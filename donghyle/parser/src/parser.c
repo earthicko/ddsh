@@ -2,20 +2,6 @@
 #include "t_token.h"
 #include <stdlib.h>
 
-int	find_tokentype(t_token *tokenarr, int n_tokens, int type)
-{
-	int	i;
-
-	i = 0;
-	while (i < n_tokens)
-	{
-		if ((tokenarr + i)->type == type)
-			return (i);
-		i++;
-	}
-	return (-1);
-}
-
 t_node	*parse_here_end(t_token **current_token, t_token *last_token)
 {
 	t_node	*root;
@@ -139,6 +125,33 @@ t_node	*parse_io_redirect(t_token **current_token, t_token *last_token)
 	return (destroy_node);
 }
 
+t_node	*parse_cmd_element(t_token **current_token, t_token *last_token)
+{
+	t_node	*root;
+
+	if ((*current_token)->type == TOKENTYPE_WORD)
+		return (create_node(NODETYPE_CMD_ELEMENT, (*current_token)->content));
+	return (parse_io_redirect(current_token, last_token));
+}
+
+t_node	*parse_simple_command(t_token **current_token, t_token *last_token)
+{
+	t_node	*root;
+	t_node	*child;
+
+	root = create_node(NODETYPE_SIMPLE_COMMAND, "");
+	if (!root)
+		return (NULL);
+	while (1)
+	{
+		child = parse_cmd_element(current_token, last_token);
+		if (!child)
+			return (root);
+		if (addchild_node(root, child))
+			return (destroy_node(root));
+	}
+}
+
 t_node	*parse_pipe_sequence(t_token **current_token, t_token *last_token)
 {
 	t_node	*root;
@@ -162,5 +175,12 @@ t_node	*parse_pipe_sequence(t_token **current_token, t_token *last_token)
 
 t_node	*parse_tokens(t_token *tokenarr, int n_tokens)
 {
-	
+	t_token	*token_p;
+	t_token	*last_token;
+	t_node	*root;
+
+	token_p = tokenarr;
+	last_token = tokenarr + n_tokens;
+	root = parse_pipe_sequence(&token_p, last_token);
+	return (root);
 }
