@@ -16,12 +16,12 @@ CFLAGS			= -Wall -Werror -Wextra -MMD -MP -g
 ################################ FILENAMES #####################################
 FILENAME		= \
 				t_node \
-				parser \
-				parser_util \
-				parser_util1 \
-				parser_util2 \
-				parser_util3 \
-				debug/print_nodes
+				parser/parser \
+				parser/parser_util \
+				parser/parser_util1 \
+				parser/parser_util2 \
+				parser/parser_util3 \
+				parser/debug/print_nodes
 
 SRC				= $(addprefix srcs/, $(addsuffix .c, $(FILENAME)))
 OBJ				= $(addprefix srcs/, $(addsuffix .o, $(FILENAME)))
