@@ -51,9 +51,9 @@ int	node_addchild(t_node *node, t_node *child)
 
 	new_child = ft_lstnew(child);
 	if (!new_child)
-		return (-1);
+		return (CODE_ERROR_MALLOC);
 	ft_lstadd_back(&(node->childs), new_child);
-	return (0);
+	return (CODE_OK);
 }
 
 int	node_getntokens(t_node *node)

@@ -1,6 +1,7 @@
 #include "t_node.h"
 #include "t_token.h"
 #include "parser_internal.h"
+#include "libft_def.h"
 #include <stdlib.h>
 
 t_parser	*parser_create(t_token *tokenarr, int n_tokens)
@@ -20,8 +21,8 @@ t_parser	*parser_create(t_token *tokenarr, int n_tokens)
 int	parser_is_last_token(t_parser *parser)
 {
 	if (parser->tok_curr == parser->tok_last)
-		return (1);
-	return (0);
+		return (TRUE);
+	return (FALSE);
 }
 
 t_node	*parse_tokens(t_token *tokenarr, int n_tokens)
