@@ -1,44 +1,52 @@
-NAME			= parser_test
+NAME				= minishell
 ################################# LIBRARIES ####################################
-LIBFT_DIR		= libft
-LIBFT			= $(LIBFT_DIR)/libft.a
-LINK_LIBFT		= -L$(LIBFT_DIR)
-INC_DIR_LIBFT	= -I$(LIBFT_DIR)/includes
+LIBFT_DIR			= modules/libft
+LIBFT				= $(LIBFT_DIR)/libft.a
+LINK_LIBFT			= -L$(LIBFT_DIR)
+INC_DIR_LIBFT		= -I$(LIBFT_DIR)/includes
 
-LIB_ALL			= $(LIBFT)
-LINK_LIBS		= $(LINK_LIBFT)
+LIBPARSER_DIR		= modules/libparser
+LIBPARSER			= $(LIBPARSER_DIR)/libparser.a
+LINK_LIBPARSER		= -L$(LIBPARSER_DIR)
+INC_DIR_LIBPARSER	= -I$(LIBPARSER_DIR)/includes
 
-INC_DIR			= -I. $(INC_DIR_LIBFT) -Iincludes
+LIBENVMAN_DIR		= modules/libenvman
+LIBENVMAN			= $(LIBENVMAN_DIR)/libenvman.a
+LINK_LIBENVMAN		= -L$(LIBENVMAN_DIR)
+INC_DIR_LIBENVMAN	= -I$(LIBENVMAN_DIR)/includes
+
+LIB_ALL				= $(LIBFT) $(LIBPARSER) $(LIBENVMAN)
+LINK_LIBS			= $(LINK_LIBFT) $(LINK_LIBPARSER) $(LINK_LIBENVMAN)
+
+INC_DIR				= -I. -Iincludes \
+					$(INC_DIR_LIBFT) \
+					$(INC_DIR_LIBPARSER) \
+					$(INC_DIR_LIBENVMAN)
 ################################# COMMANDS #####################################
-RM				= rm -f
-CC				= gcc
-CFLAGS			= -Wall -Werror -Wextra -MMD -MP -g
+RM					= rm -f
+CC					= gcc
+CFLAGS				= -Wall -Werror -Wextra -MMD -MP -g
 ################################ FILENAMES #####################################
-FILENAME		= \
-				t_node \
-				parser/parser \
-				parser/parser_util \
-				parser/parser_util1 \
-				parser/parser_util2 \
-				parser/parser_util3 \
-				parser/debug/print_nodes \
-				envmanager/envmanager \
-				envmanager/envmanager_addentry \
-				envmanager/envmanager_getval \
-				envmanager/envmanager_setval
+FILENAME			=
 
-SRC				= $(addprefix srcs/, $(addsuffix .c, $(FILENAME)))
-OBJ				= $(addprefix srcs/, $(addsuffix .o, $(FILENAME)))
-DEP				= $(addprefix srcs/, $(addsuffix .d, $(FILENAME)))
+SRC					= $(addprefix srcs/, $(addsuffix .c, $(FILENAME)))
+OBJ					= $(addprefix srcs/, $(addsuffix .o, $(FILENAME)))
+DEP					= $(addprefix srcs/, $(addsuffix .d, $(FILENAME)))
 ################################# TARGETS ######################################
 all:
 	@make $(NAME)
 
-$(NAME): $(LIB_ALL) $(OBJ) $(STAT) test_parser.o
-	$(CC) $(CFLAGS) $(INC_DIR) $(LINK_LIBS) $(LIB_ALL) $(OBJ) test_parser.o -o $@
+$(NAME): $(LIB_ALL) $(OBJ) $(STAT) test_envmanager.o
+	$(CC) $(CFLAGS) $(INC_DIR) $(LINK_LIBS) $(LIB_ALL) $(OBJ) test_envmanager.o -o $@
 
 $(LIBFT):
 	@make -s -j4 -C $(LIBFT_DIR)/
+
+$(LIBPARSER):
+	@make -s -j4 -C $(LIBPARSER_DIR)/
+
+$(LIBENVMAN):
+	@make -s -j4 -C $(LIBENVMAN_DIR)/
 
 -include $(DEP)
 
@@ -47,11 +55,15 @@ $(LIBFT):
 
 clean:
 	$(RM) $(OBJ) $(DEP)
-	@make clean -C $(LIBFT_DIR)
+	@make clean -s -C $(LIBFT_DIR)
+	@make clean -s -C $(LIBPARSER_DIR)
+	@make clean -s -C $(LIBENVMAN_DIR)
 
 fclean: clean
 	$(RM) $(NAME)
-	@make fclean -C $(LIBFT_DIR)
+	@make fclean -s -C $(LIBFT_DIR)
+	@make fclean -s -C $(LIBPARSER_DIR)
+	@make fclean -s -C $(LIBENVMAN_DIR)
 
 re:
 	@make fclean
