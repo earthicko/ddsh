@@ -1,67 +1,63 @@
 #include "t_node.h"
 #include "t_token.h"
+#include "parser.h"
 #include <stddef.h>
 
-static int	can_parse_io_file(t_token **current_token, t_token *last_token)
+static int	can_parse_io_file(t_parser *parser)
 {
-	if (*current_token == last_token)
+	if (parser_is_last_token(parser))
 		return (0);
-	if ((*current_token)->type == TOKENTYPE_REDIR_IN)
+	if (parser->tok_curr->type == TOKENTYPE_REDIR_IN)
 		return (1);
-	if ((*current_token)->type == TOKENTYPE_REDIR_OUT)
+	if (parser->tok_curr->type == TOKENTYPE_REDIR_OUT)
 		return (1);
-	if ((*current_token)->type == TOKENTYPE_REDIR_OUT_APPEND)
+	if (parser->tok_curr->type == TOKENTYPE_REDIR_OUT_APPEND)
 		return (1);
 	return (0);
 }
 
-t_node	*parse_io_file(t_token **current_token, t_token *last_token)
+t_node	*parse_io_file(t_parser *parser)
 {
 	t_node	*root;
 	t_node	*child;
 
-	if (!can_parse_io_file(current_token, last_token))
+	if (!can_parse_io_file(parser))
 		return (NULL);
-	(*current_token)++;
-	child = parse_filename(current_token, last_token);
+	root = create_node(NODETYPE_IO_FILE, parser->tok_curr->content, 1);
+	if (!root)
+		return (abort_parse(parser, NULL, NULL));
+	parser_increment_token(parser, 1);
+	child = parse_filename(parser);
 	if (!child)
-	{
-		(*current_token)--;
-		return (NULL);
-	}
-	root = create_node(NODETYPE_IO_FILE, (*current_token)->content);
-	if (!root || addchild_node(root, child) < 0)
-	{
-		if (root)
-			destroy_node(root);
-		(*current_token) -= 2;
-		destroy_node(child);
-		return (NULL);
-	}
+		return (abort_parse(parser, root, NULL));
+	if (addchild_node(root, child))
+		return (abort_parse(parser, root, child));
 	return (root);
 }
 
-t_node	*parse_io_redirect(t_token **current_token, t_token *last_token)
+t_node	*parse_io_redirect(t_parser *parser)
 {
 	t_node	*root;
 	t_node	*child;
 
-	root = create_node(NODETYPE_IO_REDIRECT, "");
+	if (parser_is_last_token(parser))
+		return (NULL);
+	root = create_node(NODETYPE_IO_REDIRECT, "", 0);
 	if (!root)
 		return (NULL);
-	child = parse_io_file(current_token, last_token);
+	child = parse_io_file(parser);
 	if (child)
 	{
-		if (addchild_node(root, child) < 0)
-			return (destroy_node(root));
+		if (addchild_node(root, child))
+			return (abort_parse(parser, root, child));
 		return (root);
 	}
-	child = parse_io_here(current_token, last_token);
+	child = parse_io_here(parser);
 	if (child)
 	{
-		if (addchild_node(root, child) < 0)
-			return (destroy_node(root));
+		if (addchild_node(root, child))
+			return (abort_parse(parser, root, child));
 		return (root);
 	}
-	return (destroy_node);
+	return (abort_parse(parser, root, NULL));
 }

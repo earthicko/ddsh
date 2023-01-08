@@ -1,62 +1,55 @@
 #include "t_node.h"
 #include "t_token.h"
+#include "parser.h"
 #include <stddef.h>
 
-t_node	*parse_here_end(t_token **current_token, t_token *last_token)
+t_node	*parse_here_end(t_parser *parser)
 {
 	t_node	*root;
 
-	if (*current_token == last_token)
+	if (parser_is_last_token(parser))
 		return (NULL);
-	if ((*current_token)->type != TOKENTYPE_WORD)
+	if (parser->tok_curr->type != TOKENTYPE_WORD)
 		return (NULL);
-	root = create_node(NODETYPE_HERE_END, (*current_token)->content);
+	root = create_node(NODETYPE_HERE_END, parser->tok_curr->content, 1);
 	if (!root)
 		return (NULL);
-	// quote removal needed?
-	(*current_token)++;
+	parser_increment_token(parser, 1);
 	return (root);
 }
 
-t_node	*parse_io_here(t_token **current_token, t_token *last_token)
+t_node	*parse_io_here(t_parser *parser)
 {
 	t_node	*root;
 	t_node	*child;
 
-	if (*current_token == last_token)
+	if (parser_is_last_token(parser))
 		return (NULL);
-	if ((*current_token)->type != TOKENTYPE_REDIR_IN_HERE)
+	if (parser->tok_curr->type != TOKENTYPE_REDIR_IN_HERE)
 		return (NULL);
-	(*current_token)++;
-	child = parse_here_end(current_token, last_token);
+	root = create_node(NODETYPE_IO_HERE, parser->tok_curr->content, 1);
+	if (!root)
+		return (abort_parse(parser, NULL, NULL));
+	parser_increment_token(parser, 1);
+	child = parse_here_end(parser);
 	if (!child)
-	{
-		(*current_token)--;
-		return (NULL);
-	}
-	root = create_node(NODETYPE_IO_HERE, (*current_token)->content);
-	if (!root || addchild_node(root, child) < 0)
-	{
-		if (root)
-			destroy_node(root);
-		(*current_token) -= 2;
-		destroy_node(child);
-		return (NULL);
-	}
+		return (abort_parse(parser, root, NULL));
+	if (addchild_node(root, child))
+		return (abort_parse(parser, root, child));
 	return (root);
 }
 
-t_node	*parse_filename(t_token **current_token, t_token *last_token)
+t_node	*parse_filename(t_parser *parser)
 {
 	t_node	*root;
 
-	if (*current_token == last_token)
+	if (parser_is_last_token(parser))
 		return (NULL);
-	if ((*current_token)->type != TOKENTYPE_WORD)
+	if (parser->tok_curr->type != TOKENTYPE_WORD)
 		return (NULL);
-	root = create_node(NODETYPE_FILENAME, (*current_token)->content);
+	root = create_node(NODETYPE_FILENAME, parser->tok_curr->content, 1);
 	if (!root)
 		return (NULL);
-	(*current_token)++;
+	parser_increment_token(parser, 1);
 	return (root);
 }
