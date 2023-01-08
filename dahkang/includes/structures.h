@@ -1,5 +1,11 @@
 #ifndef STRUCTURES_H
 # define STRUCTURES_H
+# define SEP 1
+# define NOTSEP 0
+# define TRUE 1
+# define FALSE 0
+
+typedef int	t_bool;
 
 typedef struct s_token
 {

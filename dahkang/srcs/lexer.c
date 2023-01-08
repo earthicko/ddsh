@@ -1,52 +1,59 @@
 #include "../libft/includes/libft.h"
 #include "../includes/lexer.h"
 
-static int	get_n_toks(char *str)
-{
-	int	n_toks;
+#include <stdio.h>
 
-	while (*str)
-	{
-		skip_space(str);
-		if (*str && *str == '\'')
-	}
-
-	return (n_toks);
-}
-
-static	t_toks	*init_toks(char *str)
-{
-	t_toks	*toks;
-
-	toks = (t_toks *)malloc(sizeof(t_toks));
-	if (!toks)
-		return (0);
-	toks->n_toks = get_n_toks(str);
-	toks->arr = (t_token *)malloc(sizeof(t_token) * (toks->n_toks + 1));
-	if (!toks->arr)
-		return (0);
-	return (toks);
-}
-
-//인풋이 그냥 엔터일 때, 동적할당 실패하는 경우를 나누어야 하나?
+//토큰화 로직은 토큰 개수세는 로직과 달리 바꾸는게 나을듯.
 t_toks	*lexer(char *str)
 {
 	t_toks	*toks;	
-	int		i;
-	char	*start;
+	int		state;
+	char	quote;
+	int		idx;
+	char	*from;
 
 	if (!str)
 		return (0);
 	toks = init_toks(str);
+	if (toks->n_toks == -1)
+		return (toks);
+	quote = 0;
+	state = SEP;
+	idx = 0;
 	while (*str)
 	{
-		if (skip_space(str))
-			return (0);
-		if (*str == '\'' || *str == '"')
+		if (!quote && is_space(*str))
 		{
-			start = str;
-			while (*str && *str == '\'')
-				str++;
+			if (state == NOTSEP)
+			{
+				toks->arr[idx].content = ft_substr(from, 0, str - from - 1);
+				toks->arr[idx].type = TOKENTYPE_WORD;
+			}
+			skip_space(&str);
+			state = SEP;
+		}
+		if (*str && *str == '\'' || *str == '"')
+		{
+			if (state == SEP)
+				from = str;
+			if (quote == 0)
+				quote = *str;
+			skip_inquote(&str, quote);
+			quote = 0;
+			str++;
+			state = NOTSEP;
+		}
+		if (!quote && *str && is_metachar(*str))
+		{
+			idx++;
+			state = SEP;
+		}
+		if (skip_letter(&str))
+		{
+			if (state == SEP)
+				from = str;
+			state = NOTSEP;
 		}
 	}
+	return (toks);
 }
