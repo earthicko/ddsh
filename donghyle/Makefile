@@ -21,7 +21,11 @@ FILENAME		= \
 				parser/parser_util1 \
 				parser/parser_util2 \
 				parser/parser_util3 \
-				parser/debug/print_nodes
+				parser/debug/print_nodes \
+				envmanager/envmanager \
+				envmanager/envmanager_addentry \
+				envmanager/envmanager_getval \
+				envmanager/envmanager_setval
 
 SRC				= $(addprefix srcs/, $(addsuffix .c, $(FILENAME)))
 OBJ				= $(addprefix srcs/, $(addsuffix .o, $(FILENAME)))
