@@ -5,7 +5,6 @@ typedef struct s_token
 {
 	int		type;
 	char	*content;
-	int		expansion;
 }	t_token;
 
 enum	e_tokentype
