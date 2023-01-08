@@ -23,15 +23,15 @@ t_node	*parse_io_file(t_parser *parser)
 
 	if (!can_parse_io_file(parser))
 		return (NULL);
-	root = create_node(NODETYPE_IO_FILE, parser->tok_curr->content, 1);
+	root = node_create(NODETYPE_IO_FILE, parser->tok_curr->content, 1);
 	if (!root)
-		return (abort_parse(parser, NULL, NULL));
+		return (parse_abort(parser, NULL, NULL));
 	parser_increment_token(parser, 1);
 	child = parse_filename(parser);
 	if (!child)
-		return (abort_parse(parser, root, NULL));
-	if (addchild_node(root, child))
-		return (abort_parse(parser, root, child));
+		return (parse_abort(parser, root, NULL));
+	if (node_addchild(root, child))
+		return (parse_abort(parser, root, child));
 	return (root);
 }
 
@@ -42,22 +42,22 @@ t_node	*parse_io_redirect(t_parser *parser)
 
 	if (parser_is_last_token(parser))
 		return (NULL);
-	root = create_node(NODETYPE_IO_REDIRECT, "", 0);
+	root = node_create(NODETYPE_IO_REDIRECT, "", 0);
 	if (!root)
 		return (NULL);
 	child = parse_io_file(parser);
 	if (child)
 	{
-		if (addchild_node(root, child))
-			return (abort_parse(parser, root, child));
+		if (node_addchild(root, child))
+			return (parse_abort(parser, root, child));
 		return (root);
 	}
 	child = parse_io_here(parser);
 	if (child)
 	{
-		if (addchild_node(root, child))
-			return (abort_parse(parser, root, child));
+		if (node_addchild(root, child))
+			return (parse_abort(parser, root, child));
 		return (root);
 	}
-	return (abort_parse(parser, root, NULL));
+	return (parse_abort(parser, root, NULL));
 }

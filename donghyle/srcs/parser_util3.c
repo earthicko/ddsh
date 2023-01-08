@@ -14,20 +14,20 @@ t_node	*parse_cmd_element(t_parser *parser)
 		return (NULL);
 	if (parser->tok_curr->type == TOKENTYPE_WORD)
 	{
-		root = create_node(NODETYPE_CMD_ELEMENT, parser->tok_curr->content, 1);
+		root = node_create(NODETYPE_CMD_ELEMENT, parser->tok_curr->content, 1);
 		if (!root)
-			return (abort_parse(parser, NULL, NULL));
+			return (parse_abort(parser, NULL, NULL));
 		parser_increment_token(parser, 1);
 		return (root);
 	}
-	root = create_node(NODETYPE_CMD_ELEMENT, "", 0);
+	root = node_create(NODETYPE_CMD_ELEMENT, "", 0);
 	if (!root)
-		return (abort_parse(parser, NULL, NULL));
+		return (parse_abort(parser, NULL, NULL));
 	child = parse_io_redirect(parser);
 	if (!child)
-		return (abort_parse(parser, root, NULL));
-	if (addchild_node(root, child))
-		return (abort_parse(parser, root, child));
+		return (parse_abort(parser, root, NULL));
+	if (node_addchild(root, child))
+		return (parse_abort(parser, root, child));
 	return (root);
 }
 
@@ -38,7 +38,7 @@ t_node	*parse_simple_command(t_parser *parser)
 
 	if (parser_is_last_token(parser))
 		return (NULL);
-	root = create_node(NODETYPE_SIMPLE_COMMAND, "", 0);
+	root = node_create(NODETYPE_SIMPLE_COMMAND, "", 0);
 	if (!root)
 		return (NULL);
 	while (1)
@@ -46,8 +46,8 @@ t_node	*parse_simple_command(t_parser *parser)
 		child = parse_cmd_element(parser);
 		if (!child)
 			return (root);
-		if (addchild_node(root, child))
-			return (abort_parse(parser, root, child));
+		if (node_addchild(root, child))
+			return (parse_abort(parser, root, child));
 	}
 }
 
@@ -58,22 +58,22 @@ t_node	*parse_pipe_sequence(t_parser *parser)
 
 	if (parser_is_last_token(parser))
 		return (NULL);
-	root = create_node(NODETYPE_PIPE_SEQUENCE, "|", 0);
+	root = node_create(NODETYPE_PIPE_SEQUENCE, "|", 0);
 	if (!root)
 		return (NULL);
 	while (1)
 	{
 		child = parse_simple_command(parser);
 		if (!child)
-			return (abort_parse(parser, root, NULL));
-		if (addchild_node(root, child))
-			return (abort_parse(parser, root, child));
+			return (parse_abort(parser, root, NULL));
+		if (node_addchild(root, child))
+			return (parse_abort(parser, root, child));
 		if (parser_is_last_token(parser))
 			return (root);
 		if (parser->tok_curr->type != TOKENTYPE_PIPE)
-			return (destroy_node(root));
+			return (node_destroy(root));
 		parser_increment_token(parser, 1);
 		root->n_tokens++;
 	}
-	return (destroy_node(root));
+	return (node_destroy(root));
 }

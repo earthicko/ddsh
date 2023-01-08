@@ -1,7 +1,7 @@
 #include "parser.h"
 #include <stdlib.h>
 
-void	print_node(t_node *root, int depth);
+void	node_print(t_node *root, int depth);
 
 int main(void)
 {
@@ -27,8 +27,8 @@ int main(void)
 	tokens[7].type = TOKENTYPE_WORD;
 
 	root = parse_tokens(tokens, 8);
-	print_node(root, 0);
-	destroy_node(root);
+	node_print(root, 0);
+	node_destroy(root);
 	system("leaks minishell");
 	return 0;
 }

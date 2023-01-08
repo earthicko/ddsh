@@ -36,7 +36,7 @@ static char	*get_node_typename(int type)
 	}
 }
 
-void	print_node_content(t_node *root)
+void	node_print_content(t_node *root)
 {
 	ft_printf("node type \"%s\", content \"%s\"\n",
 		get_node_typename(root->type), root->content);
@@ -44,7 +44,7 @@ void	print_node_content(t_node *root)
 
 static void	print_childs(t_node *root, int depth);
 
-void	print_node(t_node *root, int depth)
+void	node_print(t_node *root, int depth)
 {
 	char	*prefix;
 	char	*temp;
@@ -75,7 +75,7 @@ static void	print_childs(t_node *root, int depth)
 	cursor = root->childs;
 	while (cursor)
 	{
-		print_node(cursor->content, depth);
+		node_print(cursor->content, depth);
 		cursor = cursor->next;
 	}
 }
