@@ -1,19 +1,20 @@
 #include "t_node.h"
 #include "t_token.h"
 #include "parser_internal.h"
+#include "libft_def.h"
 #include <stddef.h>
 
 static int	can_parse_io_file(t_parser *parser)
 {
 	if (parser_is_last_token(parser))
-		return (0);
+		return (FALSE);
 	if (parser->tok_curr->type == TOKENTYPE_REDIR_IN)
-		return (1);
+		return (TRUE);
 	if (parser->tok_curr->type == TOKENTYPE_REDIR_OUT)
-		return (1);
+		return (TRUE);
 	if (parser->tok_curr->type == TOKENTYPE_REDIR_OUT_APPEND)
-		return (1);
-	return (0);
+		return (TRUE);
+	return (FALSE);
 }
 
 t_node	*parse_io_file(t_parser *parser)

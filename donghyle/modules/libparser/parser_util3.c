@@ -2,8 +2,7 @@
 #include "t_token.h"
 #include "parser_internal.h"
 #include <stddef.h>
-
-#include "libft.h"
+#include "libft_def.h"
 
 t_node	*parse_cmd_element(t_parser *parser)
 {
@@ -41,7 +40,7 @@ t_node	*parse_simple_command(t_parser *parser)
 	root = node_create(NODETYPE_SIMPLE_COMMAND, "", 0);
 	if (!root)
 		return (NULL);
-	while (1)
+	while (TRUE)
 	{
 		child = parse_cmd_element(parser);
 		if (!child)
@@ -58,10 +57,10 @@ t_node	*parse_pipe_sequence(t_parser *parser)
 
 	if (parser_is_last_token(parser))
 		return (NULL);
-	root = node_create(NODETYPE_PIPE_SEQUENCE, "|", 0);
+	root = node_create(NODETYPE_PIPE_SEQUENCE, "", 0);
 	if (!root)
 		return (NULL);
-	while (1)
+	while (TRUE)
 	{
 		child = parse_simple_command(parser);
 		if (!child)
