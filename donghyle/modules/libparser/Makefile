@@ -15,7 +15,8 @@ FILENAME		= \
 				parser_util1 \
 				parser_util2 \
 				parser_util3 \
-				parser
+				parser \
+				debug/print_nodes
 
 SRC				= $(addsuffix .c, $(FILENAME))
 OBJ				= $(addsuffix .o, $(FILENAME))
