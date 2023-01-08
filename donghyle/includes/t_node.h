@@ -29,4 +29,5 @@ int		node_addchild(t_node *node, t_node *child);
 int		node_getntokens(t_node *node);
 
 void	node_print_content(t_node *root);
+void	node_print(t_node *root, int depth);
 #endif

@@ -3,7 +3,7 @@
 #include "parser_internal.h"
 #include <stdlib.h>
 
-t_parser	*create_parser(t_token *tokenarr, int n_tokens)
+t_parser	*parser_create(t_token *tokenarr, int n_tokens)
 {
 	t_parser	*parser;
 
@@ -29,9 +29,10 @@ t_node	*parse_tokens(t_token *tokenarr, int n_tokens)
 	t_parser	*parser;
 	t_node		*root;
 
-	parser = create_parser(tokenarr, n_tokens);
+	parser = parser_create(tokenarr, n_tokens);
 	if (!parser)
 		return (NULL);
 	root = parse_pipe_sequence(parser);
+	free(parser);
 	return (root);
 }
