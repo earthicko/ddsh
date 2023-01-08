@@ -71,9 +71,8 @@ t_node	*parse_pipe_sequence(t_parser *parser)
 		if (parser_is_last_token(parser))
 			return (root);
 		if (parser->tok_curr->type != TOKENTYPE_PIPE)
-			return (node_destroy(root));
+			return (parse_abort(parser, root, NULL));
 		parser->tok_curr++;
 		root->n_tokens++;
 	}
-	return (node_destroy(root));
 }
