@@ -1,6 +1,6 @@
 #include "t_node.h"
 #include "t_token.h"
-#include "parser.h"
+#include "parser_internal.h"
 #include <stddef.h>
 
 static int	can_parse_io_file(t_parser *parser)

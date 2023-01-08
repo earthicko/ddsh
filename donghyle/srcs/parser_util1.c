@@ -1,6 +1,6 @@
 #include "t_node.h"
 #include "t_token.h"
-#include "parser.h"
+#include "parser_internal.h"
 #include <stddef.h>
 
 t_node	*parse_here_end(t_parser *parser)

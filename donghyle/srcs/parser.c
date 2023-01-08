@@ -1,6 +1,6 @@
 #include "t_node.h"
 #include "t_token.h"
-#include "parser.h"
+#include "parser_internal.h"
 #include <stdlib.h>
 
 t_parser	*create_parser(t_token *tokenarr, int n_tokens)
