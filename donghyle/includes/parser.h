@@ -9,7 +9,6 @@ typedef struct s_parser
 	t_token	*tok_curr;
 	t_token	*tok_last;
 	int		n_tokens;
-	int		rewind_counter;
 }	t_parser;
 
 t_node	*parse_tokens(t_token *tokenarr, int n_tokens);

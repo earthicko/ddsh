@@ -26,7 +26,7 @@ t_node	*parse_io_file(t_parser *parser)
 	root = node_create(NODETYPE_IO_FILE, parser->tok_curr->content, 1);
 	if (!root)
 		return (parse_abort(parser, NULL, NULL));
-	parser_increment_token(parser, 1);
+	parser->tok_curr++;
 	child = parse_filename(parser);
 	if (!child)
 		return (parse_abort(parser, root, NULL));

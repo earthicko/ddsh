@@ -17,7 +17,7 @@ t_node	*parse_cmd_element(t_parser *parser)
 		root = node_create(NODETYPE_CMD_ELEMENT, parser->tok_curr->content, 1);
 		if (!root)
 			return (parse_abort(parser, NULL, NULL));
-		parser_increment_token(parser, 1);
+		parser->tok_curr++;
 		return (root);
 	}
 	root = node_create(NODETYPE_CMD_ELEMENT, "", 0);
@@ -72,7 +72,7 @@ t_node	*parse_pipe_sequence(t_parser *parser)
 			return (root);
 		if (parser->tok_curr->type != TOKENTYPE_PIPE)
 			return (node_destroy(root));
-		parser_increment_token(parser, 1);
+		parser->tok_curr++;
 		root->n_tokens++;
 	}
 	return (node_destroy(root));

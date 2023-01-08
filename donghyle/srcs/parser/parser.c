@@ -14,7 +14,6 @@ t_parser	*create_parser(t_token *tokenarr, int n_tokens)
 	parser->tok_curr = tokenarr;
 	parser->tok_last = tokenarr + n_tokens;
 	parser->n_tokens = n_tokens;
-	parser->rewind_counter = 0;
 	return (parser);
 }
 
@@ -23,12 +22,6 @@ int	parser_is_last_token(t_parser *parser)
 	if (parser->tok_curr == parser->tok_last)
 		return (1);
 	return (0);
-}
-
-void	parser_increment_token(t_parser *parser, int n)
-{
-	parser->tok_curr += n;
-	parser->rewind_counter += n;
 }
 
 t_node	*parse_tokens(t_token *tokenarr, int n_tokens)
