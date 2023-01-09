@@ -27,6 +27,7 @@ int	envmanager_setval(t_list **envlist, char *name, char *val)
 	t_enventry	*entry;
 	char		*envstr;
 	char		*temp;
+	int			stat;
 
 	entry = envmanager_getentry(*envlist, name);
 	if (entry)
@@ -42,8 +43,10 @@ int	envmanager_setval(t_list **envlist, char *name, char *val)
 		envstr = compose_envstr(name, val);
 		if (!envstr)
 			return (CODE_ERROR_MALLOC);
-		envmanager_addentry(envlist, envstr);
+		stat = envmanager_addentry(envlist, envstr);
 		free(envstr);
+		if (stat)
+			return (stat);
 	}
 	return (CODE_OK);
 }
