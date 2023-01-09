@@ -44,7 +44,11 @@ t_node	*parse_simple_command(t_parser *parser)
 	{
 		child = parse_cmd_element(parser);
 		if (!child)
-			return (root);
+		{
+			if (node_getntokens(root))
+				return (root);
+			return (parse_abort(parser, root, NULL));
+		}
 		if (node_addchild(root, child))
 			return (parse_abort(parser, root, child));
 	}
