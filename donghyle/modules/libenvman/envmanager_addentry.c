@@ -11,7 +11,7 @@ static int	split_envstring(char *str, char **ret_name, char **ret_val)
 	i_split = 0;
 	while (i_split < len_str)
 	{
-		if (str[i_split] == '=')
+		if (str[i_split] == ENVSTR_DELIM_CHAR)
 			break ;
 		i_split++;
 	}

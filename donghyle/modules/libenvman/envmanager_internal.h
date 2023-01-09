@@ -1,6 +1,8 @@
 #ifndef ENVMANAGER_INTERNAL_H
 # define ENVMANAGER_INTERNAL_H
 # include "libft_def.h"
+# define ENVSTR_DELIM_CHAR '='
+# define ENVSTR_DELIM_STR "="
 
 typedef struct s_enventry
 {

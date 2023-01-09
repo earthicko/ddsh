@@ -10,7 +10,7 @@ char	*compose_envstr(char *name, char *val)
 	base = ft_strdup(name);
 	if (!base)
 		return (NULL);
-	temp = ft_strjoin(base, "=");
+	temp = ft_strjoin(base, ENVSTR_DELIM_STR);
 	free(base);
 	if (!temp)
 		return (NULL);
