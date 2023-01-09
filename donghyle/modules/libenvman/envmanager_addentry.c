@@ -40,13 +40,12 @@ int	envmanager_addentry(t_list **p_list, char *env)
 		enventry_destroy(entry);
 		return (stat);
 	}
-	newlst = malloc(sizeof(t_list));
+	newlst = ft_lstnew(entry);
 	if (!newlst)
 	{
 		enventry_destroy(entry);
 		return (CODE_ERROR_MALLOC);
 	}
-	newlst->content = entry;
 	ft_lstadd_back(p_list, newlst);
 	return (CODE_OK);
 }
