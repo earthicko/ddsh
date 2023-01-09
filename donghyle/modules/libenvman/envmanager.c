@@ -47,9 +47,10 @@ static int	envmanager_init(t_list **p_list, char **envp)
 
 // init: set envp
 // clear: set none
-// getval: set buf, name
+// getval: set (char **)buf, name
 // setval: set name, val
-int	envmanager(char **envp, char **buf, char *name, char *val)
+// getenvp: set (char ***)buf
+int	envmanager(char **envp, void *buf, char *name, char *val)
 {
 	static t_list	*envlist;
 
@@ -61,5 +62,7 @@ int	envmanager(char **envp, char **buf, char *name, char *val)
 		return (envmanager_getval(envlist, buf, name));
 	else if (!envp && !buf && name && val)
 		return (envmanager_setval(&envlist, name, val));
+	else if (!envp && buf && !name && !val)
+		return (envmanager_getenvp(envlist, buf));
 	return (CODE_ERROR_DATA);
 }

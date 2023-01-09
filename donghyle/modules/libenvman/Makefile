@@ -13,6 +13,7 @@ FILENAME		= \
 				envmanager_addentry \
 				envmanager_getval \
 				envmanager_setval \
+				envmanager_getenvp \
 				envmanager
 
 SRC				= $(addsuffix .c, $(FILENAME))

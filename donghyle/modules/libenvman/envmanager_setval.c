@@ -2,7 +2,7 @@
 #include "libft.h"
 #include <stdlib.h>
 
-static char	*compose_envstr(char *name, char *val)
+char	*compose_envstr(char *name, char *val)
 {
 	char	*base;
 	char	*temp;
