@@ -1,9 +1,11 @@
-#include "../libft/includes/libft.h"
-#include "../includes/lexer.h"
+#include "../../libft/includes/libft.h"
+#include "../../includes/lexer.h"
 
 #include <stdio.h>
 
-void	get_word_token(t_toks *toks, int idx, char *str)
+//동적할당 실패에 대한 에러처리 코드 추가할 것
+
+static void	get_word_token(t_toks *toks, int idx, char *str)
 {
 	const char	*from = str;
 
@@ -12,7 +14,7 @@ void	get_word_token(t_toks *toks, int idx, char *str)
 	toks->arr[idx].content = ft_substr(from, 0, str - from);
 }
 
-void	get_op_token(t_toks *toks, int idx, int tok_type)
+static void	get_op_token(t_toks *toks, int idx, int tok_type)
 {
 	toks->arr[idx].type = tok_type;
 	if (tok_type == TOKENTYPE_PIPE)
@@ -27,18 +29,11 @@ void	get_op_token(t_toks *toks, int idx, int tok_type)
 		toks->arr[idx].content = ft_strdup(">");
 }
 
-//malloc실패에 대한 로직은 별도로 작성
-t_toks	*lexer(char *str)
+t_toks	*build_toks_arr(t_toks *toks, char *str)
 {
-	t_toks	*toks;	
-	int		tok_type;
-	int		idx;
+	int	idx;
+	int	tok_type;
 
-	if (!str)
-		return (0);
-	toks = init_toks(str);
-	if (toks->n_toks == -1)
-		return (toks);
 	idx = -1;
 	while (++idx < toks->n_toks)
 	{
@@ -58,6 +53,40 @@ t_toks	*lexer(char *str)
 		}
 	}
 	return (toks);
+}
+
+//malloc실패에 대한 로직은 별도로 작성
+t_toks	*lexer(char *str)
+{
+	t_toks	*toks;	
+
+	if (!str)
+		return (0);
+	toks = init_toks(str);
+	if (toks->n_toks == -1)
+		return (toks);
+	return (build_toks_arr(toks, str));
+	/*
+	idx = -1;
+	while (++idx < toks->n_toks)
+	{
+		str += space_len(str);
+		tok_type = get_token_type(str);
+		if (tok_type == TOKENTYPE_WORD)
+		{
+			get_word_token(toks, idx, str);
+			str += get_word_len(str);
+		}
+		else if (tok_type == TOKENTYPE_NULL)
+			continue ;
+		else
+		{
+			get_op_token(toks, idx, tok_type);
+			str += op_len(str);
+		}
+	}
+	return (toks);
+	*/
 }
 	/*
 	while (*str)

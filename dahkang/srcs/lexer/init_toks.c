@@ -1,8 +1,7 @@
-#include "../libft/includes/libft.h"
-#include "../includes/lexer.h"
+#include "../../libft/includes/libft.h"
+#include "../../includes/lexer.h"
 
 #include <stdio.h>
-
 
 //test이후에 static 선언 할 것
 int	get_n_toks(char *str)
@@ -31,6 +30,7 @@ int	get_n_toks(char *str)
 		n_toks++;
 	}
 	return (n_toks);
+}
 	/*
 	while (*str)
 	{
@@ -62,7 +62,6 @@ int	get_n_toks(char *str)
 	}
 	return (n_toks);
 	*/
-}
 
 t_toks	*init_toks(char *str)
 {
@@ -79,7 +78,7 @@ t_toks	*init_toks(char *str)
 	toks->arr = (t_token *)malloc(sizeof(t_token) * (toks->n_toks + 1));
 	if (!toks->arr)
 		return (0);
-	toks->arr[toks->n_toks].type = 0;
+	toks->arr[toks->n_toks].type = TOKENTYPE_NULL;
 	toks->arr[toks->n_toks].content = 0;
 	return (toks);
 }

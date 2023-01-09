@@ -1,4 +1,4 @@
-#include "../includes/lexer.h"
+#include "../../includes/lexer.h"
 
 t_bool	is_space(char ch)
 {
@@ -8,7 +8,7 @@ t_bool	is_space(char ch)
 		return (FALSE);
 }
 
-t_bool is_quote(char ch)
+t_bool	is_quote(char ch)
 {
 	if (ch == '\'' || ch == '\"')
 		return (TRUE);
@@ -16,9 +16,9 @@ t_bool is_quote(char ch)
 		return (FALSE);
 }
 
-t_bool is_metachar(char ch)
+t_bool	is_metachar(char ch)
 {
-	if (ch == '<' || ch == '>' || ch =='|')
+	if (ch == '<' || ch == '>' || ch == '|')
 		return (TRUE);
 	else
 		return (FALSE);

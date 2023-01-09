@@ -1,4 +1,4 @@
-#include "../includes/lexer.h"
+#include "../../includes/lexer.h"
 
 int	get_word_len(char *str)
 {
