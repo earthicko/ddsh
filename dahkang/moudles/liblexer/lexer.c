@@ -29,6 +29,20 @@ static void	get_op_token(t_toks *toks, int idx, int tok_type)
 		toks->arr[idx].content = ft_strdup(">");
 }
 
+t_toks *free_toks(t_toks *toks, int idx)	
+{
+	while (idx >= 0)
+	{
+		free(toks->arr[idx].content);
+		toks->arr[idx].content = 0;
+		idx--;
+	}
+	free(toks->arr);
+	toks->arr = 0;
+	free(toks);
+	return (0);
+}
+
 t_toks	*build_toks_arr(t_toks *toks, char *str)
 {
 	int	idx;
@@ -51,6 +65,9 @@ t_toks	*build_toks_arr(t_toks *toks, char *str)
 			get_op_token(toks, idx, tok_type);
 			str += op_len(str);
 		}
+		//if (idx == 5)
+		if (!toks->arr[idx].content)
+			return (free_toks(toks, idx));
 	}
 	return (toks);
 }
@@ -66,6 +83,7 @@ t_toks	*lexer(char *str)
 	if (toks->n_toks == -1)
 		return (toks);
 	return (build_toks_arr(toks, str));
+}
 	/*
 	idx = -1;
 	while (++idx < toks->n_toks)
@@ -87,7 +105,7 @@ t_toks	*lexer(char *str)
 	}
 	return (toks);
 	*/
-}
+
 	/*
 	while (*str)
 	{
