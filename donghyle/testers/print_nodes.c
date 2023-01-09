@@ -22,7 +22,7 @@ static char	*get_node_typename(int type)
 
 void	node_print_content(t_node *root)
 {
-	ft_printf("nodetype %s, content \"%s\", %d tokens\n",
+	ft_printf("nodetype %s:%s, %d tokens\n",
 		get_node_typename(root->type), root->content, node_getntokens(root));
 }
 
@@ -45,7 +45,7 @@ void	node_print(t_node *root, int depth)
 		prefix = temp;
 		i++;
 	}
-	ft_printf("%snodetype %s, content \"%s\", %d tokens\n", prefix,
+	ft_printf("%snodetype %s:%s, %d tokens\n", prefix,
 		get_node_typename(root->type), root->content, node_getntokens(root));
 	ft_printf("%schilds:\n", prefix);
 	free(prefix);
