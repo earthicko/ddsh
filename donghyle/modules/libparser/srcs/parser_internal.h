@@ -14,6 +14,7 @@ typedef struct s_parser
 
 int		parser_is_last_token(t_parser *parser);
 
+t_node	*parse_addchild_and_return(t_parser *p, t_node *root, t_node *child);
 t_node	*parse_abort(t_parser *parser, t_node *root, t_node *child);
 
 t_node	*parse_terminal(t_parser *parser, int tokentype, int nodetype);

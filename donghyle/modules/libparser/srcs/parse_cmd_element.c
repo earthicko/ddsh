@@ -14,17 +14,9 @@ t_node	*parse_cmd_element(t_parser *p)
 		return (NULL);
 	child = parse_terminal(p, TOKENTYPE_WORD, NODETYPE_CMD_WORD);
 	if (child)
-	{
-		if (node_addchild(root, child))
-			return (parse_abort(p, root, child));
-		return (root);
-	}
+		return (parse_addchild_and_return(p, root, child));
 	child = parse_io_redirect(p);
 	if (child)
-	{
-		if (node_addchild(root, child))
-			return (parse_abort(p, root, child));
-		return (root);
-	}
+		return (parse_addchild_and_return(p, root, child));
 	return (parse_abort(p, root, NULL));
 }

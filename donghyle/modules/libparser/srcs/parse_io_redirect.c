@@ -13,17 +13,9 @@ t_node	*parse_io_redirect(t_parser *p)
 		return (NULL);
 	child = parse_io_file(p);
 	if (child)
-	{
-		if (node_addchild(root, child))
-			return (parse_abort(p, root, child));
-		return (root);
-	}
+		return (parse_addchild_and_return(p, root, child));
 	child = parse_io_here(p);
 	if (child)
-	{
-		if (node_addchild(root, child))
-			return (parse_abort(p, root, child));
-		return (root);
-	}
+		return (parse_addchild_and_return(p, root, child));
 	return (parse_abort(p, root, NULL));
 }
