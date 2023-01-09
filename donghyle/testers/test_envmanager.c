@@ -1,7 +1,6 @@
 #include "envmanager.h"
 #include "libft.h"
 #include <stdlib.h>
-#include <stdio.h>
 
 void	get_and_print(char *name)
 {
@@ -9,10 +8,10 @@ void	get_and_print(char *name)
 
 	if (envmanager(NULL, &buf, name, NULL))
 	{
-		printf("no var named %s\n", name);
+		ft_printf("no var named %s\n", name);
 		return ;
 	}
-	printf("%s: %s\n", name, buf);
+	ft_printf("%s: %s\n", name, buf);
 	free(buf);
 }
 
@@ -25,17 +24,17 @@ void	test_getenvp(void)
 	stat = envmanager(NULL, &envp, NULL, NULL);
 	if (stat)
 	{
-		printf("failed to compose envp string\n");
+		ft_printf("failed to compose envp string\n");
 		return ;
 	}
-	printf("start envp string\n");
+	ft_printf("start envp string\n");
 	cursor = envp;
 	while (*cursor)
 	{
-		printf("\t%s\n", *cursor);
+		ft_printf("\t%s\n", *cursor);
 		cursor++;
 	}
-	printf("end envp string\n");
+	ft_printf("end envp string\n");
 	ft_free_strarr(envp);
 }
 
@@ -46,6 +45,7 @@ int	main(int argc, char **argv, char **envp)
 	test_getenvp();
 	get_and_print("HOME");
 	envmanager(envp, NULL, NULL, NULL);
+	ft_printf("fuck\n");
 	test_getenvp();
 	get_and_print("HOME");
 	get_and_print("LOGNAME");
