@@ -35,6 +35,13 @@ FILENAME			= \
 SRC					= $(addprefix srcs/, $(addsuffix .c, $(FILENAME)))
 OBJ					= $(addprefix srcs/, $(addsuffix .o, $(FILENAME)))
 DEP					= $(addprefix srcs/, $(addsuffix .d, $(FILENAME)))
+
+TEST_FILENAME		= \
+					testers/print_nodes \
+					testers/print_tokens
+TEST_SRC			= $(addsuffix .c, $(TEST_FILENAME))
+TEST_OBJ			= $(addsuffix .o, $(TEST_FILENAME))
+TEST_DEP			= $(addsuffix .d, $(TEST_FILENAME))
 ################################# TARGETS ######################################
 all:
 	@make $(NAME)
@@ -42,11 +49,11 @@ all:
 $(NAME): $(LIB_ALL) $(OBJ)
 	$(CC) $(CFLAGS) $(INC_DIR) $(LINK_LIBS) $(LIB_ALL) $(OBJ) -o $@
 
-test_parser: $(LIB_ALL) testers/test_parser.o
-	$(CC) $(CFLAGS) $(INC_DIR) $(LINK_LIBS) $(LIB_ALL) testers/test_parser.o -o $@
+test_parser: $(LIB_ALL) $(TEST_OBJ) testers/test_parser.o
+	$(CC) $(CFLAGS) $(INC_DIR) $(LINK_LIBS) $(LIB_ALL) $(TEST_OBJ) testers/test_parser.o -o $@
 
-test_envmanager: $(LIB_ALL) testers/test_envmanager.o
-	$(CC) $(CFLAGS) $(INC_DIR) $(LINK_LIBS) $(LIB_ALL) testers/test_envmanager.o -o $@
+test_envmanager: $(LIB_ALL) $(TEST_OBJ) testers/test_envmanager.o
+	$(CC) $(CFLAGS) $(INC_DIR) $(LINK_LIBS) $(LIB_ALL) $(TEST_OBJ) testers/test_envmanager.o -o $@
 
 $(LIBFT):
 	@make -j4 -C $(LIBFT_DIR)/
@@ -63,18 +70,18 @@ $(LIBENVMAN):
 	$(CC) $(CFLAGS) $(INC_DIR) -c $< -o $@
 
 clean:
-	$(RM) $(OBJ) $(DEP)
+	$(RM) $(OBJ) $(DEP) $(TEST_OBJ) $(TEST_DEP)
 	@make clean -C $(LIBFT_DIR)
 	@make clean -C $(LIBPARSER_DIR)
 	@make clean -C $(LIBENVMAN_DIR)
-	rm -rf testers/test_parser.o testers/test_parser.d testers/test_envmanager.o testers/test_envmanager.d
+	$(RM) testers/test_parser.o testers/test_parser.d testers/test_envmanager.o testers/test_envmanager.d
 
 fclean: clean
 	$(RM) $(NAME)
 	@make fclean -C $(LIBFT_DIR)
 	@make fclean -C $(LIBPARSER_DIR)
 	@make fclean -C $(LIBENVMAN_DIR)
-	rm -rf test_parser test_envmanager
+	$(RM) test_parser test_envmanager
 
 re:
 	@make fclean

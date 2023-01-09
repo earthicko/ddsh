@@ -26,19 +26,6 @@ void	set_tokens(t_token *p_tokens)
 	p_tokens[7].type = TOKENTYPE_WORD;
 }
 
-void	print_tokens(t_token *p_token)
-{
-	int	i;
-
-	i = 0;
-	while (i < n_tokens)
-	{
-		printf("%s ", p_token[i].content);
-		i++;
-	}
-	printf("\n");
-}
-
 int	get_rand_int(int min, int max)
 {
 	return (min + rand() % (max - min + 1));
