@@ -44,10 +44,23 @@ t_node	*parse_simple_command(t_parser *parser)
 	{
 		child = parse_cmd_element(parser);
 		if (!child)
-			return (root);
+		{
+			if (node_getntokens(root))
+				return (root);
+			return (parse_abort(parser, root, NULL));
+		}
 		if (node_addchild(root, child))
 			return (parse_abort(parser, root, child));
 	}
+}
+
+static int	can_parse_pipe_sequence(t_parser *parser)
+{
+	if (parser_is_last_token(parser))
+		return (FALSE);
+	if (parser->tok_curr->type == TOKENTYPE_PIPE)
+		return (FALSE);
+	return (TRUE);
 }
 
 t_node	*parse_pipe_sequence(t_parser *parser)
@@ -55,7 +68,7 @@ t_node	*parse_pipe_sequence(t_parser *parser)
 	t_node	*root;
 	t_node	*child;
 
-	if (parser_is_last_token(parser))
+	if (!can_parse_pipe_sequence(parser))
 		return (NULL);
 	root = node_create(NODETYPE_PIPE_SEQUENCE, "", 0);
 	if (!root)
