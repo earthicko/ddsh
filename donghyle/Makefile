@@ -1,16 +1,18 @@
 NAME				= minishell
 ################################# LIBRARIES ####################################
-LIBFT_DIR			= modules/libft
+LIB_DIR				= modules
+
+LIBFT_DIR			= $(LIB_DIR)/libft
 LIBFT				= $(LIBFT_DIR)/libft.a
 LINK_LIBFT			= -L$(LIBFT_DIR)
 INC_DIR_LIBFT		= -I$(LIBFT_DIR)/includes
 
-LIBPARSER_DIR		= modules/libparser
+LIBPARSER_DIR		= $(LIB_DIR)/libparser
 LIBPARSER			= $(LIBPARSER_DIR)/libparser.a
 LINK_LIBPARSER		= -L$(LIBPARSER_DIR)
 INC_DIR_LIBPARSER	= -I$(LIBPARSER_DIR)/includes
 
-LIBENVMAN_DIR		= modules/libenvman
+LIBENVMAN_DIR		= $(LIB_DIR)/libenvman
 LIBENVMAN			= $(LIBENVMAN_DIR)/libenvman.a
 LINK_LIBENVMAN		= -L$(LIBENVMAN_DIR)
 INC_DIR_LIBENVMAN	= -I$(LIBENVMAN_DIR)/includes
@@ -40,13 +42,13 @@ $(NAME): $(LIB_ALL) $(OBJ) $(STAT) test_envmanager.o
 	$(CC) $(CFLAGS) $(INC_DIR) $(LINK_LIBS) $(LIB_ALL) $(OBJ) test_envmanager.o -o $@
 
 $(LIBFT):
-	@make -s -j4 -C $(LIBFT_DIR)/
+	@make -j4 -C $(LIBFT_DIR)/
 
 $(LIBPARSER):
-	@make -s -j4 -C $(LIBPARSER_DIR)/
+	@make -j4 -C $(LIBPARSER_DIR)/
 
 $(LIBENVMAN):
-	@make -s -j4 -C $(LIBENVMAN_DIR)/
+	@make -j4 -C $(LIBENVMAN_DIR)/
 
 -include $(DEP)
 
@@ -55,15 +57,15 @@ $(LIBENVMAN):
 
 clean:
 	$(RM) $(OBJ) $(DEP)
-	@make clean -s -C $(LIBFT_DIR)
-	@make clean -s -C $(LIBPARSER_DIR)
-	@make clean -s -C $(LIBENVMAN_DIR)
+	@make clean -C $(LIBFT_DIR)
+	@make clean -C $(LIBPARSER_DIR)
+	@make clean -C $(LIBENVMAN_DIR)
 
 fclean: clean
 	$(RM) $(NAME)
-	@make fclean -s -C $(LIBFT_DIR)
-	@make fclean -s -C $(LIBPARSER_DIR)
-	@make fclean -s -C $(LIBENVMAN_DIR)
+	@make fclean -C $(LIBFT_DIR)
+	@make fclean -C $(LIBPARSER_DIR)
+	@make fclean -C $(LIBENVMAN_DIR)
 
 re:
 	@make fclean

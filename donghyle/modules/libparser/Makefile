@@ -3,11 +3,11 @@ NAME			= libparser.a
 RM				= rm -f
 CC				= gcc
 CFLAGS			= -Wall -Werror -Wextra -MMD -MP -g
-BASE_DIR		= ../../
+BASE_DIR		= ../..
 INC_DIR			= \
 				-I./includes \
-				-I$(BASE_DIR)modules/libft/includes \
-				-I$(BASE_DIR)includes
+				-I$(BASE_DIR)/modules/libft/includes \
+				-I$(BASE_DIR)/includes
 ################################ FILENAMES #####################################
 FILENAME		= \
 				t_node \
