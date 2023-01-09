@@ -11,9 +11,14 @@ t_node	*node_create(int type, char *content, int n_tokens)
 		return (NULL);
 	ft_memset(new_node, 0, sizeof(t_node));
 	new_node->childs = ft_lstnew(NULL);
-	new_node->content = ft_strdup(content);
-	if (!(new_node->childs && new_node->content))
+	if (!(new_node->childs))
 		return (node_destroy(new_node));
+	if (content)
+	{
+		new_node->content = ft_strdup(content);
+		if (!(new_node->content))
+			return (node_destroy(new_node));
+	}
 	new_node->type = type;
 	new_node->n_tokens = n_tokens;
 	return (new_node);

@@ -11,15 +11,19 @@ INC_DIR			= \
 ################################ FILENAMES #####################################
 FILENAME		= \
 				t_node \
-				parser_util \
-				parser_util1 \
-				parser_util2 \
-				parser_util3 \
+				parse_abort \
+				parse_io_file \
+				parse_io_redirect \
+				parse_simple_command \
+				parse_cmd_element \
+				parse_io_here \
+				parse_pipe_sequence \
+				parse_terminal \
 				parser
 
-SRC				= $(addsuffix .c, $(FILENAME))
-OBJ				= $(addsuffix .o, $(FILENAME))
-DEP				= $(addsuffix .d, $(FILENAME))
+SRC				= $(addprefix srcs/, $(addsuffix .c, $(FILENAME)))
+OBJ				= $(addprefix srcs/, $(addsuffix .o, $(FILENAME)))
+DEP				= $(addprefix srcs/, $(addsuffix .d, $(FILENAME)))
 ################################# TARGETS ######################################
 all:
 	@make $(NAME)

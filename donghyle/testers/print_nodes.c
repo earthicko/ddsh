@@ -4,22 +4,25 @@
 
 static char	*get_node_typename(int type)
 {
-	char	*dict[8];
+	char	*dict[11];
 
 	dict[0] = "PIPE_SEQUENCE";
 	dict[1] = "SIMPLE_COMMAND";
 	dict[2] = "CMD_ELEMENT";
-	dict[3] = "IO_REDIRECT";
-	dict[4] = "IO_FILE";
-	dict[5] = "FILENAME";
-	dict[6] = "IO_HERE";
-	dict[7] = "HERE_END";
+	dict[3] = "CMD_WORD";
+	dict[4] = "IO_REDIRECT";
+	dict[5] = "IO_FILE";
+	dict[6] = "IO_OP_FILE";
+	dict[7] = "FILENAME";
+	dict[8] = "IO_HERE";
+	dict[9] = "IO_OP_HERE";
+	dict[10] = "HERE_END";
 	return (dict[type]);
 }
 
 void	node_print_content(t_node *root)
 {
-	ft_printf("nodetype %s, content \"%s\", %d tokens\n",
+	ft_printf("nodetype %s:%s, %d tokens\n",
 		get_node_typename(root->type), root->content, node_getntokens(root));
 }
 
@@ -42,7 +45,7 @@ void	node_print(t_node *root, int depth)
 		prefix = temp;
 		i++;
 	}
-	ft_printf("%snodetype %s, content \"%s\", %d tokens\n", prefix,
+	ft_printf("%snodetype %s:%s, %d tokens\n", prefix,
 		get_node_typename(root->type), root->content, node_getntokens(root));
 	ft_printf("%schilds:\n", prefix);
 	free(prefix);

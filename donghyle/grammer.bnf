@@ -3,22 +3,26 @@ pipe_sequence    :                   simple_command
                  ; N개의 simple_command가 '|'로 이어진 것
                  ; 처음 위치에서 s/c를 만들고, 다음 포인터가 |라면 반복, NULL이라면 종료, 다 아니라면 에러
 simple_command   : cmd_element
-				 | simple_command cmd_element
-				 ;
-cmd_element		 : WORD
-				 | io_redirect
-				 ;
-io_redirect      :           io_file
-                 |           io_here
+                 | simple_command cmd_element
+                 ;
+cmd_element      : cmd_word
+                 | io_redirect
+                 ;
+cmd_word         : WORD
+                 ; 토큰 1개
+io_redirect      : io_file
+                 | io_here
                  ; io_file 또는 io_here
-io_file          : '<'       filename
-                 | '>'       filename
-                 | '>>'      filename
+io_file          : io_op_file filename
                  ; 토큰 2개
+io_op_file       : '<' | '>' | '>>'
+                 ; 토큰 1개
 filename         : WORD
                  ; 토큰 1개
-io_here          : '<<'     here_end
+io_here          : io_op_here here_end
                  ; 토큰 2개
+io_op_here       : '<<'
+                 ; 토큰 1개
 here_end         : WORD                      /* Apply rule 3 */
                  ; 토큰 1개
                  ; quote 제거를 해야함

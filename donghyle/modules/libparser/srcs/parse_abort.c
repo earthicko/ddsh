@@ -3,7 +3,7 @@
 #include "parser_internal.h"
 #include <stddef.h>
 
-t_node	*parse_abort(t_parser *parser, t_node *root, t_node *child)
+t_node	*parse_abort(t_parser *p, t_node *root, t_node *child)
 {
 	int	rewind_counter;
 
@@ -18,6 +18,6 @@ t_node	*parse_abort(t_parser *parser, t_node *root, t_node *child)
 		rewind_counter += node_getntokens(child);
 		node_destroy(child);
 	}
-	parser->tok_curr -= rewind_counter;
+	p->tok_curr -= rewind_counter;
 	return (NULL);
 }
