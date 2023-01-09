@@ -1,13 +1,13 @@
 #include "parser.h"
 #include "t_node.h"
+#include "testers.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
 
-const int	n_tokens = 8;
-
-void	set_tokens(t_token *p_tokens)
+void	set_tokens(t_token *p_tokens, int *n_tokens)
 {
+	*n_tokens = 8;
 	p_tokens[0].content = "cat";
 	p_tokens[0].type = TOKENTYPE_WORD;
 	p_tokens[1].content = "<<";
@@ -44,7 +44,7 @@ void	swap_token(t_token *p_tokens, int i, int j)
 	p_tokens[j].content = cbuf;
 }
 
-void	shuffle(t_token *p_tokens, int n_times)
+void	shuffle(t_token *p_tokens, int n_tokens, int n_times)
 {
 	int	i;
 	int	s;
@@ -65,11 +65,12 @@ int	main(void)
 {
 	t_node	*root;
 	t_token	tokens[10];
+	int		n_tokens;
 
 	srand(time(NULL));
-	set_tokens(tokens);
-	shuffle(tokens, 10);
-	print_tokens(tokens);
+	set_tokens(tokens, &n_tokens);
+	shuffle(tokens, n_tokens, 10);
+	print_tokens(tokens, n_tokens);
 	root = parse_tokens(tokens, 8);
 	node_print(root, 0);
 	node_destroy(root);
