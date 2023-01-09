@@ -13,6 +13,8 @@ void	print_tok_arr(t_toks *toks)
 	int	i;
 
 	i = -1;
+	if (!toks)
+		return ;
 	while (++i < toks->n_toks)
 	{
 		printf("type: %d\n", toks->arr[i].type);
@@ -36,7 +38,11 @@ int	main(void)
 	print_tok_arr(lexer("\"c\"a\'t\'bc >><a -e >b 'file'>>c"));
 	print_tok_arr(lexer("\"c\"\"abc\'\"t\'bc\' >><a -e >b 'file'>>c"));
 	print_tok_arr(lexer("<<> <a>b >><"));
+	//
+	//idx == 5에서, free걸어두면, 바로 아랫단, unclosed quote인데 toks를 해제하지 않아서 릭 잡힘
 	print_tok_arr(lexer("\"c\"\"abc\'\t\'bc\' >><a -e >b 'file'>>c"));
+
 	print_tok_arr(lexer(" c\"a'b\" |>a ls -l"));
 	print_tok_arr(lexer(" c\"a'\tb\" |>a\t ls -l"));
+	//system("leaks a.out");
 }
