@@ -4,16 +4,19 @@
 
 static char	*get_node_typename(int type)
 {
-	char	*dict[8];
+	char	*dict[11];
 
 	dict[0] = "PIPE_SEQUENCE";
 	dict[1] = "SIMPLE_COMMAND";
 	dict[2] = "CMD_ELEMENT";
-	dict[3] = "IO_REDIRECT";
-	dict[4] = "IO_FILE";
-	dict[5] = "FILENAME";
-	dict[6] = "IO_HERE";
-	dict[7] = "HERE_END";
+	dict[3] = "CMD_WORD";
+	dict[4] = "IO_REDIRECT";
+	dict[5] = "IO_FILE";
+	dict[6] = "IO_OP_FILE";
+	dict[7] = "FILENAME";
+	dict[8] = "IO_HERE";
+	dict[9] = "IO_OP_HERE";
+	dict[10] = "HERE_END";
 	return (dict[type]);
 }
 
