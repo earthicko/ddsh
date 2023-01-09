@@ -26,14 +26,16 @@ int	envmanager_setval(t_list **envlist, char *name, char *val)
 {
 	t_enventry	*entry;
 	char		*envstr;
+	char		*temp;
 
 	entry = envmanager_getentry(*envlist, name);
 	if (entry)
 	{
-		free(entry->val);
-		entry->val = ft_strdup(val);
-		if (!(entry->val))
+		temp = ft_strdup(val);
+		if (!temp)
 			return (CODE_ERROR_MALLOC);
+		free(entry->val);
+		entry->val = temp;
 	}
 	else
 	{
