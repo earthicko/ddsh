@@ -29,7 +29,8 @@ RM					= rm -f
 CC					= gcc
 CFLAGS				= -Wall -Werror -Wextra -MMD -MP -g
 ################################ FILENAMES #####################################
-FILENAME			=
+FILENAME			= \
+					main
 
 SRC					= $(addprefix srcs/, $(addsuffix .c, $(FILENAME)))
 OBJ					= $(addprefix srcs/, $(addsuffix .o, $(FILENAME)))
