@@ -1,5 +1,6 @@
 #ifndef STRUCTURES_H
 # define STRUCTURES_H
+
 # define SEP 1
 # define NOTSEP 0
 # define TRUE 1
@@ -22,7 +23,8 @@ typedef struct s_toks
 
 enum	e_tokentype
 {
-	TOKENTYPE_WORD = 0,
+	TOKENTYPE_NULL = 0,
+	TOKENTYPE_WORD,
 	TOKENTYPE_REDIR_IN,
 	TOKENTYPE_REDIR_OUT,
 	TOKENTYPE_REDIR_IN_HERE,

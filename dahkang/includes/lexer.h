@@ -4,15 +4,21 @@
 # include <stdlib.h>
 # include "structures.h"
 
+int	get_word_len(char *str);
+int	get_token_type(char *str);
+
 t_toks	*init_toks(char *str);
 
 t_bool	is_space(char ch);
-t_bool is_quote(char ch);
-t_bool is_metachar(char ch);
+t_bool	is_quote(char ch);
+t_bool	is_metachar(char ch);
 
-t_bool	skip_space(char **str);
-void	skip_inquote(char **str, char quote);
-t_bool	skip_letter(char **str);
-t_bool	skip_metachar(char **str);
+int	space_len(char *str);
+int	inquote_len(char *str, char quote);
+int	letter_len(char *str);
+int	op_len(char *str);
+
+
+int	get_n_toks(char *str);
 
 #endif

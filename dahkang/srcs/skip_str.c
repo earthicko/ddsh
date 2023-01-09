@@ -1,52 +1,48 @@
 #include "../includes/lexer.h"
 #include "../libft/includes/libft.h"
 
-t_bool	skip_space(char **str)
+#include <stdio.h>
+
+int	space_len(char *str)
 {
-	int	skipped;
+	int	len;
 	
-	skipped = 0;
-	if (is_space(**str))
-		skipped = 1;
-	while (**str && is_space(**str))
-		(*str)++;
-	return (skipped);
+	len = 0;
+	while (str[len] && is_space(str[len]))
+		len++;
+	return (len);
 }
 
-void	skip_inquote(char **str, char quote)
+int	inquote_len(char *str, char quote)
 {
-	while (**str && **str != quote)
-		(*str)++;
+	int	len;
+
+	len = 0;
+	while (str[len] && str[len] != quote)
+		len++;
+	return (len);
 }
 
-t_bool	skip_letter(char **str)
+int	letter_len(char *str)
 {
-	int	skipped;
+	int	len;
 
-	skipped = 0;
-	if (**str && !is_quote(**str) && !is_space(**str) && !is_metachar(**str))
-		skipped = 1;
-	while (**str && !is_quote(**str)
-			&& !is_space(**str) && !is_metachar(**str))
-		(*str)++;
-	return (skipped);
+	len = 0;
+	while (str[len] && !is_quote(str[len])
+			&& !is_space(str[len]) && !is_metachar(str[len]))
+		len++;
+	return (len);
 }
 
-t_bool	skip_metachar(char **str)
+int	op_len(char *str)
 {
-	int	skipped = 1;
+	int	len;
 
-	if (ft_strncmp(*str, ">>", 2) == 0)
-		(*str) += 2;
-	else if (ft_strncmp(*str, "<<", 2) == 0)
-		(*str) += 2;
-	else if (**str == '>')
-		(*str)++;
-	else if (**str == '<')
-		(*str)++;
-	else if (**str == '|')
-		(*str)++;
+	len = 0;
+
+	if (ft_strncmp(str, ">>", 2) == 0 || ft_strncmp(str, "<<", 2) == 0)
+		len = 2;
 	else
-		skipped = 0;
-	return (skipped);
+		len = 1;
+	return (len);
 }
