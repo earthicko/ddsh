@@ -30,6 +30,6 @@ int	main(int argc, char **argv, char **envp)
 	envmanager(NULL, NULL, "HOME", "BAR");
 	get_and_print("HOME");
 	envmanager(NULL, NULL, NULL, NULL);
-	system("leaks minishell");
+	system("leaks test_envmanager");
 	return (0);
 }
