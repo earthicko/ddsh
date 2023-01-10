@@ -11,12 +11,12 @@ t_node	*parse_io_here(t_parser *p)
 	root = node_create(NODETYPE_IO_HERE, NULL, 0);
 	if (!root)
 		return (parse_abort(p, NULL, NULL));
-	child = parse_terminal(p, TOKENTYPE_REDIR_IN_HERE, NODETYPE_IO_OP_HERE);
+	child = parse_terminal(p, NODETYPE_IO_OP_HERE);
 	if (!child)
 		return (parse_abort(p, root, NULL));
 	if (node_addchild(root, child))
 		return (parse_abort(p, root, child));
-	child = parse_terminal(p, TOKENTYPE_WORD, NODETYPE_HERE_END);
+	child = parse_terminal(p, NODETYPE_HERE_END);
 	if (!child)
 		return (parse_abort(p, root, NULL));
 	if (node_addchild(root, child))

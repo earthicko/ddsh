@@ -12,6 +12,7 @@ INC_DIR			= \
 FILENAME		= \
 				t_node \
 				parse_util \
+				parse_map_setter \
 				parse_io_file \
 				parse_io_redirect \
 				parse_simple_command \

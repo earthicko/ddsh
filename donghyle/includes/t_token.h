@@ -1,5 +1,6 @@
 #ifndef T_TOKEN_H
 # define T_TOKEN_H
+# define N_TOKENTYPE 8
 
 typedef struct s_token
 {

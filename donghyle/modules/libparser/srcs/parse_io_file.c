@@ -11,12 +11,12 @@ t_node	*parse_io_file(t_parser *p)
 	root = node_create(NODETYPE_IO_FILE, NULL, 0);
 	if (!root)
 		return (parse_abort(p, NULL, NULL));
-	child = parse_io_op_file(p);
+	child = parse_terminal(p, NODETYPE_IO_OP_FILE);
 	if (!child)
 		return (parse_abort(p, root, NULL));
 	if (node_addchild(root, child))
 		return (parse_abort(p, root, child));
-	child = parse_terminal(p, TOKENTYPE_WORD, NODETYPE_FILENAME);
+	child = parse_terminal(p, NODETYPE_FILENAME);
 	if (!child)
 		return (parse_abort(p, root, NULL));
 	if (node_addchild(root, child))

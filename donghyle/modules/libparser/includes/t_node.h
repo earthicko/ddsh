@@ -1,6 +1,7 @@
 #ifndef T_NODE_H
 # define T_NODE_H
 # include "libft_def.h"
+# define N_NODETYPE 11
 
 typedef struct s_node
 {

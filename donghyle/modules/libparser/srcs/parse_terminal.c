@@ -1,42 +1,31 @@
 #include "t_node.h"
+#include "t_token.h"
 #include "parser_internal.h"
 #include <stddef.h>
 
-t_node	*parse_terminal(t_parser *p, int tokentype, int nodetype)
+static int	is_correct_tokentype(int nodetype, int tokentype)
+{
+	int		token_map[N_TOKENTYPE];
+	void	(*map_setter[N_NODETYPE])(int *);
+
+	map_setter[NODETYPE_CMD_WORD] = map_setter_cmd_word;
+	map_setter[NODETYPE_IO_OP_FILE] = map_setter_io_op_file;
+	map_setter[NODETYPE_FILENAME] = map_setter_filename;
+	map_setter[NODETYPE_IO_OP_HERE] = map_setter_io_op_here;
+	map_setter[NODETYPE_HERE_END] = map_setter_here_end;
+	(map_setter[nodetype])(token_map);
+	return (token_map[tokentype]);
+}
+
+t_node	*parse_terminal(t_parser *p, int nodetype)
 {
 	t_node	*root;
 
 	if (parser_is_last_token(p))
 		return (NULL);
-	if (p->tok_curr->type != tokentype)
+	if (!is_correct_tokentype(nodetype, p->tok_curr->type))
 		return (NULL);
 	root = node_create(nodetype, p->tok_curr->content, 1);
-	if (!root)
-		return (NULL);
-	p->tok_curr++;
-	return (root);
-}
-
-static int	can_parse_io_op_file(t_parser *p)
-{
-	if (parser_is_last_token(p))
-		return (FALSE);
-	if (p->tok_curr->type == TOKENTYPE_REDIR_IN)
-		return (TRUE);
-	if (p->tok_curr->type == TOKENTYPE_REDIR_OUT)
-		return (TRUE);
-	if (p->tok_curr->type == TOKENTYPE_REDIR_OUT_APPEND)
-		return (TRUE);
-	return (FALSE);
-}
-
-t_node	*parse_io_op_file(t_parser *p)
-{
-	t_node	*root;
-
-	if (!can_parse_io_op_file(p))
-		return (NULL);
-	root = node_create(NODETYPE_IO_OP_FILE, p->tok_curr->content, 1);
 	if (!root)
 		return (NULL);
 	p->tok_curr++;

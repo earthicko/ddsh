@@ -12,7 +12,7 @@ t_node	*parse_cmd_element(t_parser *p)
 	root = node_create(NODETYPE_CMD_ELEMENT, NULL, 0);
 	if (!root)
 		return (NULL);
-	child = parse_terminal(p, TOKENTYPE_WORD, NODETYPE_CMD_WORD);
+	child = parse_terminal(p, NODETYPE_CMD_WORD);
 	if (child)
 		return (parse_addchild_and_return(p, root, child));
 	child = parse_io_redirect(p);
