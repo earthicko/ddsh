@@ -12,7 +12,6 @@ INC_DIR			= \
 FILENAME		= \
 				type_len \
 				is_char \
-				init_toks \
 				lexer_utils \
 				lexer
 

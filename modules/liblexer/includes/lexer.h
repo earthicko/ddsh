@@ -3,6 +3,6 @@
 
 # include "t_token.h"
 
-t_toks	*lexer(char *str);
+int	lexer(char *str, t_toks *toks);
 
 #endif

@@ -1,5 +1,36 @@
 #include "lexer_internal.h"
 
+
+#include <stdio.h>
+
+int	get_n_toks(char *str)
+{
+	int		n_toks;
+	int		tok_type;
+	int		word_len;
+
+	printf("str: %s\n", str);
+	n_toks = 0;
+	while (*str)
+	{
+		str += space_len(str);
+		tok_type = get_token_type(str);
+		if (tok_type == TOKENTYPE_WORD)
+		{
+			word_len = get_word_len(str);
+			if (word_len == -1)
+				return (-1);
+			str += word_len;
+		}
+		else if (tok_type == TOKENTYPE_NULL)
+			continue ;
+		else
+			str += op_len(str);
+		n_toks++;
+	}
+	return (n_toks);
+}
+
 int	get_word_len(char *str)
 {
 	int		len;

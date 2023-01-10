@@ -6,9 +6,9 @@
 # include "libft_def.h"
 # include "lexer.h"
 
-int		get_n_toks(char *str);
-t_toks	*init_toks(char *str);
+# define UNCLOSED_QUOTE -1
 
+int		get_n_toks(char *str);
 int		get_word_len(char *str);
 int		get_token_type(char *str);
 
