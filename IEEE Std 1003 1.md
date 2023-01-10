@@ -185,7 +185,7 @@ exit status는 성공시 0, 실패시 0이 아닌 값이다.
 pwd
 ```
 
-현재 디렉토리를 STDOUT에 출력한다. exit status는 성공시 0, 실패하거나 올바르지 않은 옵션을 입력시 0이 아닌 값이다.
+현재 디렉토리를 STDOUT에 출력한다. exit status는 성공시 0, 실패할 경우 0이 아닌 값이다.
 
 ## export
 
