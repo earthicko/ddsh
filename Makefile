@@ -74,16 +74,26 @@ test_parser: $(LIB_ALL) $(TEST_OBJ) tests/test_parser.o
 test_envmanager: $(LIB_ALL) $(TEST_OBJ) tests/test_envmanager.o
 	$(CC) $(CFLAGS) $(INC_DIR) $(LINK_LIBS) $(LIB_ALL) $(TEST_OBJ) tests/test_envmanager.o -o $@
 
-$(LIBFT):
+include $(LIBFT_DIR)/filelist.mk
+include $(LIBLEXER_DIR)/filelist.mk
+include $(LIBPARSER_DIR)/filelist.mk
+include $(LIBENVMAN_DIR)/filelist.mk
+
+ABS_SRC_LIBFT = $(addprefix $(LIBFT_DIR)/, $(SRC_LIBFT))
+ABS_SRC_LIBLEXER = $(addprefix $(LIBLEXER_DIR)/, $(SRC_LIBLEXER))
+ABS_SRC_LIBPARSER = $(addprefix $(LIBPARSER_DIR)/, $(SRC_LIBPARSER))
+ABS_SRC_LIBENVMAN = $(addprefix $(LIBENVMAN_DIR)/, $(SRC_LIBENVMAN))
+
+$(LIBFT): $(ABS_SRC_LIBFT)
 	@make -j4 -C $(LIBFT_DIR)/
 
-$(LIBLEXER):
+$(LIBLEXER): $(ABS_SRC_LIBLEXER)
 	@make -j4 -C $(LIBLEXER_DIR)/
 
-$(LIBPARSER):
+$(LIBPARSER): $(ABS_SRC_LIBPARSER)
 	@make -j4 -C $(LIBPARSER_DIR)/
 
-$(LIBENVMAN):
+$(LIBENVMAN): $(ABS_SRC_LIBENVMAN)
 	@make -j4 -C $(LIBENVMAN_DIR)/
 
 -include $(DEP)

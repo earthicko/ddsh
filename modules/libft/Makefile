@@ -1,64 +1,32 @@
-NAME		= libft.a
+NAME			= libft.a
+################################# COMMANDS #####################################
+RM				= rm -f
+CC				= gcc
+CFLAGS			= -Wall -Werror -Wextra -MMD -MP -g
+BASE_DIR		= ../..
+INC_DIR			= -I./includes
 
-CC			= gcc
-CFLAGS		= -Wall -Wextra -Werror -MMD -MP
-RM			= rm -f
+include filelist.mk
+################################# TARGETS ######################################
+all:
+	@make $(NAME)
 
-SRCNAME		= \
-			ft_asciitools \
-			ft_asciitools2 \
-			ft_memtools \
-			ft_memtools2 \
-			ft_strtools \
-			ft_strtools2 \
-			ft_strtools3 \
-			ft_strtools4 \
-			ft_strarrtools \
-			ft_split \
-			ft_split_by_chars \
-			ft_atoi \
-			ft_itoa \
-			ft_put_fd \
-			ft_lsttools \
-			ft_lsttools2 \
-			get_next_line \
-			get_next_line_utils \
-			ft_printf \
-			ft_printf_t_conv \
-			ft_printf_parse_format \
-			ft_printf_parse_format_utils \
-			ft_printf_create_str \
-			ft_printf_create_str_utils \
-			ft_printf_fwrite_chr \
-			ft_printf_fwrite_num \
-			ft_printf_fwrite_ptr \
-			ft_printf_fwrite_utils \
-			t_intarr \
-			t_chararr
+$(NAME): $(OBJ_LIBFT)
+	ar -rcs $(NAME) $(OBJ_LIBFT)
 
-SRC			= $(addprefix srcs/, $(addsuffix .c, $(SRCNAME)))
-OBJ			= $(addprefix srcs/, $(addsuffix .o, $(SRCNAME)))
-DEP			= $(addprefix srcs/, $(addsuffix .d, $(SRCNAME)))
-
-all: $(NAME)
-
-$(NAME): $(OBJ)
-	ar -rcs $(NAME) $(OBJ)
-
--include $(DEP)
+-include $(DEP_LIBFT)
 
 %.o: %.c
-	$(CC) $(CFLAGS) -Iincludes -c $< -o $@
+	$(CC) $(CFLAGS) $(INC_DIR) -c $< -o $@
 
 clean:
-	$(RM) $(OBJ) $(DEP)
+	$(RM) $(OBJ_LIBFT) $(DEP_LIBFT)
 
-fclean:
-	make clean
+fclean: clean
 	$(RM) $(NAME)
 
 re:
-	make fclean
-	make all
+	@make fclean
+	@make all
 
-.PHONY : all clean fclean re
+.PHONY: all bonus clean fclean re

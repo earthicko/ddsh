@@ -8,29 +8,22 @@ INC_DIR			= \
 				-I$(BASE_DIR)/modules/libft/includes \
 				-I$(BASE_DIR)/modules/libenvman/includes \
 				-I$(BASE_DIR)/includes
-################################ FILENAMES #####################################
-FILENAME		= \
-				builtin_echo \
-				builtin_pwd \
-				builtin_unset
 
-SRC				= $(addprefix srcs/, $(addsuffix .c, $(FILENAME)))
-OBJ				= $(addprefix srcs/, $(addsuffix .o, $(FILENAME)))
-DEP				= $(addprefix srcs/, $(addsuffix .d, $(FILENAME)))
+include filelist.mk
 ################################# TARGETS ######################################
 all:
 	@make $(NAME)
 
-$(NAME): $(OBJ)
-	ar -rcs $(NAME) $(OBJ)
+$(NAME): $(OBJ_LIBBUILTIN)
+	ar -rcs $(NAME) $(OBJ_LIBBUILTIN)
 
--include $(DEP)
+-include $(DEP_LIBBUILTIN)
 
 %.o: %.c
 	$(CC) $(CFLAGS) $(INC_DIR) -c $< -o $@
 
 clean:
-	$(RM) $(OBJ) $(DEP)
+	$(RM) $(OBJ_LIBBUILTIN) $(DEP_LIBBUILTIN)
 
 fclean: clean
 	$(RM) $(NAME)

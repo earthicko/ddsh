@@ -8,30 +8,22 @@ INC_DIR			= \
 				-I./includes \
 				-I$(BASE_DIR)/modules/libft/includes \
 				-I$(BASE_DIR)/includes
-################################ FILENAMES #####################################
-FILENAME		= \
-				type_len \
-				is_char \
-				lexer_utils \
-				lexer
 
-SRC				= $(addprefix srcs/, $(addsuffix .c, $(FILENAME)))
-OBJ				= $(addprefix srcs/, $(addsuffix .o, $(FILENAME)))
-DEP				= $(addprefix srcs/, $(addsuffix .d, $(FILENAME)))
+include filelist.mk
 ################################# TARGETS ######################################
 all:
 	@make $(NAME)
 
-$(NAME): $(OBJ)
-	ar -rcs $(NAME) $(OBJ)
+$(NAME): $(OBJ_LIBLEXER)
+	ar -rcs $(NAME) $(OBJ_LIBLEXER)
 
--include $(DEP)
+-include $(DEP_LIBLEXER)
 
 %.o: %.c
 	$(CC) $(CFLAGS) $(INC_DIR) -c $< -o $@
 
 clean:
-	$(RM) $(OBJ) $(DEP)
+	$(RM) $(OBJ_LIBLEXER) $(DEP_LIBLEXER)
 
 fclean: clean
 	$(RM) $(NAME)

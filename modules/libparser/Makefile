@@ -9,37 +9,22 @@ INC_DIR			= \
 				-I$(BASE_DIR)/modules/libft/includes \
 				-I$(BASE_DIR)/modules/liblexer/includes \
 				-I$(BASE_DIR)/includes
-################################ FILENAMES #####################################
-FILENAME		= \
-				t_node \
-				parse_util \
-				parse_map_setter \
-				parse_io_file \
-				parse_io_redirect \
-				parse_simple_command \
-				parse_cmd_element \
-				parse_io_here \
-				parse_pipe_sequence \
-				parse_terminal \
-				parser
 
-SRC				= $(addprefix srcs/, $(addsuffix .c, $(FILENAME)))
-OBJ				= $(addprefix srcs/, $(addsuffix .o, $(FILENAME)))
-DEP				= $(addprefix srcs/, $(addsuffix .d, $(FILENAME)))
+include filelist.mk
 ################################# TARGETS ######################################
 all:
 	@make $(NAME)
 
-$(NAME): $(OBJ)
-	ar -rcs $(NAME) $(OBJ)
+$(NAME): $(OBJ_LIBPARSER)
+	ar -rcs $(NAME) $(OBJ_LIBPARSER)
 
--include $(DEP)
+-include $(DEP_LIBPARSER)
 
 %.o: %.c
 	$(CC) $(CFLAGS) $(INC_DIR) -c $< -o $@
 
 clean:
-	$(RM) $(OBJ) $(DEP)
+	$(RM) $(OBJ_LIBPARSER) $(DEP_LIBPARSER)
 
 fclean: clean
 	$(RM) $(NAME)
