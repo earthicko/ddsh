@@ -21,6 +21,7 @@ void	map_setter_io_op_here(int *token_map);
 void	map_setter_here_end(int *token_map);
 
 t_node	*parse_addchild_and_return(t_parser *p, t_node *root, t_node *child);
+int		parse_terminal_and_addchild(t_parser *p, int n_t, t_node *root);
 t_node	*parse_abort(t_parser *parser, t_node *root, t_node *child);
 
 t_node	*parse_terminal(t_parser *parser, int nodetype);
