@@ -9,8 +9,6 @@ t_node	*parse_simple_command(t_parser *p)
 	t_node	*root;
 	t_node	*child;
 
-	if (parser_is_last_token(p))
-		return (NULL);
 	root = node_create(NODETYPE_SIMPLE_COMMAND, NULL, 0);
 	if (!root)
 		return (NULL);
