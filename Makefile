@@ -24,22 +24,30 @@ LIBENVMAN			= $(LIBENVMAN_DIR)/libenvman.a
 LINK_LIBENVMAN		= -L$(LIBENVMAN_DIR)
 INC_DIR_LIBENVMAN	= -I$(LIBENVMAN_DIR)/includes
 
+LIBBUILTIN_DIR		= $(LIB_DIR)/libbuiltin
+LIBBUILTIN			= $(LIBBUILTIN_DIR)/libbuiltin.a
+LINK_LIBBUILTIN		= -L$(LIBBUILTIN_DIR)
+INC_DIR_LIBBUILTIN	= -I$(LIBBUILTIN_DIR)/includes
+
 LIB_ALL				= \
 					$(LIBFT) \
 					$(LIBLEXER) \
 					$(LIBPARSER) \
-					$(LIBENVMAN)
+					$(LIBENVMAN) \
+					$(LIBBUILTIN)
 LINK_LIBS			= \
 					$(LINK_READLINE) \
 					$(LINK_LIBFT) \
 					$(LINK_LIBLEXER) \
 					$(LINK_LIBPARSER) \
-					$(LINK_LIBENVMAN)
+					$(LINK_LIBENVMAN) \
+					$(LINK_LIBBUILTIN)
 INC_DIR				= -I. -Iincludes \
 					$(INC_DIR_LIBFT) \
 					$(INC_DIR_LIBLEXER) \
 					$(INC_DIR_LIBPARSER) \
-					$(INC_DIR_LIBENVMAN)
+					$(INC_DIR_LIBENVMAN) \
+					$(INC_DIR_LIBBUILTIN)
 ################################# COMMANDS #####################################
 RM					= rm -f
 CFLAGS				= -Wall -Werror -Wextra -MMD -MP -g
@@ -77,11 +85,13 @@ include $(LIBFT_DIR)/filelist.mk
 include $(LIBLEXER_DIR)/filelist.mk
 include $(LIBPARSER_DIR)/filelist.mk
 include $(LIBENVMAN_DIR)/filelist.mk
+include $(LIBBUILTIN_DIR)/filelist.mk
 
 ABS_SRC_LIBFT = $(addprefix $(LIBFT_DIR)/, $(SRC_LIBFT))
 ABS_SRC_LIBLEXER = $(addprefix $(LIBLEXER_DIR)/, $(SRC_LIBLEXER))
 ABS_SRC_LIBPARSER = $(addprefix $(LIBPARSER_DIR)/, $(SRC_LIBPARSER))
 ABS_SRC_LIBENVMAN = $(addprefix $(LIBENVMAN_DIR)/, $(SRC_LIBENVMAN))
+ABS_SRC_LIBBUILTIN = $(addprefix $(LIBBUILTIN_DIR)/, $(SRC_LIBBUILTIN))
 
 $(LIBFT): $(ABS_SRC_LIBFT)
 	@make -j4 -C $(LIBFT_DIR)/
@@ -95,6 +105,9 @@ $(LIBPARSER): $(ABS_SRC_LIBPARSER)
 $(LIBENVMAN): $(ABS_SRC_LIBENVMAN)
 	@make -j4 -C $(LIBENVMAN_DIR)/
 
+$(LIBBUILTIN): $(ABS_SRC_LIBBUILTIN)
+	@make -j4 -C $(LIBBUILTIN_DIR)/
+
 -include $(DEP)
 
 %.o: %.c
@@ -106,6 +119,7 @@ clean:
 	@make clean -C $(LIBLEXER_DIR)
 	@make clean -C $(LIBPARSER_DIR)
 	@make clean -C $(LIBENVMAN_DIR)
+	@make clean -C $(LIBBUILTIN_DIR)
 	$(RM) tests/get_n_tok.o tests/get_n_tok.d tests/test_parser.o tests/test_parser.d tests/test_envmanager.o tests/test_envmanager.d
 
 fclean: clean
@@ -114,6 +128,7 @@ fclean: clean
 	@make fclean -C $(LIBLEXER_DIR)
 	@make fclean -C $(LIBPARSER_DIR)
 	@make fclean -C $(LIBENVMAN_DIR)
+	@make fclean -C $(LIBBUILTIN_DIR)
 	$(RM) get_n_tok test_parser test_envmanager
 
 re:
