@@ -17,6 +17,9 @@ module 디렉토리 안에 각 모듈을 배치한다. 모듈로 분류될 수 �
 libmodule1
 ├── includes
 │   └── *.h
+├── srcs
+│   ├── *.c
+│   └── *.h
 ├── *.c
 ├── *.h
 └── Makefile
