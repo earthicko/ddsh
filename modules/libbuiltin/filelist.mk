@@ -1,6 +1,8 @@
 ################################ FILENAMES #####################################
 FILE_LIBBUILTIN	= \
+					builtin_cd \
 					builtin_echo \
+					builtin_export \
 					builtin_pwd \
 					builtin_unset
 
