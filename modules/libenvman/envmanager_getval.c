@@ -1,7 +1,7 @@
 #include "envmanager_internal.h"
 #include "libft.h"
 
-t_enventry	*envmanager_getentry(t_list *envlist, char *name)
+t_list	*find_list_with_entry(t_list *envlist, char *name)
 {
 	t_list	*list;
 	char	*lstname;
@@ -11,9 +11,19 @@ t_enventry	*envmanager_getentry(t_list *envlist, char *name)
 	{
 		lstname = ((t_enventry *)(list->content))->name;
 		if (!ft_strncmp(name, lstname, ft_strlen(lstname)))
-			return (list->content);
+			return (list);
 		list = list->next;
 	}
+	return (NULL);
+}
+
+t_enventry	*envmanager_getentry(t_list *envlist, char *name)
+{
+	t_list	*list;
+
+	list = find_list_with_entry(envlist, name);
+	if (list)
+		return (list->content);
 	return (NULL);
 }
 

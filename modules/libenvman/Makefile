@@ -13,6 +13,7 @@ FILENAME		= \
 				envmanager_addentry \
 				envmanager_getval \
 				envmanager_setval \
+				envmanager_unsetval \
 				envmanager_getenvp \
 				envmanager
 
