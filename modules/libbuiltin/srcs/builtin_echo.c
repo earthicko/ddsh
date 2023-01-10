@@ -2,39 +2,30 @@
 #include "builtin_internal.h"
 #include "libft.h"
 
-static int	loop_builtin_echo(char ***p_argv, int *p_flag_n)
+static int	builtin_flag_n_on(char *first_arg)
 {
-	if (ft_strncmp(FLAG_N, **p_argv, ft_strlen(FLAG_N)))
-	{
-		if (ft_printf("%s", **p_argv) < 0)
-			return (1);
-	}
-	else
-		*p_flag_n = TRUE;
-	(*p_argv)++;
-	if (**p_argv)
-	{
-		if (ft_printf("%c", ' ') < 0)
-			return (1);
-	}
-	else
-		return (-1);
-	return (0);
+	if (!first_arg)
+		return (FALSE);
+	if (ft_strncmp(FLAG_N, first_arg, ft_strlen(FLAG_N)))
+		return (FALSE);
+	return (TRUE);
 }
 
 int	builtin_echo(char **argv)
 {
 	int	flag_n;
-	int	stat;
 
-	flag_n = FALSE;
-	while (TRUE)
+	flag_n = builtin_flag_n_on(*argv);
+	while (*argv)
 	{
-		stat = loop_builtin_echo(&argv, &flag_n);
-		if (stat == -1)
-			break ;
-		if (stat == 1)
+		if (ft_printf("%s", *argv) < 0)
 			return (1);
+		argv++;
+		if (*argv)
+		{
+			if (ft_printf("%c", ' ') < 0)
+				return (1);
+		}
 	}
 	if (!flag_n)
 	{
