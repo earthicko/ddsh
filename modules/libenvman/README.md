@@ -34,6 +34,7 @@ typedef struct s_enventry
 // clear: set none
 // getval: set (char **)buf, name
 // setval: set name, val
+// unsetval: set name
 // getenvp: set (char ***)buf
 int	envmanager(char **envp, void *buf, char *name, char *val);
 ```
@@ -44,11 +45,12 @@ int	envmanager(char **envp, void *buf, char *name, char *val);
 
 |envp|buf|name|val|기능|
 |----|---|----|---|----|
-|(char **)envp|NULL|NULL|NULL|환경 변수 입력|
-|NULL|NULL|NULL|NULL|초기화|
-|NULL|(char **)buf|(char *)name|NULL|변수의 값 조회|
-|NULL|NULL|(char *)name|(char *)val|변수 생성/값 설정/값 변경|
-|NULL|(char ***)buf|NULL|NULL|execve()에 사용할 envp 생성|
+|`(char **)envp`|`NULL`|`NULL`|`NULL`|환경 변수 입력|
+|`NULL`|`NULL`|`NULL`|`NULL`|초기화|
+|`NULL`|`(char **)buf`|`(char *)name`|`NULL`|변수의 값 조회|
+|`NULL`|`NULL`|`(char *)name`|`(char *)val`|변수 생성/값 설정/값 변경|
+|`NULL`|`NULL`|`(char *)name`|`NULL`|변수 삭제|
+|`NULL`|`(char ***)buf`|`NULL`|`NULL`|`execve()`에 사용할 envp 생성|
 
 입력된 매개 변수의 값이 위 표와 일치하지 않을 경우 `CODE_ERROR_DATA`를 반환한다.
 
@@ -136,6 +138,26 @@ stat = envmanager(NULL, NULL, name, val);
 - `CODE_ERROR_MALLOC`: 메모리를 할당할 수 없음
 
 비정상 종료시에도 기존 엔트리가 보존된다. 따라서 이 기능을 호출하는 함수에는 비정상 종료를 감지할 시 프로그램을 종료시킬 것인지 결정하는 로직이 필요하다.
+
+### 변수 삭제
+
+```c
+int		stat;
+char	*name;
+
+name = "FOO";
+stat = envmanager(NULL, NULL, name, NULL);
+```
+
+`name`에 삭제할 변수의 이름 문자열을, 나머지 매개 변수에 `NULL`을 입력할 시 발동된다.
+
+`name`의 이름을 가진 엔트리가 삭제된다. 그러한 이름의 엔트리가 없을 시엔 아무 것도 하지 않는다.
+
+
+반환 값은 다음과 같다.
+
+- `CODE_OK`: 정상적으로 완료됨
+- `CODE_ERROR_DATA`: 일치하는 이름의 엔트리가 없음
 
 ### execve()에 사용할 envp 생성
 
