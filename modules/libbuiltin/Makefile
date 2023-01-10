@@ -32,4 +32,4 @@ re:
 	@make fclean
 	@make all
 
-.PHONY: all bonus clean fclean re
+.PHONY: all clean fclean re

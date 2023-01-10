@@ -1,7 +1,6 @@
 NAME			= liblexer.a
 ################################# COMMANDS #####################################
 RM				= rm -f
-CC				= gcc
 CFLAGS			= -Wall -Werror -Wextra -MMD -MP -g
 BASE_DIR		= ../..
 INC_DIR			= \
@@ -32,4 +31,4 @@ re:
 	@make fclean
 	@make all
 
-.PHONY: all bonus clean fclean re
+.PHONY: all clean fclean re
