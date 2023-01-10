@@ -36,9 +36,9 @@ SRCNAME		= \
 			t_intarr \
 			t_chararr
 
-SRC			= $(addprefix src/, $(addsuffix .c, $(SRCNAME)))
-OBJ			= $(addprefix src/, $(addsuffix .o, $(SRCNAME)))
-DEP			= $(addprefix src/, $(addsuffix .d, $(SRCNAME)))
+SRC			= $(addprefix srcs/, $(addsuffix .c, $(SRCNAME)))
+OBJ			= $(addprefix srcs/, $(addsuffix .o, $(SRCNAME)))
+DEP			= $(addprefix srcs/, $(addsuffix .d, $(SRCNAME)))
 
 all: $(NAME)
 

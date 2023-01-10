@@ -14,9 +14,9 @@ FILENAME		= \
 				builtin_pwd \
 				builtin_unset
 
-SRC				= $(addsuffix .c, $(FILENAME))
-OBJ				= $(addsuffix .o, $(FILENAME))
-DEP				= $(addsuffix .d, $(FILENAME))
+SRC				= $(addprefix srcs/, $(addsuffix .c, $(FILENAME)))
+OBJ				= $(addprefix srcs/, $(addsuffix .o, $(FILENAME)))
+DEP				= $(addprefix srcs/, $(addsuffix .d, $(FILENAME)))
 ################################# TARGETS ######################################
 all:
 	@make $(NAME)
