@@ -1,5 +1,5 @@
-#include "envmanager_internal.h"
 #include "libft.h"
+#include "envmanager_internal.h"
 
 int	envmanager_clear(t_list **p_list)
 {

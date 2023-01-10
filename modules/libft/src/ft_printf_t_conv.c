@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
 #include <stdlib.h>
+#include "ft_printf.h"
 
 static int	init_conv(t_conv *conv)
 {

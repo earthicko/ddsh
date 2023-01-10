@@ -10,10 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include "ft_printf.h"
-#include <unistd.h>
 #include <stdlib.h>
+#include <unistd.h>
+#include "ft_printf.h"
+#include "libft.h"
 
 static int	ft_ptrlen(void *ptr)
 {

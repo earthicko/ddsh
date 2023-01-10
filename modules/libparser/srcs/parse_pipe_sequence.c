@@ -1,8 +1,8 @@
-#include "t_node.h"
-#include "t_token.h"
-#include "parser_internal.h"
 #include <stddef.h>
 #include "libft_def.h"
+#include "t_token.h"
+#include "t_node.h"
+#include "parser_internal.h"
 
 t_node	*parse_pipe_sequence(t_parser *p)
 {

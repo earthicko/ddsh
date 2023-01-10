@@ -1,8 +1,8 @@
-#include "t_node.h"
-#include "t_token.h"
-#include "parser_internal.h"
-#include "libft_def.h"
 #include <stdlib.h>
+#include "libft_def.h"
+#include "t_token.h"
+#include "t_node.h"
+#include "parser_internal.h"
 
 int	parser_is_last_token(t_parser *parser)
 {

@@ -1,7 +1,7 @@
-#include "t_node.h"
-#include "t_token.h"
-#include "parser_internal.h"
 #include <stddef.h>
+#include "t_token.h"
+#include "t_node.h"
+#include "parser_internal.h"
 
 t_node	*parse_io_here(t_parser *p)
 {

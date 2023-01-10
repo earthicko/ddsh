@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include "get_next_line.h"
 #include <stdlib.h>
+#include "get_next_line.h"
+#include "libft.h"
 
 t_fdbuff	*init_fdbuff(int fd)
 {

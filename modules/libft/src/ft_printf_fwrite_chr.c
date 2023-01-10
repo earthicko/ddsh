@@ -10,10 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include "ft_printf.h"
-#include <unistd.h>
 #include <stdlib.h>
+#include <unistd.h>
+#include "ft_printf.h"
+#include "libft.h"
 
 int	fwrite_plain(int fd, t_conv *conv)
 {

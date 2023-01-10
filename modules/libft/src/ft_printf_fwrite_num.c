@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include "ft_printf.h"
 #include <unistd.h>
+#include "ft_printf.h"
+#include "libft.h"
 
 int	fwrite_int(int fd, t_conv *conv, int num, char *charset)
 {

@@ -1,6 +1,6 @@
-#include "t_node.h"
-#include "t_token.h"
 #include "libft.h"
+#include "t_token.h"
+#include "t_node.h"
 
 void	map_setter_cmd_word(int *token_map)
 {

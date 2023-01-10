@@ -10,10 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include "get_next_line.h"
-#include <unistd.h>
 #include <stdlib.h>
+#include <unistd.h>
+#include "get_next_line.h"
+#include "libft.h"
 
 static int	read_line(t_list *buff_stored, int fd, char *buff_read)
 {

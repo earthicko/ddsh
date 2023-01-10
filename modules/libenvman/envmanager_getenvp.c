@@ -1,6 +1,6 @@
-#include "envmanager_internal.h"
-#include "libft.h"
 #include <stdlib.h>
+#include "libft.h"
+#include "envmanager_internal.h"
 
 int	envmanager_getenvp(t_list *envlist, char ***buf)
 {

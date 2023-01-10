@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include "ft_printf.h"
 #include <stdlib.h>
+#include "ft_printf.h"
+#include "libft.h"
 
 char	*merge_num_buffers(t_conv *conv, char **buf)
 {

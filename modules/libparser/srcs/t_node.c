@@ -1,6 +1,6 @@
-#include "t_node.h"
-#include "libft.h"
 #include <stdlib.h>
+#include "libft.h"
+#include "t_node.h"
 
 t_node	*node_create(int type, char *content, int n_tokens)
 {

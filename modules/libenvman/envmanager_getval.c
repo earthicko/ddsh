@@ -1,5 +1,5 @@
-#include "envmanager_internal.h"
 #include "libft.h"
+#include "envmanager_internal.h"
 
 int	envmanager_getval(t_list *envlist, char **buf, char *name)
 {

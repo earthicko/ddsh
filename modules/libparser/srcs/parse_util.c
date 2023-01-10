@@ -1,8 +1,8 @@
-#include "t_node.h"
-#include "t_token.h"
-#include "parser_internal.h"
-#include "libft_def.h"
 #include <stddef.h>
+#include "libft_def.h"
+#include "t_token.h"
+#include "t_node.h"
+#include "parser_internal.h"
 
 t_node	*parse_addchild_and_return(t_parser *p, t_node *root, t_node *child)
 {

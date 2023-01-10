@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include <stdlib.h>
+#include "libft.h"
 
 static void	ft_memmove_rtol(t_uchar *dst, t_uchar *src, size_t len)
 {

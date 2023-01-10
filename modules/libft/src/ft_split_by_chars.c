@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include <limits.h>
 #include <stdlib.h>
+#include <limits.h>
+#include "libft.h"
 
 static void	skip_separator(char **start, int *map, int inverted)
 {

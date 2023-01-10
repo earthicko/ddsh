@@ -1,6 +1,6 @@
-#include "envmanager_internal.h"
-#include "libft.h"
 #include <stdlib.h>
+#include "libft.h"
+#include "envmanager_internal.h"
 
 t_enventry	*enventry_destroy(t_enventry *enventry)
 {
