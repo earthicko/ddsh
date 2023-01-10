@@ -278,8 +278,6 @@ t_node	*parse_abort(t_parser *parser, t_node *root, t_node *child)
 // 임의의 말단 요소를 생성하는 함수
 t_node	*parse_terminal(t_parser *p, int nodetype)
 {
-	t_node	*root;
-
 	if (parser_is_last_token(p)) // 마지막 토큰이라면 파싱할 수 없음
 		return (NULL);
 	if (!is_correct_tokentype(nodetype, p->tok_curr->type)) // 임의의 nodetype을 현재 토큰의 타입이 생성할 수 있는지 검사
@@ -299,14 +297,8 @@ t_node	*parse_terminal(t_parser *p, int nodetype)
 t_node	*parse_io_here(t_parser *p)
 {
 	root = node_create(NODETYPE_IO_HERE, NULL, 0);
-	child = parse_terminal(p, NODETYPE_IO_OP_HERE); // 말단 요소 생성 함수
-	if (!child)
-		return (parse_abort(p, root, NULL));
-	node_addchild(root, child);
-	child = parse_terminal(p, NODETYPE_HERE_END);
-	if (!child)
-		return (parse_abort(p, root, NULL));
-	node_addchild(root, child);
+	parse_terminal_and_addchild(p, NODETYPE_IO_OP_HERE, root);
+	parse_terminal_and_addchild(p, NODETYPE_HERE_END, root);
 	return (root);
 }
 ```
@@ -360,8 +352,7 @@ t_node	*parse_simple_command(t_parser *p)
 			// root에 토큰이 1개도 없는 경우 simple_command 생성에 실패한 것이다.
 			return (parse_abort(p, root, NULL));
 		}
-		if (node_addchild(root, child))
-			return (parse_abort(p, root, child));
+		node_addchild(root, child);
 	}
 }
 ```
