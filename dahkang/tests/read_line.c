@@ -8,10 +8,7 @@ int	main(void)
 	while (1)
 	{
 		str = readline("prompt: ");
-		if (str)
-			printf("str: %s\n", str);
-		else
-			break ;
+		printf("str: %s\n", str);
 	}
 	return (0);
 }

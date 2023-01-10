@@ -1,4 +1,4 @@
-#include "../../includes/lexer.h"
+#include "../includes/lexer.h"
 
 t_bool	is_space(char ch)
 {

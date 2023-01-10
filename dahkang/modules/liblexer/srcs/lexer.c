@@ -1,5 +1,5 @@
 #include "../../libft/includes/libft.h"
-#include "../../includes/lexer.h"
+#include "../includes/lexer.h"
 
 #include <stdio.h>
 
@@ -84,6 +84,8 @@ t_toks	*lexer(char *str)
 		return (toks);
 	return (build_toks_arr(toks, str));
 }
+
+
 	/*
 	idx = -1;
 	while (++idx < toks->n_toks)
