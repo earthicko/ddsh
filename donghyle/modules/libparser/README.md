@@ -26,10 +26,13 @@ enum e_nodetype
 	NODETYPE_PIPE_SEQUENCE = 0,
 	NODETYPE_SIMPLE_COMMAND,
 	NODETYPE_CMD_ELEMENT,
+	NODETYPE_CMD_WORD,
 	NODETYPE_IO_REDIRECT,
 	NODETYPE_IO_FILE,
+	NODETYPE_IO_OP_FILE,
 	NODETYPE_FILENAME,
 	NODETYPE_IO_HERE,
+	NODETYPE_IO_OP_HERE,
 	NODETYPE_HERE_END,
 };
 
@@ -73,32 +76,38 @@ pipe_sequence    :                   simple_command
                  ; N개의 simple_command가 '|'로 이어진 것
                  ; 처음 위치에서 s/c를 만들고, 다음 포인터가 |라면 반복, NULL이라면 종료, 다 아니라면 에러
 simple_command   : cmd_element
-				 | simple_command cmd_element
-				 ;
-cmd_element		 : WORD
-				 | io_redirect
-				 ;
-io_redirect      :           io_file
-                 |           io_here
+                 | simple_command cmd_element
+                 ;
+cmd_element      : cmd_word
+                 | io_redirect
+                 ;
+cmd_word         : WORD
+                 ; 토큰 1개
+io_redirect      : io_file
+                 | io_here
                  ; io_file 또는 io_here
-io_file          : '<'       filename
-                 | '>'       filename
-                 | '>>'      filename
+io_file          : io_op_file filename
                  ; 토큰 2개
+io_op_file       : '<' | '>' | '>>'
+                 ; 토큰 1개
 filename         : WORD
                  ; 토큰 1개
-io_here          : '<<'     here_end
+io_here          : io_op_here here_end
                  ; 토큰 2개
+io_op_here       : '<<'
+                 ; 토큰 1개
 here_end         : WORD                      /* Apply rule 3 */
                  ; 토큰 1개
                  ; quote 제거를 해야함
 ```
 
-위 문법에서 각각의 구성 요소(`pipe_sequence`, `simple_command` 등)는 각자의 생성 함수를 가진다. 예를 들어 `cmd_element`를 생성하는 함수는 `parse_cmd_element()`이다.
+위 문법에서 정확히 토큰 1개에 1:1로 대응되는 요소를 말단 요소라고 한다. 말단 요소를 생성할 때는 토큰이 정확히 1개만 소모된다. 말단 요소는 parse_terminal() 함수로 생성한다.
+
+여러 말단 요소가 모여서 만들어지는 구성 요소(`pipe_sequence`, `simple_command` 등)는 각자의 생성 함수를 가진다. 예를 들어 `cmd_element`를 생성하는 함수는 `parse_cmd_element()`이다.
 
 파서는 문법 체계에서 가장 상위에 있는 구성 요소를 먼저 생성하려 시도한다. 각 구성 요소는 그를 구성하는 하위 요소를 생성하려 시도한다. 위 표에서는 어떤 요소를 구성할 수 있는 하나의 가능성이 한 줄에 하나씩 기술되어 있다.
 
-어떤 요소를 생성하는 함수는 기본적으로 모든 가능성을 차례대로 시험해본다. 예를 들어 `cmd_element`를 생성하는 함수는 첫번째 가능성 (`WORD` 하나)를 시험해보고 실패할 시 다음 가능성으로 넘어간다. 이때 어떤 가능성을 생성하는 데 성공했다면 다음 가능성은 확인해보지 않고 성공 판정을 내린다. 생성한 노드는 즉시 반환한다. 만약 도중에 오류가 발생한다면 다음으로 가능한 하위 요소들을 생성해본다. 모든 가능한 경우의 수가 실패한다면 해당 구성 요소는 이 토큰 배열에 존재하지 않는 것이다.
+어떤 요소를 생성하는 함수는 기본적으로 모든 가능성을 차례대로 시험해본다. 예를 들어 `cmd_element`를 생성하는 함수는 첫번째 가능성 (`cmd_word` 하나)를 시험해보고 실패할 시 다음 가능성으로 넘어간다. 이때 어떤 가능성을 생성하는 데 성공했다면 다음 가능성은 확인해보지 않고 성공 판정을 내린다. 생성한 노드는 즉시 반환한다. 만약 도중에 오류가 발생한다면 다음으로 가능한 하위 요소들을 생성해본다. 모든 가능한 경우의 수가 실패한다면 해당 구성 요소는 이 토큰 배열에 존재하지 않는 것이다.
 
 파서는 최상위 구성 요소 (`pipe_sequence`)를 생성하지 못했다면 토큰 배열 전체가 잘못된 것이라고 판단한다.
 
@@ -116,13 +125,19 @@ io_redirect를 생성하는 함수:
 	어떠한 것도 생성이 안됐다면 NULL을 반환한다.
 
 io_file을 생성하는 함수:
-	현재 토큰이 '<' '>' '>>' 중 하나인가?
-		아니라면 io_file은 현재 위치에서 만들수 없다. NULL을 반환한다.
+	부모 노드를 하나 만든다.
+	io_op_file을 생성해서 부모에 자식으로 추가한다.
+	생성이 안 됐다면:
+		부모를 삭제하고 NULL을 반환한다.
+	io_filename을 생성해서 부모에 자식으로 추가한다.
+		부모를 삭제하고 NULL을 반환한다.
+	부모를 반환한다.
+
+io_op_file을 생성하는 함수:
+	현재 토큰이 '<' 또는 '>' 또는 '>>' 중 하나인가?
+		아니라면 io_op_file은 현재 위치에서 만들수 없다. NULL을 반환한다.
 	현재 토큰을 하나 소모하여 부모 노드를 만든다.
-	filename을 생성해본다.
-	생성이 잘 됐다면:
-		부모 노드에 자식으로 추가하고 부모 노드를 반환한다.
-	생성이 안 됐다면 io_file은 현재 위치에서 만들수 없다. 토큰 포인터를 1 되감고 NULL을 반환한다.
+	부모 노드를 반환한다.
 
 filename을 생성하는 함수:
 	현재 토큰이 WORD인가?
@@ -133,7 +148,7 @@ filename을 생성하는 함수:
 ...
 ```
 
-파서는 일렬로 배열된 토큰을 차례대로 처리한다. `WORD`나 `'>>'`같이 토큰 1개와 1:1로 대응하는 요소를 파싱할 때는 해당하는 토큰을 하나씩 소모하게 된다. 이는 토큰의 포인터를 마련하고, 포인터를 첫번째 토큰에 맞추고, 토큰 하나를 소모할 때마다 포인터를 1 증가시키는 것으로 구현할 수 있다.
+파서는 일렬로 배열된 토큰을 차례대로 처리한다. 말단 요소를 파싱할 때는 해당하는 토큰을 하나씩 소모하게 된다. 이는 토큰의 포인터를 마련하고, 포인터를 첫번째 토큰에 맞추고, 토큰 하나를 소모할 때마다 포인터를 1 증가시키는 것으로 구현할 수 있다.
 
 토큰을 소모하는 동작을 포인터로 구현하기 위해서는, 파싱 과정에서 하나의 가능성이 실패했을 때 증가시켜놓은 포인터를 되돌리는 작업이 필요하다. 각 노드는 자신이 생성되었을 당시 소모된 토큰의 수를 기록한다면 어떤 노드의 총 토큰 수는 부모 노드와 모든 자식 노드의 토큰 수를 합하여 구할 수 있다. 파싱 도중 어떤 가능성이 실패한다면 생성한 임시 노드들의 토큰 수를 합하여 그만큼 토큰 포인터를 감소시켜야 한다.
 
@@ -257,25 +272,22 @@ t_node	*parse_abort(t_parser *parser, t_node *root, t_node *child)
 }
 ```
 
-### parse_here_end
+### parse_terminal
 
 ```c
-// parse_filename과 비슷하게 동작한다.
-t_node	*parse_here_end(t_parser *parser);
-```
-
-### parse_filename
-
-```c
-t_node	*parse_filename(t_parser *parser)
+// 임의의 말단 요소를 생성하는 함수
+t_node	*parse_terminal(t_parser *p, int nodetype)
 {
-	if (parser_is_last_token(parser)) // 마지막 토큰에 도달했다면 더 이상 파싱할 수 없다.
+	t_node	*root;
+
+	if (parser_is_last_token(p)) // 마지막 토큰이라면 파싱할 수 없음
 		return (NULL);
-	if (parser->tok_curr->type != TOKENTYPE_WORD) // 현재 토큰이 WORD가 아니라면 파싱할 수 없다.
+	if (!is_correct_tokentype(nodetype, p->tok_curr->type)) // 임의의 nodetype을 현재 토큰의 타입이 생성할 수 있는지 검사
 		return (NULL);
-	// 타입이 FILENAME, 콘텐트가 현재 토큰의 콘텐츠이고 토큰을 1개 소모하는 노드 생성
-	root = node_create(NODETYPE_FILENAME, parser->tok_curr->content, 1);
-	parser->tok_curr++; // 토큰을 1개 소모
+	root = node_create(nodetype, p->tok_curr->content, 1); // 임의의 nodetype을 가진 노드 생성
+	if (!root)
+		return (NULL);
+	p->tok_curr++; // 토큰을 1개 소모
 	return (root);
 }
 ```
@@ -283,110 +295,73 @@ t_node	*parse_filename(t_parser *parser)
 ### parse_io_here
 
 ```c
-// << 토큰을 하나 소모하여 root를 만들고 child로 here_end를 추가한다.
-// parse_io_file과 비슷하게 동작한다.
-t_node	*parse_io_here(t_parser *parser);
+// 순서대로 io_op_here과 here_end이 모두 생성하여 부모에 추가 후 반환한다.
+t_node	*parse_io_here(t_parser *p)
+{
+	root = node_create(NODETYPE_IO_HERE, NULL, 0);
+	child = parse_terminal(p, NODETYPE_IO_OP_HERE); // 말단 요소 생성 함수
+	if (!child)
+		return (parse_abort(p, root, NULL));
+	node_addchild(root, child);
+	child = parse_terminal(p, NODETYPE_HERE_END);
+	if (!child)
+		return (parse_abort(p, root, NULL));
+	node_addchild(root, child);
+	return (root);
+}
 ```
 
 ### parse_io_file
 
 ```c
-// 마지막 토큰에 도달했다면 더 이상 파싱할 수 없다.
-// 현재 토큰의 타입이 <, >, >>이 아니라면 파싱할 수 없다.
-static int	can_parse_io_file(t_parser *parser)
-{
-	if (parser_is_last_token(parser))
-		return (FALSE);
-	if (parser->tok_curr->type == TOKENTYPE_REDIR_IN)
-		return (TRUE);
-	if (parser->tok_curr->type == TOKENTYPE_REDIR_OUT)
-		return (TRUE);
-	if (parser->tok_curr->type == TOKENTYPE_REDIR_OUT_APPEND)
-		return (TRUE);
-	return (FALSE);
-}
-
-t_node	*parse_io_file(t_parser *parser)
-{
-	if (!can_parse_io_file(parser)) // 위에서 정의한 조건에 맞아야 파싱할 수 있다.
-		return (NULL);
-	// 타입이 NODETYPE_IO_FILE, 콘텐트가 현재 토큰의 콘텐츠이고 토큰을 1개 소모하는 노드 생성
-	root = node_create(NODETYPE_IO_FILE, parser->tok_curr->content, 1);
-	parser->tok_curr++; // 토큰을 1개 소모
-	child = parse_filename(parser); // 다음 요소는 filename이어야 한다.
-	if (!child) // filename을 생성하지 못했다면 io_file도 생성할 수 없다.
-		return (parse_abort(parser, root, NULL)); // root가 소모한 토큰을 되감기하고 파싱을 취소한다.
-	// filename을 생성했다면 io_file을 생성하는 데 성공한 것이다.
-	node_addchild(root, child); // filename을 io_file의 자식으로 추가한다.
-	return (root);
-}
+// 순서대로 io_op_file과 filename이 모두 생성하여 부모에 추가 후 반환한다.
+// parse_io_here와 동일한 로직을 가지고 있다.
+t_node	*parse_io_file(t_parser *p);
 ```
 
 ### parse_io_redirect
 
 ```c
-t_node	*parse_io_redirect(t_parser *parser)
+// io_file 또는 io_here 중 생성에 성공한 요소 하나만을 부모에 추가하여 반환한다.
+t_node	*parse_io_redirect(t_parser *p)
 {
-	if (parser_is_last_token(parser)) // 마지막 토큰에 도달했다면 더 이상 파싱할 수 없다.
-		return (NULL);
-	root = node_create(NODETYPE_IO_REDIRECT, "", 0); // 이 구성 요소는 직접 토큰을 소모하지는 않는다.
-	child = parse_io_file(parser); // io_file을 생성해본다.
+	root = node_create(NODETYPE_IO_REDIRECT, NULL, 0);
+	child = parse_io_file(p);
 	if (child)
-	{
-		node_addchild(root, child);
-		return (root);
-	}
-	child = parse_io_here(parser); // 안되면 io_here를 생성해본다.
+		return (parse_addchild_and_return(p, root, child)); // 부모에 자식을 추가한 후 부모를 반환하는 함수
+	child = parse_io_here(p);
 	if (child)
-	{
-		node_addchild(root, child);
-		return (root);
-	}
-	return (parse_abort(parser, root, NULL)); // 되는 경우가 없으므로 파싱을 취소한다.
+		return (parse_addchild_and_return(p, root, child));
+	return (parse_abort(p, root, NULL)); // 둘 다 생성 실패 시 NULL 반환
 }
 ```
 
 ### parse_cmd_element
 
 ```c
-t_node	*parse_cmd_element(t_parser *parser)
-{
-	if (parser_is_last_token(parser))
-		return (NULL);
-	if (parser->tok_curr->type == TOKENTYPE_WORD) // 현재 토큰이 WORD라면
-	{	// 현재 토큰을 소모하여 root에 담고 종료한다.
-		root = node_create(NODETYPE_CMD_ELEMENT, parser->tok_curr->content, 1);
-		parser->tok_curr++;
-		return (root);
-	}
-	root = node_create(NODETYPE_CMD_ELEMENT, "", 0); // 현재 토큰이 WORD가 아니라면
-	child = parse_io_redirect(parser); // io_redirect를 root에 담아 반환한다.
-	if (!child)
-		return (parse_abort(parser, root, NULL)); // io_redirect가 생성되지 않았다면 cmd_element 생성 실패다.
-	node_addchild(root, child);
-	return (root);
-}
+// cmd_word 또는 io_redirect 중 생성에 성공한 요소 하나만을 부모에 추가하여 반환한다.
+// parse_io_redirect와 동일한 로직을 가지고 있다.
+t_node	*parse_cmd_element(t_parser *p)
 ```
 
 ### parse_simple_command
 
 ```c
-t_node	*parse_simple_command(t_parser *parser)
+t_node	*parse_simple_command(t_parser *p)
 {
-	if (parser_is_last_token(parser))
-		return (NULL);
-	root = node_create(NODETYPE_SIMPLE_COMMAND, "", 0); // simple_command는 직접 소모하는 토큰이 없다.
+	root = node_create(NODETYPE_SIMPLE_COMMAND, NULL, 0); // simple_command는 직접 소모하는 토큰이 없다.
 	while (TRUE) // greedy하게 하위 요소 생성을 계속한다.
 	{
-		child = parse_cmd_element(parser);
+		child = parse_cmd_element(p);
 		if (!child) // 루프를 돌던 중 child 생성에 실패했다.
 		{
 			if (node_getntokens(root)) // root에 토큰이 1개라도 담겨있던 경우
 				return (root); // 지금까지 생성한 노드를 반환한다.
 			// root에 토큰이 1개도 없는 경우 simple_command 생성에 실패한 것이다.
-			return (parse_abort(parser, root, NULL));
+			return (parse_abort(p, root, NULL));
 		}
-		node_addchild(root, child);
+		if (node_addchild(root, child))
+			return (parse_abort(p, root, child));
 	}
 }
 ```
@@ -394,27 +369,16 @@ t_node	*parse_simple_command(t_parser *parser)
 ### parse_pipe_sequence
 
 ```c
-static int	can_parse_pipe_sequence(t_parser *parser)
+t_node	*parse_pipe_sequence(t_parser *p)
 {
-	if (parser_is_last_token(parser))
-		return (FALSE);
-	if (parser->tok_curr->type == TOKENTYPE_PIPE)
-		return (FALSE);
-	return (TRUE);
-}
-
-t_node	*parse_pipe_sequence(t_parser *parser)
-{
-	if (!can_parse_pipe_sequence(parser))
-		return (NULL);
-	root = node_create(NODETYPE_PIPE_SEQUENCE, "", 0);
+	root = node_create(NODETYPE_PIPE_SEQUENCE, NULL, 0);
 	while (TRUE) // greedy하게 하위 요소 생성을 계속한다.
 	{
-		child = parse_simple_command(parser);
+		child = parse_simple_command(p);
 		if (!child) // simple_command 생성에 실패 시 전체 토큰 배열이 잘못된 것이다.
-			return (parse_abort(parser, root, NULL));
+			return (parse_abort(p, root, NULL));
 		node_addchild(root, child);
-		if (parser_is_last_token(parser)) // simple_command를 생성하자 토큰이 전부 소모되었다.
+		if (parser_is_last_token(p)) // simple_command를 생성하자 토큰이 전부 소모되었다.
 			return (root); // 전체 토큰 배열이 잘 파싱 되었다.
 		if (parser->tok_curr->type != TOKENTYPE_PIPE) // simple_command를 생성했는데 다음 토큰이 파이프가 아니다. 즉 남은 토큰이 있다.
 			return (parse_abort(parser, root, NULL)); // 전체 토큰 배열이 잘못된 것이다.
