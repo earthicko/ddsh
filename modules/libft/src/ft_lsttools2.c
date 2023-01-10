@@ -60,3 +60,28 @@ t_list	*ft_lstlast(t_list *lst)
 		lst = lst->next;
 	return (lst);
 }
+
+void	ft_lstunlink(t_list **lst_head, t_list *lst, void (*del)(void *))
+{
+	t_list	*temp;
+	t_list	*prev;
+
+	if (*lst_head == lst)
+	{
+		temp = (*lst_head)->next;
+		ft_lstdelone(*lst_head, del);
+		*lst_head = temp;
+		return ;
+	}
+	prev = *lst_head;
+	while (prev->next)
+	{
+		if (prev->next == lst)
+		{
+			prev->next = prev->next->next;
+			ft_lstdelone(prev->next, del);
+			return ;
+		}
+		prev = prev->next;
+	}
+}
