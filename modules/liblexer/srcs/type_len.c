@@ -1,4 +1,4 @@
-#include "../../libft/includes/libft.h"
+#include "libft.h"
 #include "lexer_internal.h"
 
 int	space_len(char *str)
