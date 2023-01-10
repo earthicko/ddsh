@@ -1,4 +1,4 @@
-NAME			= libenvman.a
+NAME			= libbuiltin.a
 ################################# COMMANDS #####################################
 RM				= rm -f
 CFLAGS			= -Wall -Werror -Wextra -MMD -MP -g
@@ -6,18 +6,13 @@ BASE_DIR		= ../..
 INC_DIR			= \
 				-I./includes \
 				-I$(BASE_DIR)/modules/libft/includes \
+				-I$(BASE_DIR)/modules/libenvman/includes \
 				-I$(BASE_DIR)/includes
 ################################ FILENAMES #####################################
 FILENAME		= \
-				t_enventry \
-				envmanager_getenvp \
-				envmanager_init \
-				envmanager_setval \
-				envmanager_utils \
-				envmanager_clear \
-				envmanager_getval \
-				envmanager_unsetval \
-				envmanager
+				builtin_echo \
+				builtin_pwd \
+				builtin_unset
 
 SRC				= $(addprefix srcs/, $(addsuffix .c, $(FILENAME)))
 OBJ				= $(addprefix srcs/, $(addsuffix .o, $(FILENAME)))
