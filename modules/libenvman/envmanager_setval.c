@@ -2,26 +2,6 @@
 #include "libft.h"
 #include <stdlib.h>
 
-char	*compose_envstr(char *name, char *val)
-{
-	char	*base;
-	char	*temp;
-
-	base = ft_strdup(name);
-	if (!base)
-		return (NULL);
-	temp = ft_strjoin(base, ENVSTR_DELIM_STR);
-	free(base);
-	if (!temp)
-		return (NULL);
-	base = temp;
-	temp = ft_strjoin(base, val);
-	free(base);
-	if (!temp)
-		return (NULL);
-	return (temp);
-}
-
 int	envmanager_setval(t_list **envlist, char *name, char *val)
 {
 	t_enventry	*entry;

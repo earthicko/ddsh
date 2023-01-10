@@ -1,7 +1,6 @@
 NAME			= libenvman.a
 ################################# COMMANDS #####################################
 RM				= rm -f
-CC				= gcc
 CFLAGS			= -Wall -Werror -Wextra -MMD -MP -g
 BASE_DIR		= ../..
 INC_DIR			= \
@@ -10,11 +9,14 @@ INC_DIR			= \
 				-I$(BASE_DIR)/includes
 ################################ FILENAMES #####################################
 FILENAME		= \
-				envmanager_addentry \
-				envmanager_getval \
-				envmanager_setval \
-				envmanager_unsetval \
+				t_enventry \
 				envmanager_getenvp \
+				envmanager_init \
+				envmanager_setval \
+				envmanager_utils \
+				envmanager_clear \
+				envmanager_getval \
+				envmanager_unsetval \
 				envmanager
 
 SRC				= $(addsuffix .c, $(FILENAME))
