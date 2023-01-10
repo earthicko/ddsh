@@ -3,16 +3,14 @@
 
 t_list	*find_list_with_entry(t_list *envlist, char *name)
 {
-	t_list	*list;
 	char	*lstname;
 
-	list = envlist;
-	while (list)
+	while (envlist)
 	{
-		lstname = ((t_enventry *)(list->content))->name;
+		lstname = ((t_enventry *)(envlist->content))->name;
 		if (!ft_strncmp(name, lstname, ft_strlen(lstname)))
-			return (list);
-		list = list->next;
+			return (envlist);
+		envlist = envlist->next;
 	}
 	return (NULL);
 }
