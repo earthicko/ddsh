@@ -1,14 +1,46 @@
+#include <stdlib.h>
+#include "libft.h"
+#include "envmanager.h"
+#include "builtin_internal.h"
+
 static int	export_display(void)
 {
-	// TODO: 구현
+	char	**envp;
+	char	**cursor;
+	char	*name;
+	char	*val;
+
+	if (envmanager(NULL, &envp, NULL, NULL))
+		return (1);
+	cursor = envp;
+	while (*cursor)
+	{
+		if (envman_split_envstr(*cursor, &name, &val))
+		{
+			ft_free_strarr(envp);
+			return (1);
+		}
+		ft_printf(FMTSTR_EXPORT, name, val);
+		free(name);
+		free(val);
+		cursor++;
+	}
+	ft_free_strarr(envp);
 	return (0);
 }
 
 static int	export_var(char *word)
 {
-	// TODO: 구현
-	(void) word;
-	return (0);
+	char	*name;
+	char	*val;
+	int		stat;
+
+	if (envman_split_envstr(word, &name, &val))
+		return (1);
+	stat = envmanager(NULL, NULL, name, val);
+	free(name);
+	free(val);
+	return (stat);
 }
 
 int	builtin_export(char **argv)
