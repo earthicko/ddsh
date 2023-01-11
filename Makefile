@@ -22,8 +22,8 @@ all:
 
 include modules.mk
 
-$(NAME): $(LIB_ALL) $(OBJ)
-	$(CC) $(CFLAGS) $(INC_DIR) $(LINK_LIBS) $(LIB_ALL) $(OBJ) -o $@
+$(NAME): $(LIB_ALL) $(OBJ) $(TEST_OBJ)
+	$(CC) $(CFLAGS) $(INC_DIR) $(LINK_LIBS) $(LIB_ALL) $(OBJ) $(TEST_OBJ) -o $@
 
 get_n_tok: $(LIB_ALL) $(TEST_OBJ) tests/get_n_tok.o
 	$(CC) $(CFLAGS) $(INC_DIR) $(LINK_LIBS) $(LIB_ALL) $(TEST_OBJ) tests/get_n_tok.o -o $@

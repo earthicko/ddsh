@@ -2,6 +2,7 @@
 # define TESTERS_H
 # include "t_token.h"
 # include "t_node.h"
+# define MSG_DEBUG "DEBUG: "
 
 void	node_print_content(t_node *root);
 void	node_print(t_node *root, int depth);
