@@ -70,7 +70,7 @@ static int	build_toks_arr(t_toks *toks, char *str)
 int	lexer(char *str, t_toks *toks)
 {
 	if (!str)
-		return (0);
+		return (CODE_ERROR_DATA);
 	toks->n_toks = get_n_toks(str);
 	if (toks->n_toks == -1)
 		return (UNCLOSED_QUOTE);

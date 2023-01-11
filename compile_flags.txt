@@ -2,3 +2,4 @@
 -I/Users/dahkang/Desktop/minishell/modules/libenvman/includes
 -I/Users/dahkang/Desktop/minishell/modules/liblexer/includes
 -I/Users/dahkang/Desktop/minishell/modules/libparser/includes
+-I/Users/dahkang/Desktop/minishell/modules/libexec/includes

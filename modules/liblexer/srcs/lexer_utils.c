@@ -1,15 +1,11 @@
 #include "lexer_internal.h"
 
-
-#include <stdio.h>
-
 int	get_n_toks(char *str)
 {
 	int		n_toks;
 	int		tok_type;
 	int		word_len;
 
-	printf("str: %s\n", str);
 	n_toks = 0;
 	while (*str)
 	{
