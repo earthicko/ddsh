@@ -8,6 +8,6 @@ enum e_heredocmode
 	HEREDOCMODE_CLEAR
 };
 
-int	heredocmanager(int mode, int n);
+int	heredocmanager(int mode, int doc_id, char *delimeter);
 
 #endif

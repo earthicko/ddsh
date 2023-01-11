@@ -2,6 +2,6 @@
 
 int	main(void)
 {
-	heredocmanager(HEREDOCMODE_CREATE, 0);
+	heredocmanager(HEREDOCMODE_CREATE, 0, "EOF");
 	return (0);
 }

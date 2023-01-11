@@ -1,5 +1,7 @@
 ################################ FILENAMES #####################################
 FILE_LIBHEREDOC	= \
+				heredoc_filename \
+				heredoc_read \
 				heredocmanager
 
 SRC_LIBHEREDOC	= $(addprefix srcs/, $(addsuffix .c, $(FILE_LIBHEREDOC)))
