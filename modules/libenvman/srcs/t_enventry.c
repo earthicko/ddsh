@@ -33,7 +33,7 @@ t_list	*find_list_with_entry(t_list *envlist, char *name)
 	return (NULL);
 }
 
-t_enventry	*envmanager_getentry(t_list *envlist, char *name)
+t_enventry	*envman_getentry(t_list *envlist, char *name)
 {
 	t_list	*list;
 
@@ -43,7 +43,7 @@ t_enventry	*envmanager_getentry(t_list *envlist, char *name)
 	return (NULL);
 }
 
-int	envmanager_addentry(t_list **p_list, char *env)
+int	envman_addentry(t_list **p_list, char *env)
 {
 	t_list		*newlst;
 	t_enventry	*entry;
@@ -53,7 +53,7 @@ int	envmanager_addentry(t_list **p_list, char *env)
 	if (!entry)
 		return (CODE_ERROR_MALLOC);
 	ft_memset(entry, 0, sizeof(entry));
-	stat = split_envstring(env, &(entry->name), &(entry->val));
+	stat = envman_split_envstr(env, &(entry->name), &(entry->val));
 	if (stat)
 	{
 		enventry_destroy(entry);

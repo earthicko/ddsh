@@ -13,16 +13,16 @@ int	envmanager(char **envp, void *buf, char *name, char *val)
 	static t_list	*envlist;
 
 	if (envp && !buf && !name && !val)
-		return (envmanager_init(&envlist, envp));
+		return (envman_init(&envlist, envp));
 	else if (!envp && !buf && !name && !val)
-		return (envmanager_clear(&envlist));
+		return (envman_clear(&envlist));
 	else if (!envp && buf && name && !val)
-		return (envmanager_getval(envlist, buf, name));
+		return (envman_getval(envlist, buf, name));
 	else if (!envp && !buf && name && val)
-		return (envmanager_setval(&envlist, name, val));
+		return (envman_setval(&envlist, name, val));
 	else if (!envp && !buf && name && !val)
-		return (envmanager_unsetval(&envlist, name));
+		return (envman_unsetval(&envlist, name));
 	else if (!envp && buf && !name && !val)
-		return (envmanager_getenvp(envlist, buf));
+		return (envman_getenvp(envlist, buf));
 	return (CODE_ERROR_DATA);
 }

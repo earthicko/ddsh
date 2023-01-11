@@ -2,14 +2,14 @@
 #include "libft.h"
 #include "envmanager_internal.h"
 
-int	envmanager_setval(t_list **envlist, char *name, char *val)
+int	envman_setval(t_list **envlist, char *name, char *val)
 {
 	t_enventry	*entry;
 	char		*envstr;
 	char		*temp;
 	int			stat;
 
-	entry = envmanager_getentry(*envlist, name);
+	entry = envman_getentry(*envlist, name);
 	if (entry)
 	{
 		temp = ft_strdup(val);
@@ -20,10 +20,10 @@ int	envmanager_setval(t_list **envlist, char *name, char *val)
 	}
 	else
 	{
-		envstr = compose_envstr(name, val);
+		envstr = envman_compose_envstr(name, val);
 		if (!envstr)
 			return (CODE_ERROR_MALLOC);
-		stat = envmanager_addentry(envlist, envstr);
+		stat = envman_addentry(envlist, envstr);
 		free(envstr);
 		if (stat)
 			return (stat);

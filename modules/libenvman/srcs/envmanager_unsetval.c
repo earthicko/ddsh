@@ -1,7 +1,7 @@
 #include "envmanager_internal.h"
 #include "libft.h"
 
-int	envmanager_unsetval(t_list **envlist, char *name)
+int	envman_unsetval(t_list **envlist, char *name)
 {
 	t_list	*list;
 

@@ -2,7 +2,7 @@
 #include "libft.h"
 #include "envmanager_internal.h"
 
-int	envmanager_getenvp(t_list *envlist, char ***buf)
+int	envman_getenvp(t_list *envlist, char ***buf)
 {
 	char	**cursor;
 	char	*name;
@@ -17,7 +17,7 @@ int	envmanager_getenvp(t_list *envlist, char ***buf)
 	{
 		name = ((t_enventry *)(envlist->content))->name;
 		val = ((t_enventry *)(envlist->content))->val;
-		*cursor = compose_envstr(name, val);
+		*cursor = envman_compose_envstr(name, val);
 		if (!(*cursor))
 		{
 			ft_free_strarr(*buf);

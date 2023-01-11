@@ -2,7 +2,7 @@
 #include "libft.h"
 #include "envmanager_internal.h"
 
-char	*compose_envstr(char *name, char *val)
+char	*envman_compose_envstr(char *name, char *val)
 {
 	char	*base;
 	char	*temp;
@@ -22,7 +22,7 @@ char	*compose_envstr(char *name, char *val)
 	return (temp);
 }
 
-int	split_envstring(char *str, char **ret_name, char **ret_val)
+int	envman_split_envstr(char *str, char **ret_name, char **ret_val)
 {
 	size_t	i_split;
 	size_t	len_str;
