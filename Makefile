@@ -44,6 +44,7 @@ clean:
 	@make clean -C $(LIBFT_DIR)
 	@make clean -C $(LIBLEXER_DIR)
 	@make clean -C $(LIBPARSER_DIR)
+	@make clean -C $(LIBHEREDOC_DIR)
 	@make clean -C $(LIBENVMAN_DIR)
 	@make clean -C $(LIBBUILTIN_DIR)
 	$(RM) tests/get_n_tok.o tests/get_n_tok.d tests/test_parser.o tests/test_parser.d tests/test_envmanager.o tests/test_envmanager.d
@@ -53,6 +54,7 @@ fclean: clean
 	@make fclean -C $(LIBFT_DIR)
 	@make fclean -C $(LIBLEXER_DIR)
 	@make fclean -C $(LIBPARSER_DIR)
+	@make fclean -C $(LIBHEREDOC_DIR)
 	@make fclean -C $(LIBENVMAN_DIR)
 	@make fclean -C $(LIBBUILTIN_DIR)
 	$(RM) get_n_tok test_parser test_envmanager

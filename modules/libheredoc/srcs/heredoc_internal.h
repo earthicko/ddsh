@@ -1,0 +1,11 @@
+#ifndef HEREDOC_INTERNAL_H
+# define HEREDOC_INTERNAL_H
+
+enum e_heredocmode
+{
+	HEREDOCMODE_CREATE = 0,
+	HEREDOCMODE_GETFD,
+	HEREDOCMODE_CLEAR
+};
+
+#endif
