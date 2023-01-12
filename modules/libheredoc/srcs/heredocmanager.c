@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <unistd.h>
+#include <dirent.h>
 #include <fcntl.h>
 #include "libft.h"
 #include "heredoc_internal.h"
@@ -17,25 +18,53 @@ static int	heredoc_clear_entry(int n_heredoc, int doc_id)
 	return (CODE_OK);
 }
 
+static void	heredoc_clear_if_heredoc(char *filename)
+{
+	size_t	len;
+	size_t	i;
+
+	len = ft_strlen(PREFIX_HEREDOC_TEMPFILE);
+	i = 0;
+	while (i < len)
+	{
+		if (filename[i] == '\0' || filename[i] != PREFIX_HEREDOC_TEMPFILE[i])
+			return ;
+		i++;
+	}
+	unlink(filename);
+}
+
+static int	heredoc_clear_all(void)
+{
+	DIR				*d;
+	struct dirent	*dir;
+
+	d = opendir(".");
+	if (!d)
+		return (CODE_ERROR_IO);
+	while (TRUE)
+	{
+		dir = readdir(d);
+		if (!dir)
+			break ;
+		if (dir->d_type == DT_REG)
+			heredoc_clear_if_heredoc(dir->d_name);
+	}
+	closedir(d);
+	return (CODE_OK);
+}
+
 int	heredoc_clear(int *n_heredoc, int doc_id)
 {
-	int		i;
-
 	if (doc_id < 0)
 	{
-		i = 0;
-		while (i < *n_heredoc)
-		{
-			if (heredoc_clear_entry(*n_heredoc, i))
-				return (CODE_ERROR_GENERIC);
-			i++;
-		}
+		heredoc_clear_all();
+		*n_heredoc = 0;
 	}
 	else if (0 <= doc_id && doc_id < *n_heredoc)
 	{
 		if (heredoc_clear_entry(*n_heredoc, doc_id))
 			return (CODE_ERROR_GENERIC);
-		*n_heredoc = 0;
 	}
 	return (CODE_OK);
 }
