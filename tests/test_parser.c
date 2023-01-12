@@ -72,8 +72,12 @@ int	main(void)
 	shuffle(tokens, n_tokens, 10);
 	print_tokens(tokens, n_tokens);
 	root = parse_tokens(tokens, 8);
-	node_print(root, 0);
-	node_destroy(root);
+	if (root)
+	{
+		node_print(root, 0);
+		printf("%p\n", ((t_node *)(root->childs->content)));
+		node_destroy(root);
+	}
 	system("leaks test_parser");
 	return (0);
 }
