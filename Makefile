@@ -10,13 +10,21 @@ FILENAME			= \
 SRC					= $(addprefix srcs/, $(addsuffix .c, $(FILENAME)))
 OBJ					= $(addprefix srcs/, $(addsuffix .o, $(FILENAME)))
 DEP					= $(addprefix srcs/, $(addsuffix .d, $(FILENAME)))
-
+############################## TEST FILENAMES ##################################
 TEST_FILENAME		= \
-					tests/print_nodes \
-					tests/print_tokens
-TEST_SRC			= $(addsuffix .c, $(TEST_FILENAME))
-TEST_OBJ			= $(addsuffix .o, $(TEST_FILENAME))
-TEST_DEP			= $(addsuffix .d, $(TEST_FILENAME))
+					print_nodes \
+					print_tokens
+TEST_SRC			= $(addprefix tests/, $(addsuffix .c, $(TEST_FILENAME)))
+TEST_OBJ			= $(addprefix tests/, $(addsuffix .o, $(TEST_FILENAME)))
+TEST_DEP			= $(addprefix tests/, $(addsuffix .d, $(TEST_FILENAME)))
+
+DRIVER_FILENAME		= \
+					get_n_tok \
+					test_parser \
+					test_envmanager \
+					test_heredoc
+DRIVER_OBJ			= $(addprefix tests/, $(addsuffix .o, $(DRIVER_FILENAME)))
+DRIVER_DEP			= $(addprefix tests/, $(addsuffix .d, $(DRIVER_FILENAME)))
 ################################# TARGETS ######################################
 all:
 	@make $(NAME)
@@ -51,7 +59,7 @@ clean:
 	@make clean -C $(LIBHEREDOC_DIR)
 	@make clean -C $(LIBENVMAN_DIR)
 	@make clean -C $(LIBBUILTIN_DIR)
-	$(RM) tests/get_n_tok.o tests/get_n_tok.d tests/test_parser.o tests/test_parser.d tests/test_envmanager.o tests/test_envmanager.d tests/test_heredoc.o tests/test_heredoc.d
+	$(RM) $(DRIVER_OBJ) $(DRIVER_DEP)
 
 fclean: clean
 	$(RM) $(NAME)
@@ -61,7 +69,7 @@ fclean: clean
 	@make fclean -C $(LIBHEREDOC_DIR)
 	@make fclean -C $(LIBENVMAN_DIR)
 	@make fclean -C $(LIBBUILTIN_DIR)
-	$(RM) get_n_tok test_parser test_envmanager test_heredoc
+	$(RM) $(DRIVER_FILENAME)
 
 re:
 	@make fclean
