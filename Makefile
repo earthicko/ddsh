@@ -39,20 +39,20 @@ include modules.mk
 $(NAME): $(LIB_ALL) $(OBJ) $(TEST_OBJ) $(DRIVER_OBJ)
 	$(CC) $(CFLAGS) $(INC_DIR) $(LINK_LIBS) $(LIB_ALL) $(OBJ) $(TEST_OBJ) $(DRIVER_OBJ) -o $@
 
-get_n_tok: $(LIB_ALL) $(TEST_OBJ) tests/get_n_tok.o
-	$(CC) $(CFLAGS) $(INC_DIR) $(LINK_LIBS) $(LIB_ALL) $(TEST_OBJ) tests/get_n_tok.o -o $@
+get_n_tok: $(LIB_ALL) $(OBJ) $(TEST_OBJ) tests/get_n_tok.o
+	$(CC) $(CFLAGS) $(INC_DIR) $(LINK_LIBS) $(LIB_ALL) $(OBJ) $(TEST_OBJ) tests/get_n_tok.o -o $@
 
-test_parser: $(LIB_ALL) $(TEST_OBJ) tests/test_parser.o
-	$(CC) $(CFLAGS) $(INC_DIR) $(LINK_LIBS) $(LIB_ALL) $(TEST_OBJ) tests/test_parser.o -o $@
+test_parser: $(LIB_ALL) $(OBJ) $(TEST_OBJ) tests/test_parser.o
+	$(CC) $(CFLAGS) $(INC_DIR) $(LINK_LIBS) $(LIB_ALL) $(OBJ) $(TEST_OBJ) tests/test_parser.o -o $@
 
-test_envmanager: $(LIB_ALL) $(TEST_OBJ) tests/test_envmanager.o
-	$(CC) $(CFLAGS) $(INC_DIR) $(LINK_LIBS) $(LIB_ALL) $(TEST_OBJ) tests/test_envmanager.o -o $@
+test_envmanager: $(LIB_ALL) $(OBJ) $(TEST_OBJ) tests/test_envmanager.o
+	$(CC) $(CFLAGS) $(INC_DIR) $(LINK_LIBS) $(LIB_ALL) $(OBJ) $(TEST_OBJ) tests/test_envmanager.o -o $@
 
-test_heredoc: $(LIB_ALL) $(TEST_OBJ) tests/test_heredoc.o
-	$(CC) $(CFLAGS) $(INC_DIR) $(LINK_LIBS) $(LIB_ALL) $(TEST_OBJ) tests/test_heredoc.o -o $@
+test_heredoc: $(LIB_ALL) $(OBJ) $(TEST_OBJ) tests/test_heredoc.o
+	$(CC) $(CFLAGS) $(INC_DIR) $(LINK_LIBS) $(LIB_ALL) $(OBJ) $(TEST_OBJ) tests/test_heredoc.o -o $@
 
-test_expansion: $(LIB_ALL) $(TEST_OBJ) tests/test_expansion.o
-	$(CC) $(CFLAGS) $(INC_DIR) $(LINK_LIBS) $(LIB_ALL) $(TEST_OBJ) tests/test_expansion.o -o $@
+test_expansion: $(LIB_ALL) $(OBJ) $(TEST_OBJ) tests/test_expansion.o
+	$(CC) $(CFLAGS) $(INC_DIR) $(LINK_LIBS) $(LIB_ALL) $(OBJ) $(TEST_OBJ) tests/test_expansion.o -o $@
 
 -include $(DEP)
 
