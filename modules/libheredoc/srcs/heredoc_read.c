@@ -53,7 +53,10 @@ int	heredoc_read(int *n_heredoc, int expand, char *delimeter)
 	char	*filename;
 	int		stat;
 
-	filename = generate_filename(*n_heredoc);
+	(*n_heredoc)++;
+	stat = heredoc_get_filename(*n_heredoc, (*n_heredoc) - 1, &filename);
+	if (stat)
+		return (stat);
 	pid = fork();
 	if (pid == -1)
 		return (CODE_ERROR_GENERIC);
@@ -62,9 +65,8 @@ int	heredoc_read(int *n_heredoc, int expand, char *delimeter)
 		wait4(pid, &stat, 0, NULL);
 	else
 		write_to_file(filename, expand, delimeter);
-	ft_printf("child heredoc proc status %d\n", stat);
 	free(filename);
-	if (stat == 0)
-		(*n_heredoc)++;
+	if (stat)
+		(*n_heredoc)--;
 	return (stat);
 }

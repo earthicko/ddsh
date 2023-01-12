@@ -3,11 +3,11 @@
 
 enum e_heredocmode
 {
-	HEREDOCMODE_CREATE = 0,
-	HEREDOCMODE_GETFD,
+	HEREDOCMODE_READ = 0,
+	HEREDOCMODE_GETFILENAME,
 	HEREDOCMODE_CLEAR
 };
 
-int	heredocmanager(int mode, int doc_id, char *delimeter);
+int	heredocmanager(int mode, int doc_id, void *buf);
 
 #endif

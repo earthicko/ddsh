@@ -34,27 +34,30 @@ static char	*append_filenum(char *filename, int doc_id)
 	return (appended);
 }
 
-char	*generate_filename(int doc_id)
+int	heredoc_get_filename(int n_heredoc, int doc_id, char **buf)
 {
 	int		slot;
 	char	*temp1;
 	char	*temp2;
 
+	if (doc_id < 0 || n_heredoc <= doc_id)
+		return (CODE_ERROR_SCOPE);
 	slot = ttyslot();
 	if (slot < 0)
-		return (NULL);
+		return (CODE_ERROR_GENERIC);
 	temp1 = ttyname(slot);
 	if (!temp1)
-		return (NULL);
+		return (CODE_ERROR_GENERIC);
 	temp2 = extract_filename(temp1);
 	free(temp1);
 	if (!temp2)
-		return (NULL);
+		return (CODE_ERROR_MALLOC);
 	temp1 = ft_strjoin(PREFIX_HEREDOC_TEMPFILE, temp2);
 	free(temp2);
 	if (!temp1)
-		return (NULL);
+		return (CODE_ERROR_MALLOC);
 	temp2 = append_filenum(temp1, doc_id);
 	free(temp1);
-	return (temp2);
+	*buf = temp2;
+	return (CODE_OK);
 }
