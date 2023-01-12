@@ -21,9 +21,9 @@ int	ft_strappend(char **body, const char *tail)
 	if (!tail)
 		return (CODE_ERROR_GENERIC);
 	temp = ft_strjoin(*body, tail);
-	free(*body);
 	if (!temp)
 		return (CODE_ERROR_MALLOC);
+	free(*body);
 	*body = temp;
 	return (CODE_OK);
 }

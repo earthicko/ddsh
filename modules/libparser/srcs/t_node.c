@@ -10,9 +10,7 @@ t_node	*node_create(int type, char *content, int n_tokens)
 	if (!new_node)
 		return (NULL);
 	ft_memset(new_node, 0, sizeof(t_node));
-	new_node->childs = ft_lstnew(NULL);
-	if (!(new_node->childs))
-		return (node_destroy(new_node));
+	new_node->childs = NULL;
 	if (content)
 	{
 		new_node->content = ft_strdup(content);
