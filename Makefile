@@ -22,9 +22,8 @@ DRIVER_FILENAME		= \
 					get_n_tok \
 					test_parser \
 					test_envmanager \
-					test_heredoc
-DRIVER_OBJ			= $(addprefix tests/, $(addsuffix .o, $(DRIVER_FILENAME)))
-DRIVER_DEP			= $(addprefix tests/, $(addsuffix .d, $(DRIVER_FILENAME)))
+					test_heredoc \
+					test_expansion
 ################################# TARGETS ######################################
 all:
 	@make $(NAME)
@@ -45,6 +44,9 @@ test_envmanager: $(LIB_ALL) $(TEST_OBJ) tests/test_envmanager.o
 
 test_heredoc: $(LIB_ALL) $(TEST_OBJ) tests/test_heredoc.o
 	$(CC) $(CFLAGS) $(INC_DIR) $(LINK_LIBS) $(LIB_ALL) $(TEST_OBJ) tests/test_heredoc.o -o $@
+
+test_expansion: $(LIB_ALL) $(TEST_OBJ) tests/test_expansion.o
+	$(CC) $(CFLAGS) $(INC_DIR) $(LINK_LIBS) $(LIB_ALL) $(TEST_OBJ) tests/test_expansion.o -o $@
 
 -include $(DEP)
 
