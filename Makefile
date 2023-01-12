@@ -4,6 +4,7 @@ RM					= rm -f
 CFLAGS				= -Wall -Werror -Wextra -MMD -MP -g
 ################################ FILENAMES #####################################
 FILENAME			= \
+					strutils/ft_strmerge \
 					prompt/minishell
 
 SRC					= $(addprefix srcs/, $(addsuffix .c, $(FILENAME)))
