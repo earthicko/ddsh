@@ -19,6 +19,7 @@ typedef struct s_exec_unit
 {
 	char	**argv;
 	t_redir	*redir_arr;
+	int		n_redir;
 }	t_exec_unit;	
 
 typedef struct s_unit_arr

@@ -37,6 +37,9 @@ test_envmanager: $(LIB_ALL) $(TEST_OBJ) tests/test_envmanager.o
 test_heredoc: $(LIB_ALL) $(TEST_OBJ) tests/test_heredoc.o
 	$(CC) $(CFLAGS) $(INC_DIR) $(LINK_LIBS) $(LIB_ALL) $(TEST_OBJ) tests/test_heredoc.o -o $@
 
+test_get_n_redir: $(LIB_ALL) $(TEST_OBJ) tests/get_n_redir.o
+	$(CC) $(CFLAGS) $(INC_DIR) $(LINK_LIBS) $(LIB_ALL) $(TEST_OBJ) tests/get_n_redir.o -o $@
+
 -include $(DEP)
 
 %.o: %.c
@@ -50,7 +53,7 @@ clean:
 	@make clean -C $(LIBHEREDOC_DIR)
 	@make clean -C $(LIBENVMAN_DIR)
 	@make clean -C $(LIBBUILTIN_DIR)
-	$(RM) tests/get_n_tok.o tests/get_n_tok.d tests/test_parser.o tests/test_parser.d tests/test_envmanager.o tests/test_envmanager.d tests/test_heredoc.o tests/test_heredoc.d
+	$(RM) tests/get_n_tok.o tests/get_n_tok.d tests/test_parser.o tests/test_parser.d tests/test_envmanager.o tests/test_envmanager.d tests/test_heredoc.o tests/test_heredoc.d tests/get_n_redir.o tests/get_n_redir.d
 
 fclean: clean
 	$(RM) $(NAME)
@@ -60,7 +63,7 @@ fclean: clean
 	@make fclean -C $(LIBHEREDOC_DIR)
 	@make fclean -C $(LIBENVMAN_DIR)
 	@make fclean -C $(LIBBUILTIN_DIR)
-	$(RM) get_n_tok test_parser test_envmanager test_heredoc
+	$(RM) get_n_tok test_parser test_envmanager test_heredoc test_get_n_redir
 
 re:
 	@make fclean
