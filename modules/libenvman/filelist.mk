@@ -1,6 +1,9 @@
 ################################ FILENAMES #####################################
 FILE_LIBENVMAN	= \
 				t_enventry \
+				expander/expand_envvar \
+				expander/expand_envvar_skip \
+				expander/expander \
 				envmanager_getenvp \
 				envmanager_init \
 				envmanager_setval \
