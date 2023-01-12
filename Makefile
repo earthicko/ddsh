@@ -5,7 +5,7 @@ CFLAGS				= -Wall -Werror -Wextra -MMD -MP -g
 ################################ FILENAMES #####################################
 FILENAME			= \
 					strutils/ft_strmerge \
-					prompt/minishell
+					strutils/pchararr
 
 SRC					= $(addprefix srcs/, $(addsuffix .c, $(FILENAME)))
 OBJ					= $(addprefix srcs/, $(addsuffix .o, $(FILENAME)))
