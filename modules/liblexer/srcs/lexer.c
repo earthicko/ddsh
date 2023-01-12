@@ -1,6 +1,5 @@
 #include "libft.h"
 #include "lexer_internal.h"
-#include "libft_def.h"
 
 static void	get_word_token(t_toks *toks, int idx, char *str)
 {

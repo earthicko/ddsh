@@ -96,7 +96,7 @@ int	get_n_redir(t_node *node)
 
 int	main(void)
 {
-	t_node	*exec_tree;
+	t_node	*root;
 	t_node	*simple_cmd;
 	t_toks	toks;
 	int		stat;
@@ -104,10 +104,9 @@ int	main(void)
 	printf("before lexer toks\n");
 	stat = lexer("<a <b cat -e file >a > c >d", &toks);
 	printf("before parse toks\n");
-	exec_tree = parse_tokens(toks.arr, toks.n_toks);
-	printf("exec_tree: %p\n", exec_tree);
+	root = parse_tokens(toks.arr, toks.n_toks);
 	//node_print(exec_tree, 0);
-	simple_cmd = exec_tree->childs->content;
+	simple_cmd = root->childs->content;
 	printf("simple cmd: %p", simple_cmd);
-	//printf("n_redir: %d\n", get_n_redir(simple_cmd));
+	printf("n_redir: %d\n", get_n_redir(simple_cmd));
 }
