@@ -1,4 +1,8 @@
 NAME				= minishell
+DRIVER_FILENAME		= srcs/prompt/minishell
+DRIVER_SRC			= $(addsuffix .c, $(DRIVER_FILENAME))
+DRIVER_OBJ			= $(addsuffix .o, $(DRIVER_FILENAME))
+DRIVER_DEP			= $(addsuffix .d, $(DRIVER_FILENAME))
 ################################# COMMANDS #####################################
 RM					= rm -f
 CFLAGS				= -Wall -Werror -Wextra -MMD -MP -g
@@ -18,20 +22,22 @@ TEST_SRC			= $(addprefix tests/, $(addsuffix .c, $(TEST_FILENAME)))
 TEST_OBJ			= $(addprefix tests/, $(addsuffix .o, $(TEST_FILENAME)))
 TEST_DEP			= $(addprefix tests/, $(addsuffix .d, $(TEST_FILENAME)))
 
-DRIVER_FILENAME		= \
+TESTER_FILENAME		= \
 					get_n_tok \
 					test_parser \
 					test_envmanager \
 					test_heredoc \
 					test_expansion
+TESTER_OBJ			= $(addprefix tests/, $(addsuffix .o, $(TESTER_FILENAME)))
+TESTER_DEP			= $(addprefix tests/, $(addsuffix .d, $(TESTER_FILENAME)))
 ################################# TARGETS ######################################
 all:
 	@make $(NAME)
 
 include modules.mk
 
-$(NAME): $(LIB_ALL) $(OBJ) $(TEST_OBJ)
-	$(CC) $(CFLAGS) $(INC_DIR) $(LINK_LIBS) $(LIB_ALL) $(OBJ) $(TEST_OBJ) -o $@
+$(NAME): $(LIB_ALL) $(OBJ) $(TEST_OBJ) $(DRIVER_OBJ)
+	$(CC) $(CFLAGS) $(INC_DIR) $(LINK_LIBS) $(LIB_ALL) $(OBJ) $(TEST_OBJ) $(DRIVER_OBJ) -o $@
 
 get_n_tok: $(LIB_ALL) $(TEST_OBJ) tests/get_n_tok.o
 	$(CC) $(CFLAGS) $(INC_DIR) $(LINK_LIBS) $(LIB_ALL) $(TEST_OBJ) tests/get_n_tok.o -o $@
@@ -54,14 +60,14 @@ test_expansion: $(LIB_ALL) $(TEST_OBJ) tests/test_expansion.o
 	$(CC) $(CFLAGS) $(INC_DIR) -c $< -o $@
 
 clean:
-	$(RM) $(OBJ) $(DEP) $(TEST_OBJ) $(TEST_DEP)
+	$(RM) $(DRIVER_OBJ) $(DRIVER_DEP) $(OBJ) $(DEP) $(TEST_OBJ) $(TEST_DEP)
 	@make clean -C $(LIBFT_DIR)
 	@make clean -C $(LIBLEXER_DIR)
 	@make clean -C $(LIBPARSER_DIR)
 	@make clean -C $(LIBHEREDOC_DIR)
 	@make clean -C $(LIBENVMAN_DIR)
 	@make clean -C $(LIBBUILTIN_DIR)
-	$(RM) $(DRIVER_OBJ) $(DRIVER_DEP)
+	$(RM) $(TESTER_OBJ) $(TESTER_DEP)
 
 fclean: clean
 	$(RM) $(NAME)
@@ -71,7 +77,7 @@ fclean: clean
 	@make fclean -C $(LIBHEREDOC_DIR)
 	@make fclean -C $(LIBENVMAN_DIR)
 	@make fclean -C $(LIBBUILTIN_DIR)
-	$(RM) $(DRIVER_FILENAME)
+	$(RM) $(TESTER_FILENAME)
 
 re:
 	@make fclean
