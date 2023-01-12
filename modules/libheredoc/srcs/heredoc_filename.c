@@ -34,6 +34,12 @@ static char	*append_filenum(char *filename, int doc_id)
 	return (appended);
 }
 
+static int	setval_and_return(char **buf, char *val, int ret)
+{
+	*buf = val;
+	return (ret);
+}
+
 int	heredoc_get_filename(int n_heredoc, int doc_id, char **buf)
 {
 	int		slot;
@@ -41,23 +47,23 @@ int	heredoc_get_filename(int n_heredoc, int doc_id, char **buf)
 	char	*temp2;
 
 	if (doc_id < 0 || n_heredoc <= doc_id)
-		return (CODE_ERROR_SCOPE);
+		return (setval_and_return(buf, NULL, CODE_ERROR_SCOPE));
 	slot = ttyslot();
 	if (slot < 0)
-		return (CODE_ERROR_GENERIC);
+		return (setval_and_return(buf, NULL, CODE_ERROR_GENERIC));
 	temp1 = ttyname(slot);
 	if (!temp1)
-		return (CODE_ERROR_GENERIC);
+		return (setval_and_return(buf, NULL, CODE_ERROR_GENERIC));
 	temp2 = extract_filename(temp1);
-	free(temp1);
 	if (!temp2)
-		return (CODE_ERROR_MALLOC);
+		return (setval_and_return(buf, NULL, CODE_ERROR_MALLOC));
 	temp1 = ft_strjoin(PREFIX_HEREDOC_TEMPFILE, temp2);
 	free(temp2);
 	if (!temp1)
-		return (CODE_ERROR_MALLOC);
+		return (setval_and_return(buf, NULL, CODE_ERROR_MALLOC));
 	temp2 = append_filenum(temp1, doc_id);
 	free(temp1);
-	*buf = temp2;
-	return (CODE_OK);
+	if (!temp2)
+		return (setval_and_return(buf, NULL, CODE_ERROR_MALLOC));
+	return (setval_and_return(buf, temp2, CODE_OK));
 }
