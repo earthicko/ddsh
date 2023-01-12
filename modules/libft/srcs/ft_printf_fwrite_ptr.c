@@ -55,7 +55,10 @@ static char	*cstr_ptr_prefix(t_conv *conv, int len_ptr)
 		res = ft_strappend(&buf, temp);
 		free(temp);
 		if (res < 0)
+		{
+			free(buf);
 			return (NULL);
+		}
 	}
 	return (buf);
 }
