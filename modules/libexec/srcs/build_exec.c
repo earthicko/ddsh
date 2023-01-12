@@ -4,24 +4,6 @@
 #include "t_node.h"
 #include "exec_internal.h"
 
-
-int	node_getntokens(t_node *node)
-{
-	int		n_tokens;
-	t_list	*cursor;
-
-	if (!node)
-		return (0);
-	n_tokens = node->n_tokens;
-	cursor = node->childs;
-	while (cursor)
-	{
-		n_tokens += node_getntokens(cursor->content);
-		cursor = cursor->next;
-	}
-	return (n_tokens);
-}
-
 int	get_n_redir(t_node *node)
 {
 	int		n_redir;
@@ -43,8 +25,6 @@ int	get_n_redir(t_node *node)
 
 //free하는 로직 수정이 필요할듯..
 //만약 여기서 실패하는 경우를 이 안에서 처리하면 아래 반복문 밑에서 따로 잡아줄 필요는 없음
-
-
 static int	build_unit_fail(t_exec_unit *unit)
 {
 	free(unit->argv);
@@ -65,8 +45,8 @@ static int	build_unit(t_exec_unit *unit, t_node *simple_cmd)
 	unit->n_redir = n_redir;
 	if (!unit->argv || unit->redir_arr)
 		return (build_unit_fail(unit));
-	i = 0;
-	while (i < node_getntokens(simple_cmd))
+	i = -1;
+	while (++i < node_getntokens(simple_cmd))
 	{
 		if (cmd_elem 본 후, 만약 word라면)
 			argv에 값 할당;
@@ -112,3 +92,5 @@ int	build_exec_unit(t_node *root, t_unit_arr *units)
 		curr = curr->next;
 	}
 }
+
+echo $""
