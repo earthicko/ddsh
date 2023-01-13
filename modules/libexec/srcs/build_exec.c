@@ -1,74 +1,80 @@
-#include <stdlib.h>
 #include "libft.h"
 #include "libft_def.h"
+#include "t_exec_unit.h"
 #include "t_node.h"
 #include "exec_internal.h"
 
-int	get_n_redir(t_node *node)
+static int	init_unit(t_exec_unit *unit, t_node *simple_cmd)
 {
-	int		n_redir;
-	t_list	*cursor;
-	t_node	*curr;
+	const int	n_redir = get_n_redir(simple_cmd);
+	const int	n_word = node_getntokens(simple_cmd) - 2 * n_redir;
 
-	n_redir = 0;
-	cursor = node->childs;
-	while (cursor)
-	{
-		curr = cursor->content;
-		curr = curr->childs->content;
-		if (curr->type == NODETYPE_IO_REDIRECT)
-			n_redir++;
-		cursor = cursor->next;
-	}
-	return (n_redir);
+	unit->argv = (char **)malloc(sizeof(char *) * (n_word + 1));
+	unit->redir_arr = (t_redir *)malloc(sizeof(t_redir) * (n_redir + 1));
+	unit->n_word = n_word;
+	unit->n_redir = n_redir;
+	//구조체 맴버 0 으로 채워지나?
+	ft_bzero(unit->argv, sizeof(char *) * (n_word + 1));
+	ft_bzero(unit->redir_arr, sizeof(t_redir) * n_redir);
+	if (!unit->argv || unit->redir_arr)
+		return (free_unit_member(unit));
+	return (CODE_OK);
 }
 
-//free하는 로직 수정이 필요할듯..
-//만약 여기서 실패하는 경우를 이 안에서 처리하면 아래 반복문 밑에서 따로 잡아줄 필요는 없음
-static int	build_unit_fail(t_exec_unit *unit)
+static void	set_argv(t_node *node, t_exec_unit *unit, int idx)
 {
-	free(unit->argv);
-	free(unit->redir_arr);
-	unit->argv = 0;
-	unit->redir_arr = 0;
-	return (CODE_ERROR_MALLOC);
+	node = get_child_node(node, 1);
+	unit->argv[idx] = ft_strdup(node->content);
+}
+
+static void	set_redir_arr(t_node *node, t_exec_unit *unit, int idx)
+{
+	t_node	*terminal_node;
+	t_list	*curr;
+
+	node = get_child_node(node, 1);
+	curr = node->childs;
+	terminal_node = curr->content;
+	if (ft_strncmp(terminal_node->content, "<<", 2) == 0)
+		unit->redir_arr[idx].type = REDIR_IN_HERE;
+	else if (ft_strncmp(terminal_node->content, ">>", 2) == 0)
+		unit->redir_arr[idx].type = REDIR_OUT_APPEND;
+	else if (ft_strncmp(terminal_node->content, "<", 1) == 0)
+		unit->redir_arr[idx].type = REDIR_IN;
+	else if (ft_strncmp(terminal_node->content, ">", 1) == 0)
+		unit->redir_arr[idx].type = REDIR_OUT;
+	else
+		unit->redir_arr[idx].type = REDIR_NONE;
+	terminal_node = curr->next->content;
+	unit->redir_arr[idx].content = ft_strdup(terminal_node->content);
 }
 
 static int	build_unit(t_exec_unit *unit, t_node *simple_cmd)
 {
-	const int	n_redir = get_n_redir(simple_cmd);
-	const int	n_word = node_getntokens(simple_cmd) - 2 * n_redir;
 	int			i;
+	int			j;
+	t_node		*node;
+	t_list		*curr;
 
-	unit->argv = (char **)malloc(sizeof(char *) * (n_word + 1));
-	unit->redir_arr = (t_redir *)malloc(sizeof(t_redir) * n_redir);
-	unit->n_redir = n_redir;
-	if (!unit->argv || unit->redir_arr)
-		return (build_unit_fail(unit));
-	i = -1;
-	while (++i < node_getntokens(simple_cmd))
-	{
-		if (cmd_elem 본 후, 만약 word라면)
-			argv에 값 할당;
-		else
-			트리 깊이를 조금 더 들어간 다음에 리다이렉션 토큰 추출해서 redir_arr에 저장;
-		simple_cmd->childs->content->childs ... 가독성이 떨어짐
-	}
-}
-
-static int	get_n_unit(t_node *root)
-{
-	int		n_unit;
-	t_list	*curr;
-
-	n_unit = 0;
-	curr = root->childs;
+	if (init_unit(unit, simple_cmd) == CODE_ERROR_MALLOC)
+		return (CODE_ERROR_MALLOC);
+	i = 0;
+	j = 0;
+	curr = simple_cmd->childs;
 	while (curr)
 	{
+		node = get_child_node(curr->content, 1);
+		if (node->type == NODETYPE_CMD_WORD)
+			set_argv(node, unit, i);
+		else
+			set_redir_arr(node, unit, j);
+		if (!unit->argv[i] || !unit->redir_arr[j].content)
+			return (free_single_unit(unit, i, j));
 		curr = curr->next;
-		n_unit++;
+		i++;
+		j++;
 	}
-	return (n_unit);
+	return (CODE_OK);
 }
 
 int	build_exec_unit(t_node *root, t_unit_arr *units)
@@ -87,10 +93,11 @@ int	build_exec_unit(t_node *root, t_unit_arr *units)
 	idx = -1;
 	while (++idx < n_unit)
 	{
-		if (build_unit(units->arr + idx, curr) == CODE_ERROR_MALLOC)
-			return (build_exec_fail(units, idx));
+		//build_unit에서 동적할당 실패시, 이전 유닛들을 free_all_unit에서 할당해제해주기
+		//현재 생성하려고 했던 유닛은 내부에서 알아서 처리
+		if (build_unit(units->arr + idx, curr->content) == CODE_ERROR_MALLOC)
+			return (free_all_unit(units, idx));
 		curr = curr->next;
 	}
+	return (CODE_OK);
 }
-
-echo $""
