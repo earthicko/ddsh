@@ -27,6 +27,7 @@ static void	test_get_n_redir(char *str, t_toks *toks)
 		return ;
 	}
 	root = parse_tokens(toks->arr, toks->n_toks);
+	node_print(root, 0);
 	simple_cmd = root->childs->content;
 	printf("input: %s\n\n", str);
 	printf("n_redir: %d\n\n", get_n_redir(simple_cmd));

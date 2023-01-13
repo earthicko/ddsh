@@ -1,5 +1,6 @@
--I/Users/dahkang/Desktop/minishell/modules/libft/includes
--I/Users/dahkang/Desktop/minishell/modules/libenvman/includes
--I/Users/dahkang/Desktop/minishell/modules/liblexer/includes
--I/Users/dahkang/Desktop/minishell/modules/libparser/includes
--I/Users/dahkang/Desktop/minishell/modules/libexec/includes
+-I./includes
+-I./modules/libft/includes
+-I./modules/libenvman/includes
+-I./modules/liblexer/includes
+-I./modules/libparser/includes
+-I./modules/libexec/includes
