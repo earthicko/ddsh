@@ -27,7 +27,7 @@ int	builtin_cd(char **argv)
 	int		stat;
 	char	*target;
 
-	if (!ft_strncmp(argv[0], FLAG_OLDPWD, ft_strlen(FLAG_OLDPWD)))
+	if (!ft_strncmp(argv[0], FLAG_OLDPWD, ft_strlen(FLAG_OLDPWD) + 1))
 	{
 		if (envmanager(NULL, &target, ENVVAR_OLDPWD, NULL))
 		{

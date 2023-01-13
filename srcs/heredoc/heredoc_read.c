@@ -15,7 +15,7 @@ static int	write_io_file_loop(int fd, int expand, char *delimeter)
 	line = readline(PREFIX_HEREDOC_PROMPT);
 	if (!line)
 		return (1);
-	if (!ft_strncmp(line, delimeter, ft_strlen(delimeter)))
+	if (!ft_strncmp(line, delimeter, ft_strlen(delimeter) + 1))
 	{
 		free(line);
 		return (1);
