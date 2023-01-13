@@ -12,7 +12,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	envmanager(envp, NULL, NULL, NULL);
-	word = strdup("en\"vvar$HOME\"FO'O$PWD'");
+	word = strdup("en\"vvar$HOME\"FO'O$PWD'   aa'$?'$?$\"?\"\"$\"?aa");
 	printf("before: <%s>\n", word);
 	printf("exit status %d\n", envmanager_replace_envvar(&word, 0));
 	printf("after: <%s>\n", word);
