@@ -22,19 +22,6 @@ char	*envman_compose_envstr(char *name, char *val)
 	return (temp);
 }
 
-static size_t	find_equal_sign(char *str, size_t len)
-{
-	size_t	i_split;
-
-	i_split = 0;
-	while (i_split < len)
-	{
-		if (str[i_split] == ENVSTR_DELIM_CHAR)
-			return (i_split);
-		i_split++;
-	}
-}
-
 static int	split_envstr_abort(char **name, char **val, int stat)
 {
 	if (*name)
@@ -52,7 +39,7 @@ int	envman_split_envstr(char *str, char **ret_name, char **ret_val)
 	size_t	len_str;
 
 	len_str = ft_strlen(str);
-	i_split = find_equal_sign(str, len_str);
+	i_split = ft_strchr(str, ENVSTR_DELIM_CHAR) - str;
 	if (i_split == len_str)
 		return (CODE_ERROR_DATA);
 	*ret_name = ft_substr(str, 0, i_split);
