@@ -26,7 +26,7 @@ t_list	*find_list_with_entry(t_list *envlist, char *name)
 	while (envlist)
 	{
 		lstname = ((t_enventry *)(envlist->content))->name;
-		if (!ft_strncmp(name, lstname, ft_strlen(lstname)))
+		if (!ft_strncmp(name, lstname, ft_strlen(lstname) + 1))
 			return (envlist);
 		envlist = envlist->next;
 	}

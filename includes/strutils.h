@@ -19,4 +19,11 @@ int			pchararr_append(t_pchararr *pchararr, char *data);
 
 int			remove_quotes(char **buf);
 
+int			is_valid_name(char *str);
+
+char		*extract_filename(int slot);
+int			is_builtin_command(char *str);
+
+int			find_exec(char **buf);
+
 #endif

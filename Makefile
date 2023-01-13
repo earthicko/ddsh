@@ -5,13 +5,18 @@ DRIVER_OBJ			= $(addsuffix .o, $(DRIVER_FILENAME))
 DRIVER_DEP			= $(addsuffix .d, $(DRIVER_FILENAME))
 ################################# COMMANDS #####################################
 RM					= rm -f
-CFLAGS				= -MMD -MP -g
-#CFLAGS				= -Wall -Werror -Wextra -MMD -MP -g
+CFLAGS				= -Wall -Werror -Wextra -MMD -MP -g $(ACFLAGS)
 ################################ FILENAMES #####################################
 FILENAME			= \
 					strutils/ft_strmerge \
 					strutils/pchararr \
-					strutils/remove_quotes
+					strutils/remove_quotes \
+					strutils/is_valid_str \
+					strutils/filename_utils \
+					strutils/find_exec \
+					heredoc/heredoc_filename \
+					heredoc/heredoc_read \
+					heredoc/heredocmanager
 
 SRC					= $(addprefix srcs/, $(addsuffix .c, $(FILENAME)))
 OBJ					= $(addprefix srcs/, $(addsuffix .o, $(FILENAME)))
@@ -71,7 +76,6 @@ clean:
 	@make clean -C $(LIBFT_DIR)
 	@make clean -C $(LIBLEXER_DIR)
 	@make clean -C $(LIBPARSER_DIR)
-	@make clean -C $(LIBHEREDOC_DIR)
 	@make clean -C $(LIBENVMAN_DIR)
 	@make clean -C $(LIBBUILTIN_DIR)
 	@make clean -C $(LIBEXEC_DIR)
@@ -82,7 +86,6 @@ fclean: clean
 	@make fclean -C $(LIBFT_DIR)
 	@make fclean -C $(LIBLEXER_DIR)
 	@make fclean -C $(LIBPARSER_DIR)
-	@make fclean -C $(LIBHEREDOC_DIR)
 	@make fclean -C $(LIBENVMAN_DIR)
 	@make fclean -C $(LIBBUILTIN_DIR)
 	@make fclean -C $(LIBEXEC_DIR)

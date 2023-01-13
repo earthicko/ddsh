@@ -24,38 +24,59 @@ static char	*merge_pchararr(t_pchararr *strarr)
 	return (buf);
 }
 
-static void	init_variable_expansion(t_pchararr **strarr, int *i, int *stat)
+static void	free_all_pchararr(t_pchararr *strarr)
 {
-	*strarr = pchararr_create();
-	*stat = 0;
-	*i = 0;
+	int	i;
+
+	i = 0;
+	while (i < strarr->len)
+	{
+		free((strarr->data)[i]);
+		i++;
+	}
 }
 
-int	envmanager_variable_expansion(char *input, char **buf)
+static int	exit_replace_envvar(int stat, t_pchararr *strarr, char **buf)
 {
-	t_pchararr	*strarr;
-	int			i;
-	int			stat;
+	char	*backup;
 
-	init_variable_expansion(&strarr, &i, &stat);
-	if (!strarr)
-		return (CODE_ERROR_MALLOC);
-	while (input[i])
-	{
-		if (input[i] == '\'')
-			stat = stat | skip_and_append_squote(input, &i, strarr);
-		else if (input[i] == '$')
-			stat = stat | skip_and_append_envvar(input, &i, strarr);
-		else
-			stat = stat | skip_and_append_str(input, &i, strarr);
-	}
 	if (stat)
 	{
 		pchararr_destroy(strarr);
 		return (stat);
 	}
-	*buf = merge_pchararr(strarr);
-	if (!(*buf))
+	backup = merge_pchararr(strarr);
+	free_all_pchararr(strarr);
+	pchararr_destroy(strarr);
+	if (!backup)
 		return (CODE_ERROR_MALLOC);
+	free(*buf);
+	*buf = backup;
 	return (CODE_OK);
+}
+
+int	envmanager_replace_envvar(char **buf, int quote_removal)
+{
+	t_pchararr	*strarr;
+	int			i;
+	int			stat;
+
+	strarr = pchararr_create();
+	if (!strarr)
+		return (CODE_ERROR_MALLOC);
+	i = 0;
+	stat = 0;
+	while ((*buf)[i])
+	{
+		if ((*buf)[i] == '\'')
+			stat = stat | skip_and_append_squote(
+					(*buf), &i, strarr, quote_removal);
+		else if ((*buf)[i] == '$')
+			stat = stat | skip_and_append_envvar(
+					(*buf), &i, strarr);
+		else
+			stat = stat | skip_and_append_str(
+					(*buf), &i, strarr, quote_removal);
+	}
+	return (exit_replace_envvar(stat, strarr, buf));
 }

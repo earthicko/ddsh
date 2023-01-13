@@ -7,7 +7,7 @@ static int	builtin_flag_n_on(char *first_arg)
 {
 	if (!first_arg)
 		return (FALSE);
-	if (ft_strncmp(FLAG_N, first_arg, ft_strlen(FLAG_N)))
+	if (ft_strncmp(FLAG_N, first_arg, ft_strlen(FLAG_N) + 1))
 		return (FALSE);
 	return (TRUE);
 }
