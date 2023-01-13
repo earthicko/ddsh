@@ -10,7 +10,10 @@ CFLAGS				= -Wall -Werror -Wextra -MMD -MP -g $(ACFLAGS)
 FILENAME			= \
 					strutils/ft_strmerge \
 					strutils/pchararr \
-					strutils/remove_quotes
+					strutils/remove_quotes \
+					heredoc/heredoc_filename \
+					heredoc/heredoc_read \
+					heredoc/heredocmanager
 
 SRC					= $(addprefix srcs/, $(addsuffix .c, $(FILENAME)))
 OBJ					= $(addprefix srcs/, $(addsuffix .o, $(FILENAME)))
@@ -70,7 +73,6 @@ clean:
 	@make clean -C $(LIBFT_DIR)
 	@make clean -C $(LIBLEXER_DIR)
 	@make clean -C $(LIBPARSER_DIR)
-	@make clean -C $(LIBHEREDOC_DIR)
 	@make clean -C $(LIBENVMAN_DIR)
 	@make clean -C $(LIBBUILTIN_DIR)
 	$(RM) $(TESTER_OBJ) $(TESTER_DEP)
@@ -80,7 +82,6 @@ fclean: clean
 	@make fclean -C $(LIBFT_DIR)
 	@make fclean -C $(LIBLEXER_DIR)
 	@make fclean -C $(LIBPARSER_DIR)
-	@make fclean -C $(LIBHEREDOC_DIR)
 	@make fclean -C $(LIBENVMAN_DIR)
 	@make fclean -C $(LIBBUILTIN_DIR)
 	$(RM) $(TESTER_FILENAME)
