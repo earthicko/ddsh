@@ -12,6 +12,8 @@ FILENAME			= \
 					strutils/pchararr \
 					strutils/remove_quotes \
 					strutils/is_valid_str \
+					strutils/filename_utils \
+					strutils/find_exec \
 					heredoc/heredoc_filename \
 					heredoc/heredoc_read \
 					heredoc/heredocmanager
