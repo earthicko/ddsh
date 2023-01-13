@@ -5,7 +5,7 @@
 #include "lexer.h"
 #include "parser.h"
 #include "t_node.h"
-#include "strings.h"
+#include "msgdef.h"
 #include "testers.h"
 
 int	main(void)
