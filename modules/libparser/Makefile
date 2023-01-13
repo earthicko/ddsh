@@ -1,7 +1,7 @@
 NAME			= libparser.a
 ################################# COMMANDS #####################################
 RM				= rm -f
-CFLAGS			= -Wall -Werror -Wextra -MMD -MP -g
+CFLAGS			= -Wall -Werror -Wextra -MMD -MP -g $(ACFLAGS)
 BASE_DIR		= ../..
 INC_DIR			= \
 				-I./includes \
