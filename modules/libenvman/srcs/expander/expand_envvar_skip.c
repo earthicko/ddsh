@@ -1,10 +1,10 @@
 #include <stdlib.h>
-#include <stdio.h>
 #include "libft.h"
 #include "strutils.h"
 #include "../envmanager_internal.h"
 
-int	skip_and_append_squote(char *str, int *pos, t_pchararr *strarr)
+int	skip_and_append_squote(
+		char *str, int *pos, t_pchararr *strarr, int quote_removal)
 {
 	int		start;
 	char	*word;
@@ -17,13 +17,12 @@ int	skip_and_append_squote(char *str, int *pos, t_pchararr *strarr)
 	word = ft_substr(str, start, *pos - start);
 	if (!word)
 		return (CODE_ERROR_MALLOC);
-	printf("%s: made <%s>\n", __func__, word);
-	if (pchararr_append(strarr, word))
+	if (quote_removal && remove_quotes(&word))
 	{
 		free(word);
 		return (CODE_ERROR_MALLOC);
 	}
-	return (CODE_OK);
+	return (pchararr_append(strarr, word));
 }
 
 static void	init_skip_envvar(char *str, int *pos, int *start)
@@ -49,7 +48,6 @@ int	skip_and_append_envvar(char *str, int *pos, t_pchararr *strarr)
 	varname = ft_substr(str, start, *pos - start);
 	if (!varname)
 		return (CODE_ERROR_MALLOC);
-	printf("%s: envvar name <%s>\n", __func__, varname);
 	stat = envmanager(NULL, &val, varname, NULL);
 	free(varname);
 	if (stat)
@@ -58,16 +56,11 @@ int	skip_and_append_envvar(char *str, int *pos, t_pchararr *strarr)
 		if (!val)
 			return (CODE_ERROR_MALLOC);
 	}
-	if (pchararr_append(strarr, val))
-	{
-		free(val);
-		return (CODE_ERROR_MALLOC);
-	}
-	printf("%s: envvar val <%s>\n", __func__, val);
-	return (CODE_OK);
+	return (pchararr_append(strarr, val));
 }
 
-int	skip_and_append_str(char *str, int *pos, t_pchararr *strarr)
+int	skip_and_append_str(
+		char *str, int *pos, t_pchararr *strarr, int quote_removal)
 {
 	int		start;
 	char	*word;
@@ -78,11 +71,10 @@ int	skip_and_append_str(char *str, int *pos, t_pchararr *strarr)
 	word = ft_substr(str, start, *pos - start);
 	if (!word)
 		return (CODE_ERROR_MALLOC);
-	printf("%s: made <%s>\n", __func__, word);
-	if (pchararr_append(strarr, word))
+	if (quote_removal && remove_quotes(&word))
 	{
 		free(word);
 		return (CODE_ERROR_MALLOC);
 	}
-	return (CODE_OK);
+	return (pchararr_append(strarr, word));
 }

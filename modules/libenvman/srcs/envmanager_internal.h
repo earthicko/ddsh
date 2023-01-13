@@ -24,9 +24,11 @@ int			envman_setval(t_list **envlist, char *name, char *val);
 int			envman_unsetval(t_list **envlist, char *name);
 int			envman_getenvp(t_list *envlist, char ***buf);
 
-int			skip_and_append_squote(char *str, int *pos, t_pchararr *strarr);
-int			skip_and_append_envvar(char *str, int *pos, t_pchararr *strarr);
-int			skip_and_append_str(char *str, int *pos, t_pchararr *strarr);
-int			envmanager_variable_expansion(char *input, char **buf);
+int			skip_and_append_squote(
+				char *str, int *pos, t_pchararr *strarr, int quote_removal);
+int			skip_and_append_envvar(
+				char *str, int *pos, t_pchararr *strarr);
+int			skip_and_append_str(
+				char *str, int *pos, t_pchararr *strarr, int quote_removal);
 
 #endif
