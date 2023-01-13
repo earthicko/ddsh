@@ -5,7 +5,8 @@ DRIVER_OBJ			= $(addsuffix .o, $(DRIVER_FILENAME))
 DRIVER_DEP			= $(addsuffix .d, $(DRIVER_FILENAME))
 ################################# COMMANDS #####################################
 RM					= rm -f
-CFLAGS				= -Wall -Werror -Wextra -MMD -MP -g
+CFLAGS				= -MMD -MP -g
+#CFLAGS				= -Wall -Werror -Wextra -MMD -MP -g
 ################################ FILENAMES #####################################
 FILENAME			= \
 					strutils/ft_strmerge \
@@ -73,6 +74,7 @@ clean:
 	@make clean -C $(LIBHEREDOC_DIR)
 	@make clean -C $(LIBENVMAN_DIR)
 	@make clean -C $(LIBBUILTIN_DIR)
+	@make clean -C $(LIBEXEC_DIR)
 	$(RM) $(TESTER_OBJ) $(TESTER_DEP)
 
 fclean: clean
@@ -83,6 +85,7 @@ fclean: clean
 	@make fclean -C $(LIBHEREDOC_DIR)
 	@make fclean -C $(LIBENVMAN_DIR)
 	@make fclean -C $(LIBBUILTIN_DIR)
+	@make fclean -C $(LIBEXEC_DIR)
 	$(RM) $(TESTER_FILENAME)
 
 re:

@@ -106,5 +106,13 @@ int	main(void)
 	else
 		printf("code error: %d\n", ret);
 	token_destroy(&toks);
+	printf("\n>================<\n\n");
+
+	printf("input: %s\n\n", "\"\"");
+	if ((ret = lexer("\"\"", &toks)) == CODE_OK)
+		print_tok_arr(&toks);
+	else
+		printf("code error: %d\n", ret);
+	token_destroy(&toks);
 	system("leaks test_lexer");
 }

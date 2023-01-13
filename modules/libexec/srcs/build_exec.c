@@ -4,6 +4,10 @@
 #include "t_node.h"
 #include "exec_internal.h"
 
+
+
+#include <stdio.h>
+
 static int	init_unit(t_exec_unit *unit, t_node *simple_cmd)
 {
 	const int	n_redir = get_n_redir(simple_cmd);
@@ -15,19 +19,22 @@ static int	init_unit(t_exec_unit *unit, t_node *simple_cmd)
 	unit->n_redir = n_redir;
 	//구조체 맴버 0 으로 채워지나?
 	ft_bzero(unit->argv, sizeof(char *) * (n_word + 1));
-	ft_bzero(unit->redir_arr, sizeof(t_redir) * n_redir);
-	if (!unit->argv || unit->redir_arr)
+	ft_bzero(unit->redir_arr, sizeof(t_redir) * (n_redir + 1));
+	if (!unit->argv || !unit->redir_arr)
 		return (free_unit_member(unit));
 	return (CODE_OK);
 }
 
-static void	set_argv(t_node *node, t_exec_unit *unit, int idx)
+static int	set_argv(t_node *node, t_exec_unit *unit, int idx)
 {
-	node = get_child_node(node, 1);
+	printf("idx: %d\n", idx);
 	unit->argv[idx] = ft_strdup(node->content);
+	if (!unit->argv[idx])
+		return (CODE_ERROR_MALLOC);
+	return (CODE_OK);
 }
 
-static void	set_redir_arr(t_node *node, t_exec_unit *unit, int idx)
+static int	set_redir_arr(t_node *node, t_exec_unit *unit, int idx)
 {
 	t_node	*terminal_node;
 	t_list	*curr;
@@ -47,6 +54,9 @@ static void	set_redir_arr(t_node *node, t_exec_unit *unit, int idx)
 		unit->redir_arr[idx].type = REDIR_NONE;
 	terminal_node = curr->next->content;
 	unit->redir_arr[idx].content = ft_strdup(terminal_node->content);
+	if (!unit->redir_arr[idx].content)
+		return (CODE_ERROR_MALLOC);
+	return (CODE_OK);
 }
 
 static int	build_unit(t_exec_unit *unit, t_node *simple_cmd)
@@ -65,14 +75,14 @@ static int	build_unit(t_exec_unit *unit, t_node *simple_cmd)
 	{
 		node = get_child_node(curr->content, 1);
 		if (node->type == NODETYPE_CMD_WORD)
-			set_argv(node, unit, i);
+		{
+			if (set_argv(node, unit, i++) == CODE_ERROR_MALLOC)
+				return (free_single_unit(unit, i, j));
+		}
 		else
-			set_redir_arr(node, unit, j);
-		if (!unit->argv[i] || !unit->redir_arr[j].content)
-			return (free_single_unit(unit, i, j));
+			if (set_redir_arr(node, unit, j++) == CODE_ERROR_MALLOC)
+				return (free_single_unit(unit, i, j));
 		curr = curr->next;
-		i++;
-		j++;
 	}
 	return (CODE_OK);
 }
@@ -84,7 +94,7 @@ int	build_exec_unit(t_node *root, t_unit_arr *units)
 	int			idx;
 
 	units->arr = (t_exec_unit *)malloc(sizeof(t_exec_unit) * n_unit);
-	if (units->arr)
+	if (!units->arr)
 		return (CODE_ERROR_MALLOC);
 	//bzero로 초기화하면 전부 널로 채워지는지 한번 체크할 것
 	units->n_unit = n_unit;
@@ -96,7 +106,10 @@ int	build_exec_unit(t_node *root, t_unit_arr *units)
 		//build_unit에서 동적할당 실패시, 이전 유닛들을 free_all_unit에서 할당해제해주기
 		//현재 생성하려고 했던 유닛은 내부에서 알아서 처리
 		if (build_unit(units->arr + idx, curr->content) == CODE_ERROR_MALLOC)
+		{
+			//printf("failed to build unit\n");
 			return (free_all_unit(units, idx));
+		}
 		curr = curr->next;
 	}
 	return (CODE_OK);
