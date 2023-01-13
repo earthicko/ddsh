@@ -23,14 +23,27 @@ static int	write_io_file_loop(int fd, int expand, char *delimeter)
 	return (0);
 }
 
-static void	write_to_file(char *filename, int expand, char *delimeter)
+static int	should_expand(char *str)
+{
+	while (*str)
+	{
+		if (*str == '\'' || *str == '\"')
+			return (FALSE);
+		str++;
+	}
+	return (TRUE);
+}
+
+static void	write_to_file(char *filename, char *delimeter)
 {
 	int	fd;
 	int	stat;
+	int	expand;
 
 	fd = open(filename, O_WRONLY | O_CREAT | O_EXCL | O_TRUNC, 0600);
 	if (fd < 0)
 		exit(1);
+	expand = should_expand(delimeter);
 	while (TRUE)
 	{
 		stat = write_io_file_loop(fd, expand, delimeter);
@@ -47,7 +60,7 @@ static void	write_to_file(char *filename, int expand, char *delimeter)
 	exit(0);
 }
 
-int	heredoc_read(int *n_heredoc, int expand, char *delimeter)
+int	heredoc_read(int *n_heredoc, char *delimeter)
 {
 	pid_t	pid;
 	char	*filename;
@@ -64,7 +77,7 @@ int	heredoc_read(int *n_heredoc, int expand, char *delimeter)
 	if (pid)
 		wait4(pid, &stat, 0, NULL);
 	else
-		write_to_file(filename, expand, delimeter);
+		write_to_file(filename, delimeter);
 	free(filename);
 	if (stat)
 		(*n_heredoc)--;

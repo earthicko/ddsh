@@ -78,7 +78,7 @@ int	heredocmanager(int mode, int doc_id, void *buf)
 	static int	n_heredoc;
 
 	if (mode == HEREDOCMODE_READ)
-		return (heredoc_read(&n_heredoc, doc_id, buf));
+		return (heredoc_read(&n_heredoc, buf));
 	if (mode == HEREDOCMODE_GETFILENAME)
 		return (heredoc_get_filename(n_heredoc, doc_id, buf));
 	if (mode == HEREDOCMODE_CLEAR)
