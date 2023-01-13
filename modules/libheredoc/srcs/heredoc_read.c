@@ -16,7 +16,7 @@ static int	write_io_file_loop(int fd, int expand, char *delimeter)
 	if (!ft_strncmp(line, delimeter, ft_strlen(delimeter)))
 		return (1);
 	if (expand)
-		ft_printf("%s: Should expand %s\n", __func__, line);
+		printf("%s: Should expand %s\n", __func__, line);
 	stat = ft_dprintf(fd, "%s\n", line);
 	if (stat < 0)
 		return (-1);

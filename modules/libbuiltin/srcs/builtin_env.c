@@ -1,7 +1,7 @@
-#include "libft.h"
+#include <stdio.h>
 
 int	builtin_env(char **argv)
 {
 	(void)argv;
-	return (ft_printf("Unimplemented stub of builtin env.\n"));
+	return (printf("Unimplemented stub of builtin env.\n"));
 }
