@@ -29,6 +29,11 @@ static void	init_skip_envvar(char *str, int *pos, int *start)
 {
 	(*pos)++;
 	*start = *pos;
+	if (str[*pos] == '?')
+	{
+		(*pos)++;
+		return ;
+	}
 	while (
 		str[*pos] != '\0'
 		&& str[*pos] != '\''
