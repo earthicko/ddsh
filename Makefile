@@ -9,7 +9,8 @@ CFLAGS				= -Wall -Werror -Wextra -MMD -MP -g
 ################################ FILENAMES #####################################
 FILENAME			= \
 					strutils/ft_strmerge \
-					strutils/pchararr
+					strutils/pchararr \
+					strutils/remove_quotes
 
 SRC					= $(addprefix srcs/, $(addsuffix .c, $(FILENAME)))
 OBJ					= $(addprefix srcs/, $(addsuffix .o, $(FILENAME)))
