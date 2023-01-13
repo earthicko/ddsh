@@ -1,7 +1,7 @@
-#include "libft.h"
+#include <stdio.h>
 
 int	builtin_exit(char **argv)
 {
 	(void)argv;
-	return (ft_printf("Unimplemented stub of builtin exit.\n"));
+	return (printf("Unimplemented stub of builtin exit.\n"));
 }

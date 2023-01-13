@@ -1,5 +1,5 @@
-#ifndef STRINGS_H
-# define STRINGS_H
+#ifndef MSGDEF_H
+# define MSGDEF_H
 # define MSG_SHELL_PROMPT "dsh$ "
 
 #endif

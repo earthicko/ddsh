@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include "libft.h"
 #include "envmanager.h"
 #include "builtin_internal.h"
@@ -20,7 +21,7 @@ static int	export_display(void)
 			ft_free_strarr(envp);
 			return (1);
 		}
-		ft_printf(FMTSTR_EXPORT, name, val);
+		printf(FMTSTR_EXPORT, name, val);
 		free(name);
 		free(val);
 		cursor++;
