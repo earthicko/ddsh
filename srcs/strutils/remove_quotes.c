@@ -3,8 +3,9 @@
 
 static int	count_quotes(char *str)
 {
-	int	i = 0;
+	int	i;
 
+	i = 0;
 	while (*str)
 	{
 		if (*str == '\'' || *str == '\"')
@@ -34,6 +35,7 @@ int	remove_quotes(char **buf)
 		}
 		i++;
 	}
+	backup[j] = '\0';
 	free(*buf);
 	*buf = backup;
 	return (CODE_OK);
