@@ -19,4 +19,6 @@ int			pchararr_append(t_pchararr *pchararr, char *data);
 
 int			remove_quotes(char **buf);
 
+int			is_valid_name(char *str);
+
 #endif

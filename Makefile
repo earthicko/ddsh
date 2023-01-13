@@ -11,6 +11,7 @@ FILENAME			= \
 					strutils/ft_strmerge \
 					strutils/pchararr \
 					strutils/remove_quotes \
+					strutils/is_valid_str \
 					heredoc/heredoc_filename \
 					heredoc/heredoc_read \
 					heredoc/heredocmanager
