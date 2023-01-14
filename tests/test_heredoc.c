@@ -13,9 +13,9 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	envmanager(envp, NULL, NULL, NULL);
-	heredocmanager(HEREDOCMODE_CLEAR, -1, NULL);
 	delim1 = strdup("EO\"F");
 	delim2 = strdup("EOF");
+	heredocmanager(HEREDOCMODE_INIT, 0, NULL);
 	heredocmanager(HEREDOCMODE_READ, 0, delim1);
 	heredocmanager(HEREDOCMODE_READ, 0, delim2);
 	free(delim1);
