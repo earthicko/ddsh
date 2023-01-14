@@ -53,7 +53,7 @@ static void	print_each_unit(t_exec_unit *unit)
 }
 
 
-static void	test_exec_unit (char *str)
+static void	test_exec_unit(char *str)
 {
 	t_toks	toks;
 	int		stat;
@@ -120,9 +120,9 @@ static void	test_get_n_redir(char *str, t_toks *toks)
 
 int	main(void)
 {
-	/*
 	t_toks	toks;
 
+	/*
 	printf(">=========TEST GET_N_REDIR<=========\n");
 	test_get_n_redir("<a <b cat -e file >a > c >d", &toks);
 	test_get_n_redir("cat <a file -e file <a >b <<b", &toks);
@@ -131,14 +131,15 @@ int	main(void)
 	test_get_n_redir("cat <a >b <<b | cat -e > file", &toks);
 	//인자로 ""만 전달하면 파서에서 널반환
 	//test_get_n_redir("", &toks);
-	//test_get_n_redir(0, &toks);
-	//toks.arr = 0;
-	//*/
+	*/
+	test_get_n_redir(0, &toks);
+	toks.arr = 0;
 	
 	printf("\n>=========================<\n\n");
 	printf(">=========TEST GET_EXEC_UNIT<=========\n");
 	test_exec_unit("<a <b cat -e file >a > c >d");
 	test_exec_unit("<a <b cat -e | file >a > c >d");
+	test_exec_unit("<a <b cat -e | file a b c >a > c >d | cat -e");
 	test_exec_unit("<a <b cat -e file >a good bad > c >d");
-	system("leaks test_exec");
+	//system("leaks test_exec");
 }

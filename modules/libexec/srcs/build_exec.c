@@ -4,10 +4,6 @@
 #include "t_node.h"
 #include "exec_internal.h"
 
-
-
-#include <stdio.h>
-
 static int	init_unit(t_exec_unit *unit, t_node *simple_cmd)
 {
 	const int	n_redir = get_n_redir(simple_cmd);
@@ -17,7 +13,6 @@ static int	init_unit(t_exec_unit *unit, t_node *simple_cmd)
 	unit->redir_arr = (t_redir *)malloc(sizeof(t_redir) * (n_redir + 1));
 	unit->n_word = n_word;
 	unit->n_redir = n_redir;
-	//구조체 맴버 0 으로 채워지나?
 	ft_bzero(unit->argv, sizeof(char *) * (n_word + 1));
 	ft_bzero(unit->redir_arr, sizeof(t_redir) * (n_redir + 1));
 	if (!unit->argv || !unit->redir_arr)
@@ -27,7 +22,6 @@ static int	init_unit(t_exec_unit *unit, t_node *simple_cmd)
 
 static int	set_argv(t_node *node, t_exec_unit *unit, int idx)
 {
-	printf("idx: %d\n", idx);
 	unit->argv[idx] = ft_strdup(node->content);
 	if (!unit->argv[idx])
 		return (CODE_ERROR_MALLOC);
@@ -96,20 +90,14 @@ int	build_exec_unit(t_node *root, t_unit_arr *units)
 	units->arr = (t_exec_unit *)malloc(sizeof(t_exec_unit) * n_unit);
 	if (!units->arr)
 		return (CODE_ERROR_MALLOC);
-	//bzero로 초기화하면 전부 널로 채워지는지 한번 체크할 것
 	units->n_unit = n_unit;
 	ft_bzero(units->arr, n_unit * sizeof(t_exec_unit));
 	curr = root->childs;
 	idx = -1;
 	while (++idx < n_unit)
 	{
-		//build_unit에서 동적할당 실패시, 이전 유닛들을 free_all_unit에서 할당해제해주기
-		//현재 생성하려고 했던 유닛은 내부에서 알아서 처리
 		if (build_unit(units->arr + idx, curr->content) == CODE_ERROR_MALLOC)
-		{
-			//printf("failed to build unit\n");
 			return (free_all_unit(units, idx));
-		}
 		curr = curr->next;
 	}
 	return (CODE_OK);

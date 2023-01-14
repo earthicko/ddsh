@@ -41,7 +41,8 @@ int	free_all_unit(t_unit_arr *units, int idx)
 	// 이 함수는 두 경우에 호출됨
 	// 1. build_exec_unit에서 동적할당 실패시
 	// 2. units_destroy에서
-	// 1번의 경우 상관없지만 2번의 경우 malloc에러 리턴하면 말이 안됨`
+	// 1번의 경우 상관없지만 2번의 경우 malloc에러 리턴하면 다소 논리상 어색함
+	// 그러나 호출되는 destroy함내에 은닉돼있어 상관없을 것 같기도
 	if (!units->arr)
 		return (CODE_OK);
 	while (++i < idx)
