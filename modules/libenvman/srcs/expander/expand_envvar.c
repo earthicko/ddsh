@@ -55,7 +55,7 @@ static int	exit_replace_envvar(int stat, t_pchararr *strarr, char **buf)
 	return (CODE_OK);
 }
 
-int	envmanager_replace_envvar(char **buf, int quote_removal)
+int	envman_replace_envvar(char **buf, int quote_removal)
 {
 	t_pchararr	*strarr;
 	int			i;
