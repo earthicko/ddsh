@@ -6,19 +6,21 @@ int	heredocmanager(int mode, int doc_id, void *buf);
 
 ### 의존성 정보
 
-없음
+- `libenvman.a`
 
 # 개요
 
 ```c
 enum e_heredocmode
 {
-	HEREDOCMODE_READ = 0,
+	HEREDOCMODE_INIT = 0,
+	HEREDOCMODE_READ,
 	HEREDOCMODE_GETFILENAME,
 	HEREDOCMODE_CLEAR
 };
 
-// mode: READ | GETFILENAME | CLEAR
+// mode: INIT | READ | GETFILENAME | CLEAR
+// init: sets directory of temp files to $HOME
 // read: reads here_doc to doc_id, using delimeter (char *)buf
 // getfilename: store filename of doc_id on (char **)buf
 // clear: clear all docs if doc_id < 0, else clear doc_id
@@ -29,6 +31,10 @@ int	heredocmanager(int mode, int doc_id, void *buf);
 이 함수는 지금까지 생성된 here-document의 수 (이하 `n_heredoc`)를 기록한다. 이 값은 `READ` 모드로 한번 호출될 때마다 `1`씩 증가한다.
 
 생성된 N개의 here-document들은 각각 `0`...`N-1`번의 번호를 가지고 있다. 이는 `GETFILENAME`이나 `CLEAR` 모드로 호출할 때 필요한 값이다.
+
+- `mode`가 `INIT`일 시:
+
+현재 `$HOME`을 임시 파일 저장 디렉토리로 설정한다. 이후 모든 임시 파일은 여기에 생성하고 여기에서 찾게 된다.
 
 - `mode`가 `READ`일 시:
 
@@ -50,9 +56,25 @@ here-document는 임시 파일로 저장된다. 이들의 파일 이름은 다�
 .heredoc_{TTY 이름}_{doc_id}
 ```
 
-이들은 `$HOME`에 저장된다.
+`INIT` 기능을 한번 실행했다면 이들은 `$HOME`에 저장되고, 그렇지 않을 시 현재 디렉토리 (CWD)에 저장된다. 현재 디렉토리는 `cd` 명령으로 변경할 수 있으므로 반드시 셸이 실행되자마자 `INIT` 기능을 실행 해야한다.
 
 # 기능 설명
+
+### mode == INIT
+
+```c
+int heredocmanager(int mode, int doc_id, void *buf);
+
+heredocmanager(HEREDOCMODE_INIT, 0, NULL);
+```
+
+현재 환경 변수에서 `$HOME`을 찾아 임시 파일을 저장할 디렉토리로 설정한다. 실패 시 현재 디렉토리로 설정한다.
+
+반환 값은 다음과 같다.
+
+- `CODE_OK`: 정상적으로 완료됨
+- `CODE_ERROR_DATA`: 환경 변수에서 `HOME`을 찾을 수 없음
+- `CODE_ERROR_MALLOC`: 메모리를 할당할 수 없음
 
 ### mode == READ
 
