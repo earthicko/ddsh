@@ -46,36 +46,39 @@ static int	should_expand(char *str)
 	return (TRUE);
 }
 
-static void	abort_write_to_file(int fd, char *filename)
+static void	abort_write_to_file(int fd, char *filename, char *delim, int stat)
 {
 	close(fd);
 	unlink(filename);
-	exit(1);
+	exit(stat);
 }
 
 static void	write_to_file(char *filename, char *delimeter)
 {
-	int	fd;
-	int	stat;
-	int	expand;
+	int		fd;
+	int		stat;
+	int		expand;
+	char	*delim_dup;
 
 	unlink(filename);
 	fd = open(filename, O_WRONLY | O_CREAT | O_EXCL | O_TRUNC, 0600);
 	if (fd < 0)
 		exit(1);
-	expand = should_expand(delimeter);
-	if (remove_quotes(&delimeter))
-		abort_write_to_file(fd, filename);
+	delim_dup = ft_strdup(delimeter);
+	if (!delim_dup)
+		exit(1);
+	expand = should_expand(delim_dup);
+	if (remove_quotes(&delim_dup))
+		abort_write_to_file(fd, filename, delim_dup, 1);
 	while (TRUE)
 	{
-		stat = write_io_file_loop(fd, expand, delimeter);
+		stat = write_io_file_loop(fd, expand, delim_dup);
 		if (stat < 0)
-			abort_write_to_file(fd, filename);
+			abort_write_to_file(fd, filename, delim_dup, 1);
 		if (stat > 0)
 			break ;
 	}
-	close(fd);
-	exit(0);
+	abort_write_to_file(fd, filename, delim_dup, 0);
 }
 
 int	heredoc_read(int *n_heredoc, char *delimeter)

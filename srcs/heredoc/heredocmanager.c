@@ -37,6 +37,8 @@ int	heredoc_clear(int *n_heredoc, int doc_id)
 		if (heredoc_clear_entry(*n_heredoc, doc_id))
 			return (CODE_ERROR_GENERIC);
 	}
+	else
+		return (CODE_ERROR_SCOPE);
 	return (CODE_OK);
 }
 
