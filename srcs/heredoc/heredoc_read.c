@@ -22,7 +22,7 @@ static int	write_io_file_loop(int fd, int expand, char *delimeter)
 	}
 	if (expand)
 	{
-		if (envmanager_replace_envvar(&line, FALSE))
+		if (envman_replace_envvar(&line, FALSE))
 		{
 			free(line);
 			return (-1);
@@ -49,6 +49,7 @@ static int	should_expand(char *str)
 static void	abort_write_to_file(int fd, char *filename, char *delim, int stat)
 {
 	close(fd);
+	free(delim);
 	unlink(filename);
 	exit(stat);
 }
@@ -81,14 +82,15 @@ static void	write_to_file(char *filename, char *delimeter)
 	abort_write_to_file(fd, filename, delim_dup, 0);
 }
 
-int	heredoc_read(int *n_heredoc, char *delimeter)
+int	heredoc_read(int *n_heredoc, char *temp_dir, char *delimeter)
 {
 	pid_t	pid;
 	char	*filename;
 	int		stat;
 
 	(*n_heredoc)++;
-	stat = heredoc_get_filename(*n_heredoc, (*n_heredoc) - 1, &filename);
+	stat = heredoc_get_filename(
+			*n_heredoc, temp_dir, (*n_heredoc) - 1, &filename);
 	if (stat)
 		return (stat);
 	pid = fork();

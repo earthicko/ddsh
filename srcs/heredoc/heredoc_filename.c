@@ -32,7 +32,7 @@ static int	setval_and_return(char **buf, char *val, int ret)
 	return (ret);
 }
 
-static char	*merge_filename(int slot, int doc_id)
+static char	*merge_filename(int slot, char *temp_dir, int doc_id)
 {
 	char	*strs[2];
 	char	*result;
@@ -46,13 +46,18 @@ static char	*merge_filename(int slot, int doc_id)
 		free(strs[0]);
 		return (NULL);
 	}
-	result = ft_strmerge(4, PREFIX_HEREDOC_TEMPFILE, strs[0], "_", strs[1]);
+	if (temp_dir)
+		result = ft_strmerge(5,
+				temp_dir, PREFIX_HEREDOC_TEMPFILE, strs[0], "_", strs[1]);
+	else
+		result = ft_strmerge(4,
+				PREFIX_HEREDOC_TEMPFILE, strs[0], "_", strs[1]);
 	free(strs[0]);
 	free(strs[1]);
 	return (result);
 }
 
-int	heredoc_get_filename(int n_heredoc, int doc_id, char **buf)
+int	heredoc_get_filename(int n_heredoc, char *temp_dir, int doc_id, char **buf)
 {
 	int		slot;
 	char	*result;
@@ -62,7 +67,7 @@ int	heredoc_get_filename(int n_heredoc, int doc_id, char **buf)
 	slot = ttyslot();
 	if (slot < 0)
 		return (setval_and_return(buf, NULL, CODE_ERROR_GENERIC));
-	result = merge_filename(slot, doc_id);
+	result = merge_filename(slot, temp_dir, doc_id);
 	if (!result)
 		return (setval_and_return(buf, NULL, CODE_ERROR_GENERIC));
 	return (setval_and_return(buf, result, CODE_OK));
