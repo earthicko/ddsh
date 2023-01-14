@@ -1,28 +1,6 @@
 #include <unistd.h>
 #include "libft.h"
 
-char	*extract_filename(int slot)
-{
-	char	*cursor;
-	char	*fullname;
-
-	fullname = ttyname(slot);
-	if (!fullname)
-		return (NULL);
-	cursor = fullname;
-	while (*cursor)
-		cursor++;
-	while (cursor != fullname)
-	{
-		if (*cursor == '/')
-			break ;
-		cursor--;
-	}
-	if (*cursor == '/')
-		cursor++;
-	return (ft_strdup(cursor));
-}
-
 static void	init_is_builtin_command(char **parr)
 {
 	parr[0] = "cd";

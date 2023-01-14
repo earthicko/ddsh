@@ -4,6 +4,28 @@
 #include "strutils.h"
 #include "heredoc_internal.h"
 
+static char	*extract_filename(int slot)
+{
+	char	*cursor;
+	char	*fullname;
+
+	fullname = ttyname(slot);
+	if (!fullname)
+		return (NULL);
+	cursor = fullname;
+	while (*cursor)
+		cursor++;
+	while (cursor != fullname)
+	{
+		if (*cursor == '/')
+			break ;
+		cursor--;
+	}
+	if (*cursor == '/')
+		cursor++;
+	return (ft_strdup(cursor));
+}
+
 static int	setval_and_return(char **buf, char *val, int ret)
 {
 	*buf = val;
