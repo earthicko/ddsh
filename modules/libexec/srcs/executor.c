@@ -1,23 +1,35 @@
+#include <stdlib.h>
+#include <sys/wait.h>
 #include "libft.h"
+#include "strutils.h"
 #include "executor_internal.h"
 
+static int	wait_children(pid_t last_cmd, int n_unit)
+{
+	int	i;
+	int	status;
+	int	exit_status;
 
-#include "strutils.h"
+	exit_status = EXIT_FAILURE;
+	i = -1;
+	while (++i < n_unit)
+		if (last_cmd == wait(&status))
+			exit_status = WEXITSTATUS(status);
+	return (exit_status);
+}
 
 static int	parent_close_unused_pipe(t_info *info)
 {
 	int	stat;
 
+	stat = CODE_OK;
 	if (info->cur_idx == 0)
 		stat = close(info->new_pipe[WRITE]);
 	else if (info->cur_idx == info->n_unit - 1)
 		stat = close(info->old_pipe[READ]);
 	else
-	{
-		if (close(info->old_pipe[READ]) < 0)
+		if (close(info->old_pipe[READ]) < 0 || close(info->new_pipe[WRITE]) < 0)
 			return (CODE_ERROR_IO);
-		stat = close(info->new_pipe[WRITE]);
-	}
 	return (stat);
 }
 
@@ -30,6 +42,9 @@ static void	init_info(t_info *info, t_unit_arr *units)
 
 //구조체를 그냥 하나 만들까..?
 //변수 각각 선언하고 매개변수로 넘길바에 나은 거 같기도 하고..
+//
+//마지막 커맨드의 pid를 어디다가 저장하지? ㅇㅁㅇ
+//전역변수..?
 static int	fork_exec(t_unit_arr *units)
 {
 	t_info	info;
@@ -50,9 +65,10 @@ static int	fork_exec(t_unit_arr *units)
 			return (CODE_ERROR_IO);
 		ft_memcpy(info.old_pipe, info.new_pipe, sizeof(info.new_pipe));
 	}
-	return (CODE_OK);
+	return (wait_children(pid, info.n_unit));
 }
 
+//executor의 리턴값을 $?에 저장하기
 int	executor(t_unit_arr *units)
 {
 	//n_unit이 0이하인 경우는 없을듯?
