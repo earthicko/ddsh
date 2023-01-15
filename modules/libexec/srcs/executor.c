@@ -75,7 +75,7 @@ int	executor(t_unit_arr *units)
 	if (units->n_unit <= 0)
 		return (CODE_ERROR_SCOPE);
 	if (units->n_unit == 1)
-		if (is_builtin_command(units->arr[0].argv[0]))
-			return (exec_builtin_command(units));
+		if (is_builtin_command(units->arr->argv[0]))
+			return (exec_builtin_cmd(units->arr));
 	return (fork_exec(units));
 }

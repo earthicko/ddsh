@@ -1,40 +1,9 @@
 #include <stdio.h>
-
-
 #include <stdlib.h>
 #include <sys/stat.h>
 #include "executor_internal.h"
 #include "libft_def.h"
 #include "strutils.h"
-#include "t_exec_unit.h"
-
-static int	process_redir(t_redir *redir_arr, int n_redir)
-{
-	//놈에러 왜뜸????? 아나
-	const t_do_redir	do_redir[5] = {
-		[REDIR_NONE] = 0,
-		[REDIR_IN] = do_redir_in,
-		[REDIR_OUT] = do_redir_out,
-		[REDIR_IN_HERE] = do_redir_in_here,
-		[REDIR_OUT_APPEND] = do_redir_out_append
-	};
-	int					i;
-
-	i = -1;
-	while (++i < n_redir)
-	{
-		//여기 고칠 것
-		//REDIR_NONE일 때 널 함수포인터에 대한 가드
-		if (redir_arr[i].type == REDIR_NONE)
-		{
-			printf("redir type error\n");
-			continue ;
-		}
-		if (do_redir[redir_arr[i].type](redir_arr + i) != CODE_OK)
-			return (CODE_ERROR_IO);
-	}
-	return (CODE_OK);
-}
 
 //ft_syscall 함수 사용할까?
 static int	set_fd_stream(t_info *info)
@@ -69,16 +38,16 @@ static int	set_fd_stream(t_info *info)
 	return (CODE_OK);
 }
 
+//<리팩토링 시급함>
 //각 unit에 대한 정보로부터 명령어 실행
 //exit status에 주의할것!
 //
 //envp 매개변수가 여기서 필요하네 ..? 전역변수로 쓸까 그냥?
 //어차피 execve호출 후 종료되거나, exit을 하게 돼서 반환형이 필요없음
 //
-// // stat, lstat 심볼릭 링크파일인 경우 동작이 다르대..
+// //참고만 stat, lstat 심볼릭 링크파일인 경우 동작이 다르대..
  void	child_exec_cmd(t_info *info)
 {
-	//뭔가 컴파일러 경고가 뜨네?
 	struct stat	s_statbuf;
 	char	**argv;
 	int		status;
@@ -93,7 +62,7 @@ static int	set_fd_stream(t_info *info)
 	//1. 에러메시지 별로 분기를 나누어야 하나?
 	//일단 else if에선 io_err와 malloc_err 묶어서 처리
 	//
-	//CODE_OK가 반환되더라도 /no_exisiting_file처럼 존재하지 않는 파일일 수도 있음
+	//find_exec에서 CODE_OK가 반환되더라도 /no_exisiting_file처럼 존재하지 않는 파일일 수도 있음
 	//(파일명에 /가 있으면 바로 CODE_OK를 반환하기 때문)
 	//정말 억까케이스로 파일명에 /가 있고, PATH 경로에 해당파일이 등록돼있다면?
 	//

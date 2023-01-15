@@ -1,11 +1,38 @@
+#include <stdio.h>
 #include <fcntl.h>
 #include "heredoc.h"
 #include "executor_internal.h"
 #include "libft_def.h"
 #include "t_exec_unit.h"
 
-//dup2의 첫번째 인자를 close해야하는가?
-//is_a_dir 처리를 어떡하지 ㅇㅁㅇ?
+int	process_redir(t_redir *redir_arr, int n_redir)
+{
+	//놈에러 왜뜸????? 아나
+	const t_do_redir	do_redir[5] = {
+		[REDIR_NONE] = 0,
+		[REDIR_IN] = do_redir_in,
+		[REDIR_OUT] = do_redir_out,
+		[REDIR_IN_HERE] = do_redir_in_here,
+		[REDIR_OUT_APPEND] = do_redir_out_append
+	};
+	int					i;
+
+	i = -1;
+	while (++i < n_redir)
+	{
+		//여기 고칠 것
+		//REDIR_NONE일 때 널 함수포인터에 대한 가드
+		if (redir_arr[i].type == REDIR_NONE)
+		{
+			printf("redir type error\n");
+			continue ;
+		}
+		if (do_redir[redir_arr[i].type](redir_arr + i) != CODE_OK)
+			return (CODE_ERROR_IO);
+	}
+	return (CODE_OK);
+}
+
 int	do_redir_in(t_redir *redir_arr)
 {
 	int	fd;
@@ -26,9 +53,7 @@ int	do_redir_out(t_redir *redir_arr)
 	return (CODE_OK);
 }
 
-//얘가 몇번째 히얼독인지 어떻게 알지 ㅇㅁㅇ?
-//hredoc 매니저에 커서 기능이 있나?
-//히얼독 관련토큰 하나 소모할 때마다 +1씩 늘려주는 커서
+//heredoc에 static으로 커서를 만들기
 int do_redir_in_here(t_redir *redir_arr)
 {
 	//히어독 매니저로부터 파일명 받아온 후, redir_in과 동일하게 처리
