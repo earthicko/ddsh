@@ -57,6 +57,9 @@ int	do_redir_out(t_redir *redir_arr)
 int do_redir_in_here(t_redir *redir_arr)
 {
 	//히어독 매니저로부터 파일명 받아온 후, redir_in과 동일하게 처리
+	
+	redir_arr = 0;
+	(void)redir_arr;
 	return (CODE_OK);
 }
 

@@ -7,6 +7,7 @@ INC_DIR			= \
 				-I./includes \
 				-I$(BASE_DIR)/modules/libft/includes \
 				-I$(BASE_DIR)/modules/libparser/includes \
+				-I$(BASE_DIR)/modules/libbuiltin/includes \
 				-I$(BASE_DIR)/includes
 
 include filelist.mk

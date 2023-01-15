@@ -8,9 +8,12 @@
 #include "lexer.h"
 #include "parser.h"
 #include "build_exec.h"
+#include "executor.h"
 
 int		get_n_redir(t_node *node);
 void	node_print(t_node *root, int depth);
+
+char	**g_envp;
 
 static char	*get_redir_typename(int type)
 {
@@ -53,7 +56,7 @@ static void	print_each_unit(t_exec_unit *unit)
 }
 
 
-static void	test_exec_unit(char *str)
+static void	test_build_unit(char *str)
 {
 	t_toks	toks;
 	int		stat;
@@ -69,7 +72,7 @@ static void	test_exec_unit(char *str)
 	}
 	print_tok_arr(&toks);
 	root = parse_tokens(toks.arr, toks.n_toks);
-//	node_print(root, 0);
+	//	node_print(root, 0);
 	printf("\n\n");
 	printf("zero means codeok: %d\n\n", build_exec_unit(root, &units));
 	for (int i = 0; i < units.n_unit; i++)
@@ -118,28 +121,63 @@ static void	test_get_n_redir(char *str, t_toks *toks)
 	printf("\n>=========================<\n\n");
 }
 
-int	main(void)
+static void	test_exec(char *input)
+{
+	t_toks	toks;
+	t_node	*root;
+	t_unit_arr units;
+	int			status;
+
+	status = 100;
+	if (lexer(input, &toks) != CODE_OK
+			|| !(root = parse_tokens(toks.arr, toks.n_toks))
+			|| build_exec_unit(root, &units) != CODE_OK
+			|| (status = executor(&units)) != CODE_OK)
+		dprintf(2, "Some error occur\n");
+	//현재 err_io 발생중... 어디지 ㅇㅁㅇ?
+	dprintf(2, "status code: %d\n\n", status);
+}
+
+int	main(int argc, char *argv[], char *envp[])
 {
 	t_toks	toks;
 
+	(void)argc;
+	(void)argv;
+	g_envp = envp;
 	/*
-	printf(">=========TEST GET_N_REDIR<=========\n");
-	test_get_n_redir("<a <b cat -e file >a > c >d", &toks);
-	test_get_n_redir("cat <a file -e file <a >b <<b", &toks);
-	test_get_n_redir("cat <a file -e file <a >b <<b", &toks);
-	test_get_n_redir("\"cat <a file -e file <a >b <<b", &toks);
-	test_get_n_redir("cat <a >b <<b | cat -e > file", &toks);
+	   printf(">=========TEST GET_N_REDIR<=========\n");
+	   test_get_n_redir("<a <b cat -e file >a > c >d", &toks);
+	   test_get_n_redir("cat <a file -e file <a >b <<b", &toks);
+	   test_get_n_redir("cat <a file -e file <a >b <<b", &toks);
+	   test_get_n_redir("\"cat <a file -e file <a >b <<b", &toks);
+	   test_get_n_redir("cat <a >b <<b | cat -e > file", &toks);
 	//인자로 ""만 전달하면 파서에서 널반환
 	//test_get_n_redir("", &toks);
 	*/
 	test_get_n_redir(0, &toks);
 	toks.arr = 0;
-	
-	printf("\n>=========================<\n\n");
-	printf(">=========TEST GET_EXEC_UNIT<=========\n");
-	test_exec_unit("<a <b cat -e file >a > c >d");
-	test_exec_unit("<a <b cat -e | file >a > c >d");
-	test_exec_unit("<a <b cat -e | file a b c >a > c >d | cat -e");
-	test_exec_unit("<a <b cat -e file >a good bad > c >d");
+
+
+	/*
+	   printf("\n>=========================<\n\n");
+	   printf(">=========TEST GET_EXEC_UNIT<=========\n");
+	   test_build_unit("<a <b cat -e file >a > c >d");
+	   test_build_unit("<a <b cat -e | file >a > c >d");
+	   test_build_unit("<a <b cat -e | file a b c >a > c >d | cat -e");
+	   test_build_unit("<a <b cat -e file >a good bad > c >d");
+	   */
+	test_build_unit("a");
+	printf("\n\n>=========TEST EXECTUION<=========\n\n\n");
+	//test_exec("cat README.md -e");
+//	test_exec("cat -e README.md");
+//	test_exec("ls -l | cat");
+//	test_exec("cat | no_cmd");
+	//test_exec("yes you | cat | no_cmd");
+//	test_exec("cat Makefile | cat | cat");
+	test_exec("cat Makefile | head -n 5 | cat | tail -n 5");
+//	test_exec("yes you | cat | cat | head -n 5");
+//	system("lsof -p");
+	//test_exec("echo -e hi | cat | ls | cat -e");
 	//system("leaks test_exec");
 }

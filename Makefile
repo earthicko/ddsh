@@ -63,8 +63,8 @@ test_heredoc: $(LIB_ALL) $(OBJ) $(TEST_OBJ) tests/test_heredoc.o
 test_expansion: $(LIB_ALL) $(OBJ) $(TEST_OBJ) tests/test_expansion.o
 	$(CC) $(CFLAGS) $(INC_DIR) $(LINK_LIBS) $(LIB_ALL) $(OBJ) $(TEST_OBJ) tests/test_expansion.o -o $@
 
-test_exec: $(LIB_ALL) $(TEST_OBJ) tests/test_exec.o
-	$(CC) $(CFLAGS) $(INC_DIR) $(LINK_LIBS) $(LIB_ALL) $(TEST_OBJ) tests/test_exec.o -o $@
+test_exec: $(LIB_ALL) $(OBJ) $(TEST_OBJ) tests/test_exec.o
+	$(CC) $(CFLAGS) $(INC_DIR) $(LINK_LIBS) $(LIB_ALL) $(OBJ) $(TEST_OBJ) tests/test_exec.o -o $@
 
 -include $(DEP)
 
