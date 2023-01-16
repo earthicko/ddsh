@@ -82,7 +82,6 @@ static void	write_to_file(char *filename, char *delimeter)
 	abort_write_to_file(fd, filename, delim_dup, 0);
 }
 
-// TODO: 실패 시 n_heredoc 원복
 int	heredoc_read_(int *n_heredoc, char *temp_dir, char *delimeter)
 {
 	pid_t	pid;
@@ -92,6 +91,7 @@ int	heredoc_read_(int *n_heredoc, char *temp_dir, char *delimeter)
 	(*n_heredoc)++;
 	stat = heredoc_get_filename_(
 			*n_heredoc, temp_dir, (*n_heredoc) - 1, &filename);
+	(*n_heredoc)--;
 	if (stat)
 		return (stat);
 	pid = fork();
@@ -103,7 +103,7 @@ int	heredoc_read_(int *n_heredoc, char *temp_dir, char *delimeter)
 	else
 		write_to_file(filename, delimeter);
 	free(filename);
-	if (stat)
-		(*n_heredoc)--;
+	if (!stat)
+		(*n_heredoc)++;
 	return (stat);
 }
