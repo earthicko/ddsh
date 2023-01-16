@@ -103,6 +103,7 @@ int	heredoc_read_(int *n_heredoc, char *temp_dir, char *delimeter)
 	else
 		write_to_file(filename, delimeter);
 	free(filename);
+	stat = WEXITSTATUS(stat);
 	if (!stat)
 		(*n_heredoc)++;
 	return (stat);
