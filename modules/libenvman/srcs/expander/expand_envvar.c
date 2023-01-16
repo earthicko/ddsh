@@ -42,6 +42,7 @@ static int	exit_replace_envvar(int stat, t_pchararr *strarr, char **buf)
 
 	if (stat)
 	{
+		free_all_pchararr(strarr);
 		pchararr_destroy(strarr);
 		return (stat);
 	}
@@ -69,13 +70,13 @@ int	envman_replace_envvar(char **buf, int quote_removal)
 	while ((*buf)[i])
 	{
 		if ((*buf)[i] == '\'')
-			stat = stat | skip_and_append_squote(
+			stat |= skip_and_append_squote(
 					(*buf), &i, strarr, quote_removal);
 		else if ((*buf)[i] == '$')
-			stat = stat | skip_and_append_envvar(
+			stat |= skip_and_append_envvar(
 					(*buf), &i, strarr);
 		else
-			stat = stat | skip_and_append_str(
+			stat |= skip_and_append_str(
 					(*buf), &i, strarr, quote_removal);
 	}
 	return (exit_replace_envvar(stat, strarr, buf));
