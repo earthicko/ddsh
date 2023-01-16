@@ -65,5 +65,7 @@ int	find_exec_from_path(char **buf)
 			return (find_exec_from_path_abort(path, paths, stat));
 		cursor++;
 	}
+	if (stat)
+		stat = CODE_ERROR_GENERIC;
 	return (find_exec_from_path_abort(path, paths, stat));
 }
