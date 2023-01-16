@@ -11,10 +11,10 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argc;
 	(void)argv;
-	envmanager(envp, NULL, NULL, NULL);
+	envman_init(envp);
 	word = strdup("en\"vvar$HOME\"FO'O$PWD'   aa'$?'$?$\"?\"\"$\"?aa");
 	printf("before: <%s>\n", word);
-	printf("exit status %d\n", envmanager_replace_envvar(&word, 0));
+	printf("exit status %d\n", envman_replace_envvar(&word, 0));
 	printf("after: <%s>\n", word);
 	free(word);
 	execname = strdup("brew");

@@ -7,7 +7,7 @@ void	get_and_print(char *name)
 {
 	char	*buf;
 
-	if (envmanager(NULL, &buf, name, NULL))
+	if (envman_getval(name, &buf))
 	{
 		printf("no var named %s\n", name);
 		return ;
@@ -22,7 +22,7 @@ void	test_getenvp(void)
 	char	**envp;
 	char	**cursor;
 
-	stat = envmanager(NULL, &envp, NULL, NULL);
+	stat = envman_getenvp(&envp);
 	if (stat)
 	{
 		printf("failed to compose envp string\n");
@@ -45,19 +45,19 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	test_getenvp();
 	get_and_print("HOME");
-	envmanager(envp, NULL, NULL, NULL);
+	envman_init(envp);
 	test_getenvp();
 	get_and_print("HOME");
 	get_and_print("LOGNAME");
 	get_and_print("FOO");
 	get_and_print("HOME");
-	envmanager(NULL, NULL, "FOO", "BAR");
+	envman_setval("FOO", "BAR");
 	get_and_print("FOO");
 	test_getenvp();
-	envmanager(NULL, NULL, "HOME", "BAR");
+	envman_setval("HOME", "BAR");
 	get_and_print("HOME");
 	test_getenvp();
-	envmanager(NULL, NULL, NULL, NULL);
+	envman_clear();
 	test_getenvp();
 	system("leaks test_envmanager");
 	return (0);

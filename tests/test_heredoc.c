@@ -12,21 +12,21 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argc;
 	(void)argv;
-	envmanager(envp, NULL, NULL, NULL);
+	envman_init(envp);
 	delim1 = strdup("EO\"F");
 	delim2 = strdup("EOF");
-	heredocmanager(HEREDOCMODE_INIT, 0, NULL);
-	heredocmanager(HEREDOCMODE_READ, 0, delim1);
-	heredocmanager(HEREDOCMODE_READ, 0, delim2);
+	heredoc_init();
+	heredoc_read(delim1);
+	heredoc_read(delim2);
 	free(delim1);
 	free(delim2);
-	heredocmanager(HEREDOCMODE_GETFILENAME, 0, &filename);
+	heredoc_get_filename(0, &filename);
 	printf("filename: %s\n", filename);
 	free(filename);
-	heredocmanager(HEREDOCMODE_GETFILENAME, 1, &filename);
+	heredoc_get_filename(1, &filename);
 	printf("filename: %s\n", filename);
 	free(filename);
-	heredocmanager(HEREDOCMODE_CLEAR, -1, NULL);
+	heredoc_clear(-1);
 	system("leaks test_heredoc");
 	return (0);
 }
