@@ -14,13 +14,7 @@ FILENAME			= \
 					strutils/is_valid_str \
 					strutils/filename_utils \
 					strutils/find_exec \
-					strutils/find_exec_from_path \
-					heredoc/heredoc_clear \
-					heredoc/heredoc_init \
-					heredoc/heredoc_interface \
-					heredoc/heredoc_filename \
-					heredoc/heredoc_read \
-					heredoc/heredocmanager
+					strutils/find_exec_from_path
 
 SRC					= $(addprefix srcs/, $(addsuffix .c, $(FILENAME)))
 OBJ					= $(addprefix srcs/, $(addsuffix .o, $(FILENAME)))
@@ -81,6 +75,7 @@ clean:
 	@make clean -C $(LIBLEXER_DIR)
 	@make clean -C $(LIBPARSER_DIR)
 	@make clean -C $(LIBENVMAN_DIR)
+	@make clean -C $(LIBHEREDOC_DIR)
 	@make clean -C $(LIBBUILTIN_DIR)
 	@make clean -C $(LIBEXEC_DIR)
 	$(RM) $(TESTER_OBJ) $(TESTER_DEP)
@@ -91,6 +86,7 @@ fclean: clean
 	@make fclean -C $(LIBLEXER_DIR)
 	@make fclean -C $(LIBPARSER_DIR)
 	@make fclean -C $(LIBENVMAN_DIR)
+	@make fclean -C $(LIBHEREDOC_DIR)
 	@make fclean -C $(LIBBUILTIN_DIR)
 	@make fclean -C $(LIBEXEC_DIR)
 	$(RM) $(TESTER_FILENAME)

@@ -1,4 +1,4 @@
-NAME			= libexec.a
+NAME			= libheredoc.a
 ################################# COMMANDS #####################################
 RM				= rm -f
 CFLAGS			= -Wall -Werror -Wextra -MMD -MP -g $(ACFLAGS)
@@ -6,9 +6,7 @@ BASE_DIR		= ../..
 INC_DIR			= \
 				-I./includes \
 				-I$(BASE_DIR)/modules/libft/includes \
-				-I$(BASE_DIR)/modules/libparser/includes \
-				-I$(BASE_DIR)/modules/libheredoc/includes \
-				-I$(BASE_DIR)/modules/libbuiltin/includes \
+				-I$(BASE_DIR)/modules/libenvman/includes \
 				-I$(BASE_DIR)/includes
 
 include filelist.mk
@@ -16,16 +14,16 @@ include filelist.mk
 all:
 	@make $(NAME)
 
-$(NAME): $(OBJ_LIBEXEC)
-	ar -rcs $(NAME) $(OBJ_LIBEXEC)
+$(NAME): $(OBJ_LIBHEREDOC)
+	ar -rcs $(NAME) $(OBJ_LIBHEREDOC)
 
--include $(DEP_LIBLEXEC)
+-include $(DEP_LIBHEREDOC)
 
 %.o: %.c
 	$(CC) $(CFLAGS) $(INC_DIR) -c $< -o $@
 
 clean:
-	$(RM) $(OBJ_LIBEXEC) $(DEP_LIBEXEC)
+	$(RM) $(OBJ_LIBHEREDOC) $(DEP_LIBHEREDOC)
 
 fclean: clean
 	$(RM) $(NAME)
