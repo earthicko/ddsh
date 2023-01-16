@@ -12,12 +12,12 @@ static int	builtin_cd_internal(char *target)
 
 	pwd = getcwd(NULL, 0);
 	if (pwd)
-		envmanager(NULL, NULL, ENVVAR_OLDPWD, pwd);
+		envman_setval(ENVVAR_OLDPWD, pwd);
 	free(pwd);
 	stat = chdir(target);
 	pwd = getcwd(NULL, 0);
 	if (pwd)
-		envmanager(NULL, NULL, ENVVAR_PWD, pwd);
+		envman_setval(ENVVAR_PWD, pwd);
 	free(pwd);
 	return (stat);
 }
@@ -29,7 +29,7 @@ int	builtin_cd(char **argv)
 
 	if (!ft_strncmp(argv[0], FLAG_OLDPWD, ft_strlen(FLAG_OLDPWD) + 1))
 	{
-		if (envmanager(NULL, &target, ENVVAR_OLDPWD, NULL))
+		if (envman_getval(ENVVAR_OLDPWD, &target))
 		{
 			printf("Unimplemented error message of cd.\n");
 			return (1);

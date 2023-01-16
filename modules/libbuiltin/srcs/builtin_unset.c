@@ -5,7 +5,7 @@ int	builtin_unset(char **argv)
 {
 	while (*argv)
 	{
-		envmanager(NULL, NULL, *argv, NULL);
+		envman_unsetval(*argv);
 		argv++;
 	}
 	return (0);

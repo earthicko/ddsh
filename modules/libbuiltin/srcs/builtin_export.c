@@ -11,7 +11,7 @@ static int	export_display(void)
 	char	*name;
 	char	*val;
 
-	if (envmanager(NULL, &envp, NULL, NULL))
+	if (envman_getenvp(&envp))
 		return (1);
 	cursor = envp;
 	while (*cursor)
@@ -38,7 +38,7 @@ static int	export_var(char *word)
 
 	if (envman_split_envstr(word, &name, &val))
 		return (1);
-	stat = envmanager(NULL, NULL, name, val);
+	stat = envman_setval(name, val);
 	free(name);
 	free(val);
 	return (stat);

@@ -2,7 +2,7 @@
 #include "libft.h"
 #include "envmanager_internal.h"
 
-int	envman_setval(t_list **envlist, char *name, char *val)
+int	envman_setval_(t_list **envlist, char *name, char *val)
 {
 	t_enventry	*entry;
 	char		*envstr;
@@ -29,4 +29,9 @@ int	envman_setval(t_list **envlist, char *name, char *val)
 			return (stat);
 	}
 	return (CODE_OK);
+}
+
+int	envman_setval(char *name, char *val)
+{
+	return (envmanager(0, 0, name, val));
 }

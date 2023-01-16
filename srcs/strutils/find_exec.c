@@ -52,7 +52,7 @@ static int	find_exec_from_path(char **buf)
 	char	**cursor;
 	int		stat;
 
-	if (envmanager(NULL, &path, "PATH", NULL))
+	if (envman_getval("PATH", &path))
 		return (CODE_ERROR_GENERIC);
 	paths = ft_split(path, ':');
 	if (!paths)

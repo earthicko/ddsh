@@ -12,7 +12,7 @@ int	heredoc_init_(int *n_heredoc, int *i_current, char **temp_dir)
 	if (*temp_dir)
 		free(*temp_dir);
 	*temp_dir = NULL;
-	stat = envmanager(NULL, &home_dir, "HOME", NULL);
+	stat = envman_getval("HOME", &home_dir);
 	if (stat)
 		return (stat);
 	stat = ft_strappend(&home_dir, "/");

@@ -53,7 +53,7 @@ int	skip_and_append_envvar(char *str, int *pos, t_pchararr *strarr)
 	varname = ft_substr(str, start, *pos - start);
 	if (!varname)
 		return (CODE_ERROR_MALLOC);
-	stat = envmanager(NULL, &val, varname, NULL);
+	stat = envman_getval(varname, &val);
 	free(varname);
 	if (stat)
 	{

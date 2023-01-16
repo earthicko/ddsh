@@ -12,7 +12,7 @@ static int	envman_getexitstat(char **buf)
 	return (CODE_OK);
 }
 
-int	envman_getval(t_list *envlist, char **buf, char *name)
+int	envman_getval_(t_list *envlist, char **buf, char *name)
 {
 	t_enventry	*entry;
 	char		*backup;
@@ -27,4 +27,9 @@ int	envman_getval(t_list *envlist, char **buf, char *name)
 		return (CODE_ERROR_MALLOC);
 	*buf = backup;
 	return (CODE_OK);
+}
+
+int	envman_getval(char *name, char **buf)
+{
+	return (envmanager(0, buf, name, 0));
 }

@@ -2,7 +2,7 @@
 #include "libft.h"
 #include "envmanager_internal.h"
 
-int	envman_getenvp(t_list *envlist, char ***buf)
+int	envman_getenvp_(t_list *envlist, char ***buf)
 {
 	char	**cursor;
 	char	*name;
@@ -28,4 +28,9 @@ int	envman_getenvp(t_list *envlist, char ***buf)
 		envlist = envlist->next;
 	}
 	return (CODE_OK);
+}
+
+int	envman_getenvp(char ***buf)
+{
+	return (envmanager(0, buf, 0, 0));
 }
