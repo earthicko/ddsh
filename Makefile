@@ -33,7 +33,8 @@ TESTER_FILENAME		= \
 					test_envmanager \
 					test_heredoc \
 					test_expansion \
-					test_exec
+					test_exec \
+					test_strutils
 
 TESTER_OBJ			= $(addprefix tests/, $(addsuffix .o, $(TESTER_FILENAME)))
 TESTER_DEP			= $(addprefix tests/, $(addsuffix .d, $(TESTER_FILENAME)))
@@ -63,6 +64,9 @@ test_expansion: $(LIB_ALL) $(OBJ) $(TEST_OBJ) tests/test_expansion.o
 
 test_exec: $(LIB_ALL) $(OBJ) $(TEST_OBJ) tests/test_exec.o
 	$(CC) $(CFLAGS) $(INC_DIR) $(LINK_LIBS) $(LIB_ALL) $(OBJ) $(TEST_OBJ) tests/test_exec.o -o $@
+
+test_strutils: $(LIB_ALL) $(OBJ) $(TEST_OBJ) tests/test_strutils.o
+	$(CC) $(CFLAGS) $(INC_DIR) $(LINK_LIBS) $(LIB_ALL) $(OBJ) $(TEST_OBJ) tests/test_strutils.o -o $@
 
 -include $(DEP)
 
