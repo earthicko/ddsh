@@ -111,6 +111,11 @@ static void	test_get_n_redir(char *str, t_toks *toks)
 	}
 	root = parse_tokens(toks->arr, toks->n_toks);
 	printf("root: %p\n", root);
+	if (!root)
+	{
+		printf("Failed to parse token\n");
+		return ;
+	}
 	simple_cmd = root->childs->content;
 	printf("input: %s\n\n", str);
 	printf("n_redir: %d\n\n", get_n_redir(simple_cmd));
@@ -121,6 +126,7 @@ static void	test_get_n_redir(char *str, t_toks *toks)
 
 static void	test_exec(char *input)
 {
+/*
 <<<<<<< HEAD
 	t_toks	toks;
 	t_node	*root;
@@ -139,10 +145,14 @@ static void	test_exec(char *input)
 	dprintf(2, "in %s, status code: %d\n", __func__, status);
 	dprintf(2, "\n>==============<\n\n\n");
 =======
+*/
 	t_toks		toks;
 	t_node		*root;
 	t_unit_arr	units;
+	int			status;
 
+	status = 100;
+	dprintf(2, "input: %s\n\n", input);
 	if (lexer(input, &toks) != CODE_OK)
 		dprintf(2, "Some error occur\n");
 	root = parse_tokens(toks.arr, toks.n_toks);
@@ -150,13 +160,16 @@ static void	test_exec(char *input)
 		dprintf(2, "Some error occur\n");
 	if (build_exec_unit(root, &units) != CODE_OK)
 		dprintf(2, "Some error occur\n");
-	if (executor(&units) != CODE_OK)
+	if ((status = executor(&units)) != CODE_OK)
 		dprintf(2, "Some error occur\n");
+	dprintf(2, "in %s, status code: %d\n", __func__, status);
+	dprintf(2, "\n>============================<\n\n\n");
 }
 
 void	set_command_1(char **command)
 {
-	command[0] = "<a <b cat -e file >a > c >d";
+	command[0] = "a";
+	//command[0] = "<a <b cat -e file >a > c >d";
 	command[1] = "cat <a file -e file <a >b <<b";
 	command[2] = "cat <a file -e file <a >b <<b";
 	command[3] = "\"cat <a file -e file <a >b <<b";
@@ -165,7 +178,8 @@ void	set_command_1(char **command)
 
 void	set_command_2(char **command)
 {
-	command[0] = "<a <b cat -e file >a > c >d";
+	command[0] = "a";
+	//command[0] = "<a <b cat -e file >a > c >d";
 	command[1] = "<a <b cat -e | file >a > c >d";
 	command[2] = "<a <b cat -e | file a b c >a > c >d | cat -e";
 	command[3] = "<a <b cat -e file >a good bad > c >d";
@@ -174,7 +188,8 @@ void	set_command_2(char **command)
 
 void	set_command_3(char **command)
 {
-	command[0] = "cat README.md -e";
+	command[0] = "a";
+	//command[0] = "cat README.md -e";
 	command[1] = "cat -e README.md";
 	command[2] = "ls -l | cat";
 	command[3] = "cat | no_cmd";
@@ -183,9 +198,16 @@ void	set_command_3(char **command)
 	command[6] = "cat Makefile | head -n 5 | cat | tail -n 5";
 	command[7] = "yes you | cat | cat | head -n 5";
 	command[8] = "echo -e hi | cat | ls | cat -e";
->>>>>>> refs/remotes/origin/main
+//>>>>>>> refs/remotes/origin/main
 }
 
+//테스트케이스 반복문으로 작성하면 훨씬 깔끔한듯(다른사람이 볼 때)
+//
+//다만 반복문으로 작성했을 때, 특정 줄만 테스트 돌리기가 쉽지 않음.
+//
+//또 wgcc때문에 모든 함수는 최소 한 번이상 호출해야함(메이크파일 고쳐서 해결되긴 할듯)
+//그래서 각 테스트 함수를 최소한 한번 호출하기 위해서는 출력을 최소화하는 함수 호출이 필요
+//(결국 특정한 인풋을 처리하는게 필요함, 0번 인덱스에 해당 인풋을 넣어도 되긴 할듯)
 int	main(int argc, char *argv[], char *envp[])
 {
 	t_toks	toks;
@@ -198,19 +220,21 @@ int	main(int argc, char *argv[], char *envp[])
 	set_command_1(commands);
 	printf(">=========TEST GET_N_REDIR<=========\n");
 	i = -1;
-	while (++i < 5)
+	while (++i < 0)
 		test_get_n_redir(commands[i], &toks);
-	test_get_n_redir("", &toks);
+	//test_get_n_redir("", &toks);
 	test_get_n_redir(0, &toks);
 	toks.arr = 0;
-	printf("\n>=========================<\n\n");
+	printf("\n>=========================<\n\n\n");
 	printf(">=========TEST GET_EXEC_UNIT<=========\n");
 	set_command_2(commands);
 	i = -1;
-	while (++i < 5)
+	while (++i < 1)
 		test_build_unit(commands[i]);
 	printf("\n\n>=========TEST EXECTUION<=========\n\n\n");
-<<<<<<< HEAD
+
+/**********************************/
+//<<<<<<< HEAD
 	/********basic test***********/
 	/*
 	test_exec("cat README.md -e");
@@ -233,16 +257,20 @@ int	main(int argc, char *argv[], char *envp[])
 	//test_exec("echo hi > a > b | cat | no_cmd");
 	//test_exec("<README.md cat > hi");
 	//test_exec("echo hi > a > b > c | ls | cat c");
-	test_exec("echo append >> c");
+	//test_exec("echo append >> c");
 	//위 테스트 케이스 세그폴트 발생
 	//
 	//system("leaks test_exec");
-=======
+//=======
+/**********************************/
+
+	set_command_3(commands);
 	i = -1;
-	while (++i < 9)
+	while (++i < 1)
 		test_exec(commands[i]);
-	system("lsof -p");
-	system("leaks test_exec");
+	test_exec("echo append >> c");
+	//system("lsof -p");
+	//system("leaks test_exec");
 	return (0);
->>>>>>> refs/remotes/origin/main
+//>>>>>>> refs/remotes/origin/main
 }

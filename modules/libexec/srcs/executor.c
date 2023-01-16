@@ -100,7 +100,7 @@ int	executor(t_unit_arr *units)
 	if (units->n_unit <= 0)
 		return (CODE_ERROR_SCOPE);
 	if (units->n_unit == 1)
-		if (is_builtin_command(units->arr->argv[0]) && dprintf(2, "before exec_builtin_cmd\n"))
+		if (is_builtin_command(units->arr->argv[0]))
 			return (exec_builtin_cmd(units->arr));
 	//printf("in %s, before fork_exec\n", __func__);
 	return (fork_exec(units));

@@ -54,12 +54,20 @@ int	do_redir_out(t_redir *redir_arr)
 }
 
 //heredoc에 static으로 커서를 만들기
+//file_name을 언제 free해주어야 하지?
+//clear?
 int do_redir_in_here(t_redir *redir_arr)
 {
 	//히어독 매니저로부터 파일명 받아온 후, redir_in과 동일하게 처리
-	
-	redir_arr = 0;
-	(void)redir_arr;
+	int		fd;
+	char	**heredoc_file;
+
+	if (heredoc_get_next_filename(heredoc_file) != CODE_OK)
+		return (CODE_ERROR_IO);
+	fd = open(redir_arr->content, O_RDONLY);
+	if (fd < 0 || dup2(fd, STDIN_FILENO) < 0 || close(fd) < 0)
+		return (CODE_ERROR_IO);
+	//free(heredoc_file);
 	return (CODE_OK);
 }
 

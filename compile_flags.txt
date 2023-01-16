@@ -5,3 +5,4 @@
 -I./modules/libparser/includes
 -I./modules/libexec/includes
 -I./modules/libbuiltin/includes
+-I./modules/libheredoc/includes
