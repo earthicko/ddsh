@@ -79,39 +79,44 @@ static int	set_fd_stream(t_info *info)
 	//errno = 0;
 	if (info->units->n_unit == 1)
 	{
-		dprintf(2, "no here\n");
+
+		if (process_redir(cur_unit.redir_arr, cur_unit.n_redir) != CODE_OK)
+		{
+			dprintf(2, "failed to redir\n");
+			return (CODE_ERROR_IO);
+		}
 		return (CODE_OK);
 	}
 	if (info->cur_idx == 0)
 	{
 		if (close(info->new_pipe[READ]) < 0
 			|| dup2(info->new_pipe[WRITE], STDOUT_FILENO) < 0
-			|| close(info->new_pipe[WRITE]) < 0
-			|| dprintf(2, "pass all 1\n") < 0)
+			|| close(info->new_pipe[WRITE]) < 0)
+			//|| dprintf(2, "pass all 1\n") < 0)
 		{
-			dprintf(2, "here 1?\n");
+			//dprintf(2, "here 1?\n");
 			return (CODE_ERROR_IO);
 		}
 	}
 	else if (info->cur_idx == info->n_unit - 1)
 	{
 		if (dup2(info->old_pipe[READ], STDIN_FILENO) < 0
-			|| close(info->old_pipe[READ]) < 0
-			|| dprintf(2, "pass all 2\n") < 0)
+			|| close(info->old_pipe[READ]) < 0)
+			//|| dprintf(2, "pass all 2\n") < 0)
 		{
-			dprintf(2, "here 2?\n");
+			//dprintf(2, "here 2?\n");
 			return (CODE_ERROR_IO);
 		}
 	}
 	else
 		if (close(info->new_pipe[READ]) < 0
 			|| dup2(info->old_pipe[READ], STDIN_FILENO) < 0
-			|| close(info->old_pipe[READ] < 0)
+			|| close(info->old_pipe[READ]) < 0
 			|| dup2(info->new_pipe[WRITE], STDOUT_FILENO) < 0
-			|| close(info->new_pipe[WRITE]) < 0
-			|| dprintf(2, "pass all 3\n") < 0)
+			|| close(info->new_pipe[WRITE]) < 0)
+			//|| dprintf(2, "pass all 3\n") < 0)
 		{
-			dprintf(2, "here 3?\n");
+			//dprintf(2, "here 3?\n");
 			return (CODE_ERROR_IO);
 		}
 	if (process_redir(cur_unit.redir_arr, cur_unit.n_redir) != CODE_OK)
@@ -119,9 +124,8 @@ static int	set_fd_stream(t_info *info)
 		dprintf(2, "failed to redir\n");
 		return (CODE_ERROR_IO);
 	}
-	perror("what error?");
-	dprintf(2, "errno: %d\n", errno);
-	dprintf(2, "Success\n\n");
+	//perror("what error?");
+	//dprintf(2, "child errno: %d\n", errno);
 	return (CODE_OK);
 }
 
@@ -129,11 +133,9 @@ static int	set_fd_stream(t_info *info)
 //각 unit에 대한 정보로부터 명령어 실행
 //exit status에 주의할것!
 //
-//envp 매개변수가 여기서 필요하네 ..? 전역변수로 쓸까 그냥?
 //어차피 execve호출 후 종료되거나, exit을 하게 돼서 반환형이 필요없음
 //
 // //참고만 stat, lstat 심볼릭 링크파일인 경우 동작이 다르대..
-// printf로 에러메시지출력하면 표준출력으로 나옴... dprintf를 구현해야하나?
  void	child_exec_cmd(t_info *info)
 {
 	struct stat	s_statbuf;
@@ -148,20 +150,17 @@ static int	set_fd_stream(t_info *info)
 //
 	//dprintf(2, "in %s, before set stream\n", __func__);
 	//대체 왜 이 함수 들어오자마자 에러노가 22임??
-	dprintf(2, "in %s, errno: %d\n", __func__, errno);
+	//dprintf(2, "in %s, child errno: %d\n", __func__, errno);
 	if (set_fd_stream(info) < 0)
 		exit(EXIT_FAILURE);
-	dprintf(2, "cur_dx: %d\n", info->cur_idx);
+	//dprintf(2, "cur_dx: %d\n", info->cur_idx);
 	argv = info->units->arr[info->cur_idx].argv;
 	//1. 에러메시지 별로 분기를 나누어야 하나?
 	//일단 else if에선 io_err와 malloc_err 묶어서 처리
 	//
-	//find_exec에서 CODE_OK가 반환되더라도 /no_exisiting_file처럼 존재하지 않는 파일일 수도 있음
-	//(파일명에 /가 있으면 바로 CODE_OK를 반환하기 때문)
 	//정말 억까케이스로 파일명에 /가 있고, PATH 경로에 해당파일이 등록돼있다면?
 	//
-	//CODE_OK는 '존재하는 파일이 있을 때'만 반환하면 어떨까?
-	//그렇다면 F_OK를 굳이 한번 더 체크하지 않아도 됨
+	//CODE_OK는 '존재하는 파일이 있을 때'만 반환하면 어떨까?->처리 완료
 //
 //	status = find_exec(&argv[0]);
 //
@@ -194,9 +193,7 @@ static int	set_fd_stream(t_info *info)
 	}
 	if (access(argv[0], X_OK) == 0)
 	{
-		dprintf(2, "before execve cur_idx: %d\n\n", info->cur_idx);
-		while (1)
-			(void)envp_paths;
+		//dprintf(3, "before execve cur_idx: %d\n\n", info->cur_idx);
 		execve(argv[0], argv, g_envp);
 	}
 	else

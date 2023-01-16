@@ -129,13 +129,16 @@ static void	test_exec(char *input)
 	int			status;
 
 	status = 100;
+	
+	dprintf(2, "input: %s\n\n", input);
 	if (lexer(input, &toks) != CODE_OK
 			|| !(root = parse_tokens(toks.arr, toks.n_toks))
 			|| build_exec_unit(root, &units) != CODE_OK
 			|| (status = executor(&units)) != CODE_OK)
-		dprintf(2, "Some error occur\n");
+		dprintf(2, "\nin %s, Some error occured\n", __func__);
 	//현재 err_io 발생중... 어디지 ㅇㅁㅇ?
-	dprintf(2, "status code: %d\n\n", status);
+	dprintf(2, "in %s, status code: %d\n", __func__, status);
+	dprintf(2, "\n>==============<\n\n\n");
 }
 
 int	main(int argc, char *argv[], char *envp[])
@@ -169,15 +172,30 @@ int	main(int argc, char *argv[], char *envp[])
 	   */
 	test_build_unit("a");
 	printf("\n\n>=========TEST EXECTUION<=========\n\n\n");
-	//test_exec("cat README.md -e");
-//	test_exec("cat -e README.md");
-//	test_exec("ls -l | cat");
-//	test_exec("cat | no_cmd");
-	//test_exec("yes you | cat | no_cmd");
-//	test_exec("cat Makefile | cat | cat");
-	test_exec("cat Makefile | head -n 5 | cat | tail -n 5");
-//	test_exec("yes you | cat | cat | head -n 5");
-//	system("lsof -p");
-	//test_exec("echo -e hi | cat | ls | cat -e");
+	/********basic test***********/
+	/*
+	test_exec("cat README.md -e");
+	test_exec("cat -e README.md");
+	test_exec("ls -l | cat | cat");
+	test_exec("cat | no_cmd");
+	*/
+
+	/*******uncloosed pipe test*********/
+	/*
+	test_exec("yes you | cat | no_cmd");
+	test_exec("yes you | ls | cat");
+	test_exec("cat README.md | cat | cat");
+	test_exec("cat README.md | head -n 5 | cat | tail -n 5");
+	test_exec("yes you | cat | cat | head -n 5");
+	test_exec("echo -e hi | cat | ls | cat -e");
+	*/
+
+	/******redirection test*********/
+	//test_exec("echo hi > a > b | cat | no_cmd");
+	//test_exec("<README.md cat > hi");
+	//test_exec("echo hi > a > b > c | ls | cat c");
+	test_exec("echo append >> c");
+	//위 테스트 케이스 세그폴트 발생
+	//
 	//system("leaks test_exec");
 }

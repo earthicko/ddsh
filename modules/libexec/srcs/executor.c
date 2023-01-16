@@ -28,7 +28,7 @@ static int	wait_children(pid_t last_cmd, int n_unit)
 			exit_status = WEXITSTATUS(status);
 		}
 	}
-	dprintf(2, "exit_status: %d\n", exit_status);
+	dprintf(2, "in %s, exit_status: %d\n", __func__, exit_status);
 	return (exit_status);
 }
 
@@ -46,7 +46,7 @@ static int	parent_close_unused_pipe(t_info *info)
 	else
 		if (close(info->old_pipe[READ]) < 0 || close(info->new_pipe[WRITE]) < 0)
 			return (CODE_ERROR_IO);
-	dprintf(2, "in %s, errno: %d\n", __func__, errno);
+//	dprintf(2, "in %s, errno: %d\n", __func__, errno);
 	return (stat);
 }
 
@@ -60,8 +60,6 @@ static void	init_info(t_info *info, t_unit_arr *units)
 //구조체를 그냥 하나 만들까..?
 //변수 각각 선언하고 매개변수로 넘길바에 나은 거 같기도 하고..
 
-//마지막 커맨드의 pid를 어디다가 저장하지? ㅇㅁㅇ
-//전역변수..?
 static int	fork_exec(t_unit_arr *units)
 {
 	t_info	info;
@@ -73,16 +71,21 @@ static int	fork_exec(t_unit_arr *units)
 		if (info.cur_idx < info.n_unit - 1)
 			if (pipe(info.new_pipe) < 0)
 				return (CODE_ERROR_IO);
+//		dprintf(2, "in %s, before fork errno: %d\n", __func__, errno);
 		pid = fork();
 		if (pid < 0)
 			return (CODE_ERROR_GENERIC);
 		if (pid == 0)
+		{
+//			dprintf(2, "in %s, child errno: %d\n", __func__, errno);
 			child_exec_cmd(&info);
+		}
 		if (parent_close_unused_pipe(&info) < 0)
 		{
-			dprintf(2, "failed to parent close\n");
+//			dprintf(2, "failed to parent close\n");
 			return (CODE_ERROR_IO);
 		}
+//		dprintf(2, "in %s, parents errno: %d\n", __func__, errno);
 		ft_memcpy(info.old_pipe, info.new_pipe, sizeof(info.new_pipe));
 		info.cur_idx++;
 	}
@@ -97,7 +100,7 @@ int	executor(t_unit_arr *units)
 	if (units->n_unit <= 0)
 		return (CODE_ERROR_SCOPE);
 	if (units->n_unit == 1)
-		if (is_builtin_command(units->arr->argv[0]))
+		if (is_builtin_command(units->arr->argv[0]) && dprintf(2, "before exec_builtin_cmd\n"))
 			return (exec_builtin_cmd(units->arr));
 	//printf("in %s, before fork_exec\n", __func__);
 	return (fork_exec(units));

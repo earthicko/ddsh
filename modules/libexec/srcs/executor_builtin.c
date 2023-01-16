@@ -40,11 +40,11 @@ static int	map_cmd(char *cmd)
 	int			i;
 
 	i = -1;
-	while (++i)
-		if (ft_strncmp(builtin_cmds[0], cmd, cmd_len + 1) == 0)
+	while (++i < 7)
+		if (ft_strncmp(builtin_cmds[i], cmd, cmd_len + 1) == 0)
 			return (i);
 	//세그 폴트 내려고 -1 하는게 나을듯
-	return (-1);
+	return (CODE_ERROR_GENERIC);
 }
 
 //builtin_pwd 함수 매개변수형 맞추면 좋을듯
@@ -61,10 +61,16 @@ int	exec_builtin_cmd(t_exec_unit *unit)
 		builtin_env,
 		builtin_exit
 	};
+	const int				cmd_idx = map_cmd(unit->argv[0]);
 
 	//이렇게하면 개망함 표준 입출력 리다이렉션을 어디다가 저장해놔야함
 	//backup_stdinout();
 	if (process_redir(unit->redir_arr, unit->n_redir) == CODE_ERROR_IO)
 		return (CODE_ERROR_IO);
-	return (exec_builtin[map_cmd(unit->argv[0])](unit->argv));
+	if (cmd_idx == CODE_ERROR_GENERIC)
+	{
+		dprintf(2, "Failed to map proper cmd index: builtin command\n");
+		return (-42);
+	}
+	return (exec_builtin[cmd_idx](unit->argv));
 }
