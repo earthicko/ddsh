@@ -1,15 +1,10 @@
 #ifndef HEREDOC_H
 # define HEREDOC_H
 
-enum e_heredocmode
-{
-	HEREDOCMODE_INIT = 0,
-	HEREDOCMODE_READ,
-	HEREDOCMODE_GETFILENAME,
-	HEREDOCMODE_GETNEXTFILENAME,
-	HEREDOCMODE_CLEAR
-};
-
-int	heredocmanager(int mode, int doc_id, void *buf);
+int	heredoc_init(void);
+int	heredoc_read(char *delimeter);
+int	heredoc_get_filename(int doc_id, char **buf);
+int	heredoc_get_next_filename(char **buf);
+int	heredoc_clear(int doc_id);
 
 #endif

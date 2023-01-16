@@ -57,7 +57,7 @@ static char	*merge_filename(int slot, char *temp_dir, int doc_id)
 	return (result);
 }
 
-int	heredoc_get_filename(int n_heredoc, char *temp_dir, int doc_id, char **buf)
+int	heredoc_get_filename_(int n_heredoc, char *temp_dir, int doc_id, char **buf)
 {
 	int		slot;
 	char	*result;
@@ -73,12 +73,12 @@ int	heredoc_get_filename(int n_heredoc, char *temp_dir, int doc_id, char **buf)
 	return (setval_and_return(buf, result, CODE_OK));
 }
 
-int	heredoc_get_nextfilename(
+int	heredoc_get_next_filename_(
 		int n_heredoc, char *temp_dir, int *i_current, char **buf)
 {
 	int	stat;
 
-	stat = heredoc_get_filename(n_heredoc, temp_dir, *i_current, buf);
+	stat = heredoc_get_filename_(n_heredoc, temp_dir, *i_current, buf);
 	if (!stat)
 		(*i_current)++;
 	return (stat);
