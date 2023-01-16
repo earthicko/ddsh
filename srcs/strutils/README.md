@@ -135,4 +135,4 @@ int	find_exec(char **buf);
 - `CODE_OK`: 정상적으로 종료됨, `*buf`는 실제 실행 파일 경로임
 - `1`: `*buf`는 빌트인 명령어임
 - `CODE_ERROR_MALLOC`: 메모리를 할당할 수 없음
-- `CODE_ERROR_GENERIC`: `$PATH`에서 `*buf`를 찾을 수 없음
+- `CODE_ERROR_GENERIC`: `*buf`가 슬래시가 포함된 존재하지 않는 경로거나 `$PATH`에서 `*buf`를 찾을 수 없음

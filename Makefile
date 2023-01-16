@@ -14,12 +14,7 @@ FILENAME			= \
 					strutils/is_valid_str \
 					strutils/filename_utils \
 					strutils/find_exec \
-					heredoc/heredoc_clear \
-					heredoc/heredoc_init \
-					heredoc/heredoc_interface \
-					heredoc/heredoc_filename \
-					heredoc/heredoc_read \
-					heredoc/heredocmanager
+					strutils/find_exec_from_path
 
 SRC					= $(addprefix srcs/, $(addsuffix .c, $(FILENAME)))
 OBJ					= $(addprefix srcs/, $(addsuffix .o, $(FILENAME)))
@@ -38,7 +33,8 @@ TESTER_FILENAME		= \
 					test_envmanager \
 					test_heredoc \
 					test_expansion \
-					test_exec
+					test_exec \
+					test_strutils
 
 TESTER_OBJ			= $(addprefix tests/, $(addsuffix .o, $(TESTER_FILENAME)))
 TESTER_DEP			= $(addprefix tests/, $(addsuffix .d, $(TESTER_FILENAME)))
@@ -69,6 +65,9 @@ test_expansion: $(LIB_ALL) $(OBJ) $(TEST_OBJ) tests/test_expansion.o
 test_exec: $(LIB_ALL) $(OBJ) $(TEST_OBJ) tests/test_exec.o
 	$(CC) $(CFLAGS) $(INC_DIR) $(LINK_LIBS) $(LIB_ALL) $(OBJ) $(TEST_OBJ) tests/test_exec.o -o $@
 
+test_strutils: $(LIB_ALL) $(OBJ) $(TEST_OBJ) tests/test_strutils.o
+	$(CC) $(CFLAGS) $(INC_DIR) $(LINK_LIBS) $(LIB_ALL) $(OBJ) $(TEST_OBJ) tests/test_strutils.o -o $@
+
 -include $(DEP)
 
 %.o: %.c
@@ -80,6 +79,7 @@ clean:
 	@make clean -C $(LIBLEXER_DIR)
 	@make clean -C $(LIBPARSER_DIR)
 	@make clean -C $(LIBENVMAN_DIR)
+	@make clean -C $(LIBHEREDOC_DIR)
 	@make clean -C $(LIBBUILTIN_DIR)
 	@make clean -C $(LIBEXEC_DIR)
 	$(RM) $(TESTER_OBJ) $(TESTER_DEP)
@@ -90,6 +90,7 @@ fclean: clean
 	@make fclean -C $(LIBLEXER_DIR)
 	@make fclean -C $(LIBPARSER_DIR)
 	@make fclean -C $(LIBENVMAN_DIR)
+	@make fclean -C $(LIBHEREDOC_DIR)
 	@make fclean -C $(LIBBUILTIN_DIR)
 	@make fclean -C $(LIBEXEC_DIR)
 	$(RM) $(TESTER_FILENAME)
