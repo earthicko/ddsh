@@ -72,3 +72,14 @@ int	heredoc_get_filename(int n_heredoc, char *temp_dir, int doc_id, char **buf)
 		return (setval_and_return(buf, NULL, CODE_ERROR_GENERIC));
 	return (setval_and_return(buf, result, CODE_OK));
 }
+
+int	heredoc_get_nextfilename(
+		int n_heredoc, char *temp_dir, int *i_current, char **buf)
+{
+	int	stat;
+
+	stat = heredoc_get_filename(n_heredoc, temp_dir, *i_current, buf);
+	if (!stat)
+		(*i_current)++;
+	return (stat);
+}

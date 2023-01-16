@@ -20,7 +20,7 @@ static int	heredoc_clear_entry(int n_heredoc, char *temp_dir, int doc_id)
 	return (CODE_OK);
 }
 
-int	heredoc_clear(int *n_heredoc, char *temp_dir, int doc_id)
+int	heredoc_clear(int *n_heredoc, int *i_current, char *temp_dir, int doc_id)
 {
 	int	i;
 
@@ -33,6 +33,7 @@ int	heredoc_clear(int *n_heredoc, char *temp_dir, int doc_id)
 			i++;
 		}
 		*n_heredoc = 0;
+		*i_current = 0;
 	}
 	else if (0 <= doc_id && doc_id < *n_heredoc)
 	{
@@ -44,7 +45,7 @@ int	heredoc_clear(int *n_heredoc, char *temp_dir, int doc_id)
 	return (CODE_OK);
 }
 
-int	heredoc_init(int *n_heredoc, char **temp_dir)
+int	heredoc_init(int *n_heredoc, int *i_current, char **temp_dir)
 {
 	char	*home_dir;
 	int		stat;
@@ -62,7 +63,7 @@ int	heredoc_init(int *n_heredoc, char **temp_dir)
 		return (stat);
 	}
 	*temp_dir = home_dir;
-	heredoc_clear(n_heredoc, *temp_dir, -1);
+	heredoc_clear(n_heredoc, i_current, *temp_dir, -1);
 	return (CODE_OK);
 }
 
@@ -74,15 +75,18 @@ int	heredoc_init(int *n_heredoc, char **temp_dir)
 int	heredocmanager(int mode, int doc_id, void *buf)
 {
 	static int	n_heredoc;
+	static int	i_current;
 	static char	*temp_dir;
 
 	if (mode == HEREDOCMODE_INIT)
-		return (heredoc_init(&n_heredoc, &temp_dir));
+		return (heredoc_init(&n_heredoc, &i_current, &temp_dir));
 	if (mode == HEREDOCMODE_READ)
 		return (heredoc_read(&n_heredoc, temp_dir, buf));
 	if (mode == HEREDOCMODE_GETFILENAME)
 		return (heredoc_get_filename(n_heredoc, temp_dir, doc_id, buf));
+	if (mode == HEREDOCMODE_GETNEXTFILENAME)
+		return (heredoc_get_nextfilename(n_heredoc, temp_dir, &i_current, buf));
 	if (mode == HEREDOCMODE_CLEAR)
-		return (heredoc_clear(&n_heredoc, temp_dir, doc_id));
+		return (heredoc_clear(&n_heredoc, &i_current, temp_dir, doc_id));
 	return (CODE_ERROR_SCOPE);
 }
