@@ -188,7 +188,7 @@ void	set_command_2(char **command)
 
 void	set_command_3(char **command)
 {
-	command[0] = "a";
+	command[0] = "<README.md cat | cat | cat | cat";
 	//command[0] = "cat README.md -e";
 	command[1] = "cat -e README.md";
 	command[2] = "ls -l | cat";
@@ -266,9 +266,11 @@ int	main(int argc, char *argv[], char *envp[])
 
 	set_command_3(commands);
 	i = -1;
-	while (++i < 1)
+	while (++i < 9)
 		test_exec(commands[i]);
-	test_exec("echo append >> c");
+	//test_exec("echo append >> c");
+	//아래 테케는 아직 동작하지 않음
+	//test_exec("<< EOF cat");
 	//system("lsof -p");
 	//system("leaks test_exec");
 	return (0);

@@ -1,4 +1,3 @@
-#include <errno.h>
 #include <stdio.h>
 
 #include <stdlib.h>
@@ -23,10 +22,7 @@ static int	wait_children(pid_t last_cmd, int n_unit)
 	while (++i < n_unit)
 	{
 		if (last_cmd == wait(&status))
-		{
-			//dprintf(2, "here, children?\n");
 			exit_status = WEXITSTATUS(status);
-		}
 	}
 	dprintf(2, "in %s, exit_status: %d\n", __func__, exit_status);
 	return (exit_status);
@@ -46,7 +42,6 @@ static int	parent_close_unused_pipe(t_info *info)
 	else
 		if (close(info->old_pipe[READ]) < 0 || close(info->new_pipe[WRITE]) < 0)
 			return (CODE_ERROR_IO);
-//	dprintf(2, "in %s, errno: %d\n", __func__, errno);
 	return (stat);
 }
 
@@ -71,21 +66,13 @@ static int	fork_exec(t_unit_arr *units)
 		if (info.cur_idx < info.n_unit - 1)
 			if (pipe(info.new_pipe) < 0)
 				return (CODE_ERROR_IO);
-//		dprintf(2, "in %s, before fork errno: %d\n", __func__, errno);
 		pid = fork();
 		if (pid < 0)
 			return (CODE_ERROR_GENERIC);
 		if (pid == 0)
-		{
-//			dprintf(2, "in %s, child errno: %d\n", __func__, errno);
 			child_exec_cmd(&info);
-		}
 		if (parent_close_unused_pipe(&info) < 0)
-		{
-//			dprintf(2, "failed to parent close\n");
 			return (CODE_ERROR_IO);
-		}
-//		dprintf(2, "in %s, parents errno: %d\n", __func__, errno);
 		ft_memcpy(info.old_pipe, info.new_pipe, sizeof(info.new_pipe));
 		info.cur_idx++;
 	}
@@ -95,13 +82,11 @@ static int	fork_exec(t_unit_arr *units)
 //executor의 리턴값을 $?에 저장하기
 int	executor(t_unit_arr *units)
 {
-	//printf("in %s\n", __func__);
 	//n_unit이 0이하인 경우는 없을듯?
 	if (units->n_unit <= 0)
 		return (CODE_ERROR_SCOPE);
 	if (units->n_unit == 1)
 		if (is_builtin_command(units->arr->argv[0]))
 			return (exec_builtin_cmd(units->arr));
-	//printf("in %s, before fork_exec\n", __func__);
 	return (fork_exec(units));
 }

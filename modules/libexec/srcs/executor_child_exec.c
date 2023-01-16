@@ -9,6 +9,7 @@
 
 #include <sys/errno.h>
 
+/************경로 찾는 함수 임시로 가져옴***********/
 extern char	**g_envp;
 
 #include "libft.h"
@@ -68,45 +69,24 @@ char	*find_cmd_path(char *cmd, char **envp_paths)
 
 /*******************************************************/
 
-//ft_syscall 함수 사용할까?
 static int	set_fd_stream(t_info *info)
 {
 	const t_exec_unit	cur_unit = info->units->arr[info->cur_idx];
 
-	//dup2 이후에 첫번째 매개변수를 close 해야하나 ?!?
-	//안해도 된다고 생각함. 만약 new_pipe를 꼭 닫아야 하는 상황이라면
-	//dup2를 하는 행위자체가 말이 안돼. (같은 객체를 가리키는 서로다른 파일디스크립터가 생기는 것이니)
-	//errno = 0;
 	if (info->units->n_unit == 1)
-	{
-
-		if (process_redir(cur_unit.redir_arr, cur_unit.n_redir) != CODE_OK)
-		{
-			dprintf(2, "failed to redir\n");
-			return (CODE_ERROR_IO);
-		}
-		return (CODE_OK);
-	}
+		return (process_redir(cur_unit.redir_arr, cur_unit.n_redir));
 	if (info->cur_idx == 0)
 	{
 		if (close(info->new_pipe[READ]) < 0
 			|| dup2(info->new_pipe[WRITE], STDOUT_FILENO) < 0
 			|| close(info->new_pipe[WRITE]) < 0)
-			//|| dprintf(2, "pass all 1\n") < 0)
-		{
-			//dprintf(2, "here 1?\n");
 			return (CODE_ERROR_IO);
-		}
 	}
 	else if (info->cur_idx == info->n_unit - 1)
 	{
 		if (dup2(info->old_pipe[READ], STDIN_FILENO) < 0
 			|| close(info->old_pipe[READ]) < 0)
-			//|| dprintf(2, "pass all 2\n") < 0)
-		{
-			//dprintf(2, "here 2?\n");
 			return (CODE_ERROR_IO);
-		}
 	}
 	else
 		if (close(info->new_pipe[READ]) < 0
@@ -114,24 +94,11 @@ static int	set_fd_stream(t_info *info)
 			|| close(info->old_pipe[READ]) < 0
 			|| dup2(info->new_pipe[WRITE], STDOUT_FILENO) < 0
 			|| close(info->new_pipe[WRITE]) < 0)
-			//|| dprintf(2, "pass all 3\n") < 0)
-		{
-			//dprintf(2, "here 3?\n");
 			return (CODE_ERROR_IO);
-		}
-	if (process_redir(cur_unit.redir_arr, cur_unit.n_redir) != CODE_OK)
-	{
-		dprintf(2, "failed to redir\n");
-		return (CODE_ERROR_IO);
-	}
-	//perror("what error?");
-	//dprintf(2, "child errno: %d\n", errno);
-	return (CODE_OK);
+	return (process_redir(cur_unit.redir_arr, cur_unit.n_redir));
 }
 
 //<리팩토링 시급함>
-//각 unit에 대한 정보로부터 명령어 실행
-//exit status에 주의할것!
 //
 //어차피 execve호출 후 종료되거나, exit을 하게 돼서 반환형이 필요없음
 //
@@ -150,23 +117,24 @@ static int	set_fd_stream(t_info *info)
 //
 	//dprintf(2, "in %s, before set stream\n", __func__);
 	//대체 왜 이 함수 들어오자마자 에러노가 22임??
+	//정상적인 경우에 에러노를 확인하는 것이 의미없대, UB인듯
 	//dprintf(2, "in %s, child errno: %d\n", __func__, errno);
 	if (set_fd_stream(info) < 0)
 		exit(EXIT_FAILURE);
 	//dprintf(2, "cur_dx: %d\n", info->cur_idx);
 	argv = info->units->arr[info->cur_idx].argv;
+
 	//1. 에러메시지 별로 분기를 나누어야 하나?
 	//일단 else if에선 io_err와 malloc_err 묶어서 처리
 	//
 	//정말 억까케이스로 파일명에 /가 있고, PATH 경로에 해당파일이 등록돼있다면?
 	//
 	//CODE_OK는 '존재하는 파일이 있을 때'만 반환하면 어떨까?->처리 완료
-//
-//	status = find_exec(&argv[0]);
-//
+
+	/************find_exec를 못써서 처리해둔 로직********************/
+
 	//find_exec 대신 pipex에서 경로찾는 함수 이용
 	char	**envp_paths = get_envp_paths(g_envp);
-	//dprintf(2, "in %s, argv[0]: %s\n", __func__, argv[0]);
 	whole_path = find_cmd_path(argv[0], envp_paths);
 	if (!whole_path)
 	{
@@ -175,27 +143,34 @@ static int	set_fd_stream(t_info *info)
 	}
 	free(argv[0]);
 	argv[0] = whole_path;
-	status = CODE_OK;
+	/********************************************************************/
+
+	status = find_exec(&argv[0]);
+	//dprintf(2, "in %s, argv[0]: %s\n", __func__, argv[0]);
+	//아래부터 exit 상태 관련 로직
+	//
+	//일단 에러메시지 입력은 해둠 (하위 모듈에서 처리할 수 있다고 하긴 했지만)
+	//
+	//바로 아래 status가 1이면 빌트인
+	if (status == 1)
+	{
+		//run builtin
+		//exit (실패하면?)
+	}
+	if (status == CODE_ERROR_MALLOC)
+	{
+		dprintf(2, "critical error: malloc failed\n");
+		exit(EXIT_FAILURE);
+	}
 	if (status == CODE_ERROR_GENERIC)
 	{
+		//만약 /가 존재하면 no such file 어쩌고 떠야함
+		//하위 모듈에서 처리하는게 나을듯
 		dprintf(2, "shell: %s: command not found\n", argv[0]);
 		exit(127);
 	}
-	else if (status != CODE_OK)
-	{
-		dprintf(2, "shell: error occured\n");
-		exit(EXIT_FAILURE);
-	}
-	if (access(argv[0], F_OK) < 0)
-	{
-		dprintf(2, "shell: %s: No such file or directory\n", argv[0]);
-		exit(127);
-	}
 	if (access(argv[0], X_OK) == 0)
-	{
-		//dprintf(3, "before execve cur_idx: %d\n\n", info->cur_idx);
 		execve(argv[0], argv, g_envp);
-	}
 	else
 	{
 		//is a dir까지 잡아내려면 stat쓰긴 써야할듯 ㅁㄴㅇㄹ

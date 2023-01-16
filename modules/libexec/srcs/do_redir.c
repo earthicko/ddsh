@@ -20,15 +20,18 @@ int	process_redir(t_redir *redir_arr, int n_redir)
 	i = -1;
 	while (++i < n_redir)
 	{
-		//여기 고칠 것
-		//REDIR_NONE일 때 널 함수포인터에 대한 가드
+		//REDIR_NONE일 때 널 함수포인터에 대한 가드가 필요함
+		//여기 깔끔하게 고칠 수 있나?
 		if (redir_arr[i].type == REDIR_NONE)
 		{
-			printf("redir type error\n");
+			printf("in %s, redir type error\n", __func__);
 			continue ;
 		}
 		if (do_redir[redir_arr[i].type](redir_arr + i) != CODE_OK)
+		{
+			dprintf(2, "in %s, fail here?\n", __func__);
 			return (CODE_ERROR_IO);
+		}
 	}
 	return (CODE_OK);
 }
@@ -53,17 +56,20 @@ int	do_redir_out(t_redir *redir_arr)
 	return (CODE_OK);
 }
 
-//heredoc에 static으로 커서를 만들기
-//file_name을 언제 free해주어야 하지?
-//clear?
+//heredoc_file을 언제 free해주어야 하지?
+//clear 호출될 때 처리하는게 자연스러움
+//
+//아직 파스트리에서 heredoc 실행을 안해서 동작하지 않음
 int do_redir_in_here(t_redir *redir_arr)
 {
 	//히어독 매니저로부터 파일명 받아온 후, redir_in과 동일하게 처리
 	int		fd;
-	char	**heredoc_file;
+	char	*heredoc_file;
 
-	if (heredoc_get_next_filename(heredoc_file) != CODE_OK)
+	if (heredoc_get_next_filename(&heredoc_file) != CODE_OK)
+	{
 		return (CODE_ERROR_IO);
+	}
 	fd = open(redir_arr->content, O_RDONLY);
 	if (fd < 0 || dup2(fd, STDIN_FILENO) < 0 || close(fd) < 0)
 		return (CODE_ERROR_IO);

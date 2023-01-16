@@ -25,6 +25,8 @@ static int	builtin_pwd2(char **argv)
 	return (0);
 }
 
+//무조건 반복문에서 걸리긴 함
+//cmd자체가 is_builtin_command에서 추출된 애임
 static int	map_cmd(char *cmd)
 {
 	const char	*builtin_cmds[7] = {
@@ -43,13 +45,9 @@ static int	map_cmd(char *cmd)
 	while (++i < 7)
 		if (ft_strncmp(builtin_cmds[i], cmd, cmd_len + 1) == 0)
 			return (i);
-	//세그 폴트 내려고 -1 하는게 나을듯
 	return (CODE_ERROR_GENERIC);
 }
 
-//builtin_pwd 함수 매개변수형 맞추면 좋을듯
-//이렇게 하면 망한다 ㅇㅁㅇ
-//리다이렉션을 
 int	exec_builtin_cmd(t_exec_unit *unit)
 {
 	const t_exec_builtin	exec_builtin[7] = {
@@ -63,10 +61,12 @@ int	exec_builtin_cmd(t_exec_unit *unit)
 	};
 	const int				cmd_idx = map_cmd(unit->argv[0]);
 
-	//이렇게하면 개망함 표준 입출력 리다이렉션을 어디다가 저장해놔야함
+	//이렇게하면 개망함, 표준 입출력 리다이렉션을 어디다가 반드시 저장해놔야함
 	//backup_stdinout();
+	//순서는 리다이렉션 먼저 무조건!
 	if (process_redir(unit->redir_arr, unit->n_redir) == CODE_ERROR_IO)
 		return (CODE_ERROR_IO);
+	//리턴값 고칠 것
 	if (cmd_idx == CODE_ERROR_GENERIC)
 	{
 		dprintf(2, "Failed to map proper cmd index: builtin command\n");
