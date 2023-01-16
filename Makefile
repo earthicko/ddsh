@@ -14,6 +14,7 @@ FILENAME			= \
 					strutils/is_valid_str \
 					strutils/filename_utils \
 					strutils/find_exec \
+					strutils/find_exec_from_path \
 					heredoc/heredoc_clear \
 					heredoc/heredoc_init \
 					heredoc/heredoc_interface \
