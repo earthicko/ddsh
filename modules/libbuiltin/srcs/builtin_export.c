@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include "libft.h"
 #include "envmanager.h"
-#include "builtin_internal.h"
 
 static int	export_display(void)
 {
@@ -21,7 +20,7 @@ static int	export_display(void)
 			ft_free_strarr(envp);
 			return (1);
 		}
-		printf(FMTSTR_EXPORT, name, val);
+		printf("declare -x %s=\"%s\"\n", name, val);
 		free(name);
 		free(val);
 		cursor++;
@@ -48,7 +47,8 @@ int	builtin_export(char **argv)
 {
 	int	stat;
 
-	if (!(argv[0]))
+	argv++;
+	if (!*argv)
 		return (export_display());
 	stat = 0;
 	while (*argv)

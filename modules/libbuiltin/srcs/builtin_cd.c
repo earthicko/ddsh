@@ -3,7 +3,6 @@
 #include <unistd.h>
 #include "libft.h"
 #include "envmanager.h"
-#include "builtin_internal.h"
 
 static int	builtin_cd_internal(char *target)
 {
@@ -12,12 +11,12 @@ static int	builtin_cd_internal(char *target)
 
 	pwd = getcwd(NULL, 0);
 	if (pwd)
-		envman_setval(ENVVAR_OLDPWD, pwd);
+		envman_setval("OLDPWD", pwd);
 	free(pwd);
 	stat = chdir(target);
 	pwd = getcwd(NULL, 0);
 	if (pwd)
-		envman_setval(ENVVAR_PWD, pwd);
+		envman_setval("PWD", pwd);
 	free(pwd);
 	return (stat);
 }
@@ -27,13 +26,15 @@ int	builtin_cd(char **argv)
 	int		stat;
 	char	*target;
 
-	if (!ft_strncmp(argv[0], FLAG_OLDPWD, ft_strlen(FLAG_OLDPWD) + 1))
+	argv++;
+	if (*argv && !ft_strncmp(*argv, "-", 2))
 	{
-		if (envman_getval(ENVVAR_OLDPWD, &target))
+		if (envman_getval("OLDPWD", &target))
 		{
 			printf("Unimplemented error message of cd.\n");
 			return (1);
 		}
+		printf("%s\n", target);
 	}
 	else
 	{
