@@ -8,9 +8,10 @@ RM					= rm -f
 CFLAGS				= -Wall -Werror -Wextra -MMD -MP -g $(ACFLAGS)
 ################################ FILENAMES #####################################
 FILENAME			= \
-					strutils/expansion/expand_envvar_skip_quotes \
-					strutils/expansion/expand_envvar_skip_str \
-					strutils/expansion/expand_envvar \
+					strutils/expansion/expansion_compose_quotes \
+					strutils/expansion/expansion_compose_str \
+					strutils/expansion/expansion_utils \
+					strutils/expansion/expansion \
 					strutils/ft_strmerge \
 					strutils/pchararr \
 					strutils/pchararr_utils \

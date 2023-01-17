@@ -3,11 +3,12 @@
 #include "strutils.h"
 #include "expansion_internal.h"
 
-static int	init_skip_and_append_squote(int	*start, int *pos, char *str)
+static int	init_skip_and_append_quote(
+		int	*start, int *pos, char *str, char quote)
 {
 	*start = *pos;
 	(*pos)++;
-	while (str[*pos] != '\0' && str[*pos] != '\'')
+	while (str[*pos] != '\0' && str[*pos] != quote)
 		(*pos)++;
 	if (str[*pos] == '\0')
 	{
@@ -18,7 +19,7 @@ static int	init_skip_and_append_squote(int	*start, int *pos, char *str)
 	return (CODE_OK);
 }
 
-int	skip_and_append_squote(
+int	_compose_squote(
 		char *str, int *pos, t_pchararr *strarr, int remove_quote)
 {
 	int		stat;
@@ -26,7 +27,7 @@ int	skip_and_append_squote(
 	char	*word;
 	char	*temp;
 
-	stat = init_skip_and_append_squote(&start, pos, str);
+	stat = init_skip_and_append_quote(&start, pos, str, '\'');
 	if (stat)
 		return (stat);
 	word = ft_substr(str, start, *pos - start);
@@ -40,7 +41,7 @@ int	skip_and_append_squote(
 			return (CODE_ERROR_MALLOC);
 		word = temp;
 	}
-	return (pchararr_append(strarr, word));
+	return (_exit_compose(strarr, word));
 }
 
 static int	skip_and_append_dquote_recurse(char **buf, int remove_quote)
@@ -48,10 +49,10 @@ static int	skip_and_append_dquote_recurse(char **buf, int remove_quote)
 	int		stat;
 	char	*temp[2];
 
-	temp[0] = ft_substr(*buf, 1, ft_strlen(*buf) - 1);
+	temp[0] = ft_substr(*buf, 1, ft_strlen(*buf) - 2);
 	if (!temp[0])
 		return (CODE_ERROR_MALLOC);
-	stat = do_shell_expansion(&(temp[0]), FALSE, FALSE, FALSE);
+	stat = _do_shell_expansion(&(temp[0]), FALSE, FALSE, FALSE);
 	if (stat)
 	{
 		free(temp[0]);
@@ -70,29 +71,14 @@ static int	skip_and_append_dquote_recurse(char **buf, int remove_quote)
 	return (CODE_OK);
 }
 
-static int	init_skip_and_append_dquote(int	*start, int *pos, char *str)
-{
-	*start = *pos;
-	(*pos)++;
-	while (str[*pos] != '\0' && str[*pos] != '\"')
-		(*pos)++;
-	if (str[*pos] == '\0')
-	{
-		ft_printf("%s: Unimplemented error msg\n", __func__);
-		return (CODE_ERROR_DATA);
-	}
-	(*pos)++;
-	return (CODE_OK);
-}
-
-int	skip_and_append_dquote(
+int	_compose_dquote(
 		char *str, int *pos, t_pchararr *strarr, int remove_quote)
 {
 	int		stat;
 	int		start;
 	char	*word;
 
-	stat = init_skip_and_append_dquote(&start, pos, str);
+	stat = init_skip_and_append_quote(&start, pos, str, '\"');
 	if (stat)
 		return (stat);
 	word = ft_substr(str, start, *pos - start);
@@ -104,5 +90,5 @@ int	skip_and_append_dquote(
 		free(word);
 		return (stat);
 	}
-	return (pchararr_append(strarr, word));
+	return (_exit_compose(strarr, word));
 }

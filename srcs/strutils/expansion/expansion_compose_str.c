@@ -21,7 +21,7 @@ static void	init_skip_envvar(char *str, int *pos, int *start)
 		(*pos)++;
 }
 
-int	skip_and_append_envvar(
+int	_compose_envvar(
 	char *str, int *pos, t_pchararr *strarr)
 {
 	int		start;
@@ -41,11 +41,10 @@ int	skip_and_append_envvar(
 		if (!val)
 			return (CODE_ERROR_MALLOC);
 	}
-	return (pchararr_append(strarr, val));
+	return (_exit_compose(strarr, val));
 }
 
-int	skip_and_append_str(
-		char *str, int *pos, t_pchararr *strarr, int remove_quote)
+int	_compose_str(char *str, int *pos, t_pchararr *strarr)
 {
 	int		start;
 	char	*word;
@@ -59,10 +58,5 @@ int	skip_and_append_str(
 	word = ft_substr(str, start, *pos - start);
 	if (!word)
 		return (CODE_ERROR_MALLOC);
-	if (remove_quote && remove_quotes(&word))
-	{
-		free(word);
-		return (CODE_ERROR_MALLOC);
-	}
-	return (pchararr_append(strarr, word));
+	return (_exit_compose(strarr, word));
 }

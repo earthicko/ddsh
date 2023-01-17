@@ -27,7 +27,6 @@ int			is_builtin_command(char *str);
 
 int			find_exec(char **buf);
 
-int			do_shell_expansion(
-				char **buf, int remove_quote, int squote, int dquote);
+int			do_shell_expansion(char **buf, int remove_quote);
 
 #endif
