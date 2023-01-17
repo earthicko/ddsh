@@ -4,19 +4,37 @@
 #include "envmanager.h"
 #include "strutils.h"
 
+void	test_expansion(char *str, int remove_quote)
+{
+	int		stat;
+	char	*echo_str;
+
+	str = strdup(str);
+	echo_str = ft_strmerge(3, "echo \"", str, "\"");
+	printf("quote removal %d before: <%s>\n", remove_quote, str);
+	stat = do_shell_expansion(&str, remove_quote, 1);
+	printf("                after:  <%s>\n", str);
+	printf("exit status %d\n", stat);
+	free(str);
+	free(echo_str);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
-	char	*word;
 	char	*execname;
 
 	(void)argc;
 	(void)argv;
 	envman_init(envp);
-	word = strdup("en\"vvar$HOME\"FO'O$PWD'   aa'$?'$?$\"?\"\"$\"?aa");
-	printf("before: <%s>\n", word);
-	printf("exit status %d\n", envman_replace_envvar(&word, 0));
-	printf("after: <%s>\n", word);
-	free(word);
+	envman_setval("QUOTESVAL", "VAL\"\'VAL");
+	test_expansion("en\"vvar$HOME\"FO'O$PWD'   aa'$?'$?$\"?\"\"$\"?aa", 0);
+	test_expansion("en\"vvar$HOME\"FO'O$PWD'   aa'$?'$?$\"?\"\"$\"?aa", 1);
+	test_expansion("quotesval$QUOTESVAL\"quotes\"quotes\"$QUOTESVAL\"", 0);
+	test_expansion("quotesval$QUOTESVAL\"quotes\"quotes\"$QUOTESVAL\"", 1);
+	test_expansion("abc\"de\'fg\'hijkl\"mnop", 0);
+	test_expansion("abc\"de\'fg\'hijkl\"mnop", 1);
+	test_expansion("abc\"de\'fg\"hijkl\'mnop", 0);
+	test_expansion("abc\"de\'fg\"hijkl\'mnop", 1);
 	execname = strdup("brew");
 	printf("before: <%s>\n", execname);
 	find_exec(&execname);
