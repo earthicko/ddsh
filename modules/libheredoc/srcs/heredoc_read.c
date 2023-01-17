@@ -8,6 +8,8 @@
 #include "heredoc_internal.h"
 #include "sighandler.h"
 
+void	rl_clear_history(void);
+
 static int	_write_io_file_loop(int fd, int expand, char *delimeter)
 {
 	int		stat;
