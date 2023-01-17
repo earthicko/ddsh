@@ -20,7 +20,8 @@ FILENAME			= \
 					strutils/is_valid_str \
 					strutils/filename_utils \
 					strutils/find_exec \
-					strutils/find_exec_from_path
+					strutils/find_exec_from_path \
+					signal/signal_set_state
 
 SRC					= $(addprefix srcs/, $(addsuffix .c, $(FILENAME)))
 OBJ					= $(addprefix srcs/, $(addsuffix .o, $(FILENAME)))

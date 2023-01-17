@@ -6,6 +6,7 @@
 #include "libft.h"
 #include "envmanager.h"
 #include "heredoc_internal.h"
+#include "sighandler.h"
 
 // TODO: 히스토리 삭제
 static int	_write_io_file_loop(int fd, int expand, char *delimeter)
@@ -63,6 +64,9 @@ static void	_write_to_file(char *filename, char *delimeter)
 	int		expand;
 	char	*delim_dup;
 
+	stat = signal_set_state_heredoc();
+	if (stat)
+		exit(1);
 	fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0600);
 	if (fd < 0)
 		exit(1);
