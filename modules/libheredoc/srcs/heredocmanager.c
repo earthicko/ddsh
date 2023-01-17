@@ -1,4 +1,4 @@
-#include "libft_def.h"
+#include "libft.h"
 #include "heredoc_internal.h"
 
 // mode: INIT | READ | GETFILENAME | CLEAR
@@ -15,6 +15,12 @@ int	_heredocmanager(int mode, int doc_id, void *buf)
 
 	if (mode == HEREDOCMODE_INIT)
 		return (_heredoc_init(&n_heredoc, &i_current, &prefix_filename));
+	if (!prefix_filename)
+	{
+		ft_dprintf(2, "%s: Initialize heredocmanager before calling methods\n",
+			__func__);
+		return (CODE_ERROR_GENERIC);
+	}
 	if (mode == HEREDOCMODE_READ)
 		return (_heredoc_read(&n_heredoc, prefix_filename, buf));
 	if (mode == HEREDOCMODE_GETFILENAME)
@@ -23,6 +29,7 @@ int	_heredocmanager(int mode, int doc_id, void *buf)
 		return (_heredoc_get_next_filename(
 				n_heredoc, prefix_filename, &i_current, buf));
 	if (mode == HEREDOCMODE_CLEAR)
-		return (_heredoc_clear(&n_heredoc, &i_current, prefix_filename, doc_id));
+		return (_heredoc_clear(
+				&n_heredoc, &i_current, prefix_filename, doc_id));
 	return (CODE_ERROR_SCOPE);
 }

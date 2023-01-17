@@ -2,7 +2,6 @@
 #include <unistd.h>
 #include "strutils.h"
 #include "libft.h"
-#include "envmanager.h"
 #include "heredoc_internal.h"
 
 static char	*_extract_filename(int slot)
@@ -33,18 +32,13 @@ int	_heredoc_init(
 	char	*home_dir;
 	char	*ttyfilename;
 	char	*temp;
-	int		stat;
 
 	ttyfilename = _extract_filename(ttyslot());
 	if (!ttyfilename)
 		return (CODE_ERROR_GENERIC);
-	stat = envman_getval("HOME", &home_dir);
-	if (stat)
-	{
-		*prefix_filename = ttyfilename;
-		// TODO: 경고 메시지
-		return (CODE_OK);
-	}
+	home_dir = getcwd(NULL, 0);
+	if (!home_dir)
+		return (CODE_ERROR_GENERIC);
 	temp = ft_strmerge(
 			5, home_dir, "/", ttyfilename, PREFIX_HEREDOC_TEMPFILE, "_");
 	free(home_dir);
