@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <unistd.h>
 
+//pwd2에서 실행되게 했는데 pwd로 바꾸어야함
 static int	builtin_pwd2(char **argv)
 {
 	char	*pwd;
@@ -25,8 +26,8 @@ static int	builtin_pwd2(char **argv)
 	return (0);
 }
 
-//무조건 반복문에서 걸리긴 함
-//cmd자체가 is_builtin_command에서 추출된 애임
+//무조건 반복문에서 return되긴 함
+//cmd자체가 is_builtin_command로부터 온 인자이기 때문
 static int	map_cmd(char *cmd)
 {
 	const char	*builtin_cmds[7] = {

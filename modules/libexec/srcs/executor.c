@@ -1,5 +1,6 @@
 #include <stdio.h>
 
+
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/wait.h>
@@ -7,9 +8,6 @@
 #include "libft_def.h"
 #include "strutils.h"
 #include "executor_internal.h"
-
-
-#include <sys/errno.h>
 
 static int	wait_children(pid_t last_cmd, int n_unit)
 {
@@ -52,9 +50,6 @@ static void	init_info(t_info *info, t_unit_arr *units)
 	info->cur_idx = 0;
 }
 
-//구조체를 그냥 하나 만들까..?
-//변수 각각 선언하고 매개변수로 넘길바에 나은 거 같기도 하고..
-
 static int	fork_exec(t_unit_arr *units)
 {
 	t_info	info;
@@ -82,7 +77,7 @@ static int	fork_exec(t_unit_arr *units)
 //executor의 리턴값을 $?에 저장하기
 int	executor(t_unit_arr *units)
 {
-	//n_unit이 0이하인 경우는 없을듯?
+	//n_unit이 0이하인 경우는 없긴함..
 	if (units->n_unit <= 0)
 		return (CODE_ERROR_SCOPE);
 	if (units->n_unit == 1)

@@ -103,6 +103,12 @@ static int	set_fd_stream(t_info *info)
 //어차피 execve호출 후 종료되거나, exit을 하게 돼서 반환형이 필요없음
 //
 // //참고만 stat, lstat 심볼릭 링크파일인 경우 동작이 다르대..
+//
+//
+//IO 실패시 exit status가 어떻게 될까..? (fork한 상태에서)
+//일단 1로 처리
+//bash문서에서 발췌
+//If a command fails because of an error during expansion or redirection, the exit status is greater than zero.
  void	child_exec_cmd(t_info *info)
 {
 	struct stat	s_statbuf;
@@ -110,26 +116,10 @@ static int	set_fd_stream(t_info *info)
 	int		status;
 	char	*whole_path;
 
-	//IO 실패시 exit status가 어떻게 될까..? (fork한 상태에서)
-	//일단 1로 처리
-	//bash문서에서 발췌
-	//If a command fails because of an error during expansion or redirection, the exit status is greater than zero.
-//
-	//dprintf(2, "in %s, before set stream\n", __func__);
-	//대체 왜 이 함수 들어오자마자 에러노가 22임??
-	//정상적인 경우에 에러노를 확인하는 것이 의미없대, UB인듯
-	//dprintf(2, "in %s, child errno: %d\n", __func__, errno);
 	if (set_fd_stream(info) < 0)
 		exit(EXIT_FAILURE);
 	//dprintf(2, "cur_dx: %d\n", info->cur_idx);
 	argv = info->units->arr[info->cur_idx].argv;
-
-	//1. 에러메시지 별로 분기를 나누어야 하나?
-	//일단 else if에선 io_err와 malloc_err 묶어서 처리
-	//
-	//정말 억까케이스로 파일명에 /가 있고, PATH 경로에 해당파일이 등록돼있다면?
-	//
-	//CODE_OK는 '존재하는 파일이 있을 때'만 반환하면 어떨까?->처리 완료
 
 	/************find_exec를 못써서 처리해둔 로직********************/
 
@@ -147,6 +137,7 @@ static int	set_fd_stream(t_info *info)
 
 	status = find_exec(&argv[0]);
 	//dprintf(2, "in %s, argv[0]: %s\n", __func__, argv[0]);
+	//
 	//아래부터 exit 상태 관련 로직
 	//
 	//일단 에러메시지 입력은 해둠 (하위 모듈에서 처리할 수 있다고 하긴 했지만)
@@ -159,23 +150,21 @@ static int	set_fd_stream(t_info *info)
 	}
 	if (status == CODE_ERROR_MALLOC)
 	{
-		dprintf(2, "critical error: malloc failed\n");
+		dprintf(2, "in %s, critical error: malloc failed\n", __func__);
 		exit(EXIT_FAILURE);
 	}
 	if (status == CODE_ERROR_GENERIC)
 	{
-		//만약 /가 존재하면 no such file 어쩌고 떠야함
-		//하위 모듈에서 처리하는게 나을듯
-		dprintf(2, "shell: %s: command not found\n", argv[0]);
+		//만약 /가 존재하면 no such file 에러메시지가 나와야함
+		//따라서 에러메시지 출력은 하위 모듈에서 처리하는게 나을듯
+		dprintf(2, "in %s, shell: %s: command not found\n", __func__, argv[0]);
 		exit(127);
 	}
 	if (access(argv[0], X_OK) == 0)
 		execve(argv[0], argv, g_envp);
 	else
 	{
-		//is a dir까지 잡아내려면 stat쓰긴 써야할듯 ㅁㄴㅇㄹ
-		//이 분기에서 is_a_dir일 수도 있긴 해 ㅁㄴㄹㅇㄹ
-		//Permission denide든 is a dir이든 둘다 126종료
+		//Permission denide든 file is a dir이든 둘다 126종료
 		if (stat(argv[0], &s_statbuf) != 0)
 		{
 			perror("stat failed");
