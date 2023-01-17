@@ -74,10 +74,8 @@ static int	fork_exec(t_unit_arr *units)
 	return (wait_children(pid, info.n_unit));
 }
 
-//executor의 리턴값을 $?에 저장하기
 int	executor(t_unit_arr *units)
 {
-	//n_unit이 0이하인 경우는 없긴함..
 	if (units->n_unit <= 0)
 		return (CODE_ERROR_SCOPE);
 	if (units->n_unit == 1
