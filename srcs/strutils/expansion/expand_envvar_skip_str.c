@@ -1,29 +1,8 @@
 #include <stdlib.h>
 #include "libft.h"
+#include "envmanager.h"
 #include "strutils.h"
-#include "../envmanager_internal.h"
-
-int	skip_and_append_squote(
-		char *str, int *pos, t_pchararr *strarr, int quote_removal)
-{
-	int		start;
-	char	*word;
-
-	start = *pos;
-	(*pos)++;
-	while (str[*pos] != '\'')
-		(*pos)++;
-	(*pos)++;
-	word = ft_substr(str, start, *pos - start);
-	if (!word)
-		return (CODE_ERROR_MALLOC);
-	if (quote_removal && remove_quotes(&word))
-	{
-		free(word);
-		return (CODE_ERROR_MALLOC);
-	}
-	return (pchararr_append(strarr, word));
-}
+#include "expansion_internal.h"
 
 static void	init_skip_envvar(char *str, int *pos, int *start)
 {
@@ -42,7 +21,8 @@ static void	init_skip_envvar(char *str, int *pos, int *start)
 		(*pos)++;
 }
 
-int	skip_and_append_envvar(char *str, int *pos, t_pchararr *strarr)
+int	skip_and_append_envvar(
+	char *str, int *pos, t_pchararr *strarr)
 {
 	int		start;
 	int		stat;
@@ -65,18 +45,21 @@ int	skip_and_append_envvar(char *str, int *pos, t_pchararr *strarr)
 }
 
 int	skip_and_append_str(
-		char *str, int *pos, t_pchararr *strarr, int quote_removal)
+		char *str, int *pos, t_pchararr *strarr, int remove_quote)
 {
 	int		start;
 	char	*word;
 
 	start = *pos;
-	while (str[*pos] != '\0' && str[*pos] != '\'' && str[*pos] != '$')
+	while (str[*pos] != '\0'
+		&& str[*pos] != '\''
+		&& str[*pos] != '\"'
+		&& str[*pos] != '$')
 		(*pos)++;
 	word = ft_substr(str, start, *pos - start);
 	if (!word)
 		return (CODE_ERROR_MALLOC);
-	if (quote_removal && remove_quotes(&word))
+	if (remove_quote && remove_quotes(&word))
 	{
 		free(word);
 		return (CODE_ERROR_MALLOC);

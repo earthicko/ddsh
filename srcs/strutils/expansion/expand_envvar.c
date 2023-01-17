@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include "libft.h"
 #include "strutils.h"
-#include "../envmanager_internal.h"
+#include "expansion_internal.h"
 
 static char	*merge_pchararr(t_pchararr *strarr)
 {
@@ -36,7 +36,7 @@ static void	free_all_pchararr(t_pchararr *strarr)
 	}
 }
 
-static int	exit_replace_envvar(int stat, t_pchararr *strarr, char **buf)
+static int	exit_shell_expansion(int stat, t_pchararr *strarr, char **buf)
 {
 	char	*backup;
 
@@ -56,7 +56,7 @@ static int	exit_replace_envvar(int stat, t_pchararr *strarr, char **buf)
 	return (CODE_OK);
 }
 
-int	envman_replace_envvar(char **buf, int quote_removal)
+int	do_shell_expansion(char **buf, int remove_quote, int squote, int dquote)
 {
 	t_pchararr	*strarr;
 	int			i;
@@ -69,15 +69,18 @@ int	envman_replace_envvar(char **buf, int quote_removal)
 	stat = 0;
 	while ((*buf)[i])
 	{
-		if ((*buf)[i] == '\'')
+		if (squote && (*buf)[i] == '\'')
 			stat |= skip_and_append_squote(
-					(*buf), &i, strarr, quote_removal);
+					(*buf), &i, strarr, remove_quote);
+		else if (dquote && (*buf)[i] == '\"')
+			stat |= skip_and_append_dquote(
+					(*buf), &i, strarr, remove_quote);
 		else if ((*buf)[i] == '$')
 			stat |= skip_and_append_envvar(
 					(*buf), &i, strarr);
 		else
 			stat |= skip_and_append_str(
-					(*buf), &i, strarr, quote_removal);
+					(*buf), &i, strarr, remove_quote);
 	}
-	return (exit_replace_envvar(stat, strarr, buf));
+	return (exit_shell_expansion(stat, strarr, buf));
 }

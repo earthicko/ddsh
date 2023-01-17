@@ -22,7 +22,7 @@ static int	write_io_file_loop(int fd, int expand, char *delimeter)
 	}
 	if (expand)
 	{
-		if (envman_replace_envvar(&line, FALSE))
+		if (do_shell_expansion(&line, FALSE, TRUE, TRUE))
 		{
 			free(line);
 			return (-1);
