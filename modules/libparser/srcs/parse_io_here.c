@@ -1,10 +1,12 @@
 #include <stddef.h>
+#include "heredoc.h"
 #include "t_token.h"
 #include "t_node.h"
 #include "parser_internal.h"
 
 t_node	*_parse_io_here(t_parser *p)
 {
+	int		stat;
 	t_node	*root;
 
 	root = node_create(NODETYPE_IO_HERE, NULL, 0);
@@ -14,5 +16,8 @@ t_node	*_parse_io_here(t_parser *p)
 		return (NULL);
 	if (_parse_terminal_and_addchild(p, NODETYPE_HERE_END, root))
 		return (NULL);
+	stat = heredoc_read(((t_node *)root->childs->next->content)->content);
+	if (stat)
+		return (node_destroy(root));
 	return (root);
 }
