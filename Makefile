@@ -11,6 +11,7 @@ FILENAME			= \
 					strutils/expansion/expansion_compose_quotes \
 					strutils/expansion/expansion_compose_str \
 					strutils/expansion/expansion_utils \
+					strutils/expansion/expansion_nodes \
 					strutils/expansion/expansion \
 					strutils/ft_strmerge \
 					strutils/pchararr \

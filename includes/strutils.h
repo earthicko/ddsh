@@ -1,5 +1,6 @@
 #ifndef STRUTILS_H
 # define STRUTILS_H
+# include "t_node.h"
 # define PCHARARR_INITIAL_CAP 1
 
 int			ft_strappend(char **body, const char *tail);
@@ -28,5 +29,7 @@ int			is_builtin_command(char *str);
 int			find_exec(char **buf);
 
 int			do_shell_expansion(char **buf, int remove_quote);
+
+int			expand_node(t_node *root);
 
 #endif
