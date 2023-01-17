@@ -22,6 +22,7 @@ int	_heredoc_clear(int *n_heredoc, int *i_current, char *temp_dir, int doc_id)
 
 	if (doc_id < 0)
 	{
+		// TODO: 이렇게 하지 말고 디렉토리 검색해서
 		i = 0;
 		while (i < *n_heredoc)
 		{

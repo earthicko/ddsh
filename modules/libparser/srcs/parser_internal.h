@@ -4,6 +4,7 @@
 # include "t_token.h"
 # include "parser.h"
 
+// TODO: last error stat을 터미널 파서에서 업데이트
 typedef struct s_parser
 {
 	t_token	*tok_start;

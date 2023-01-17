@@ -109,6 +109,7 @@ static int	set_fd_stream(t_info *info)
 //일단 1로 처리
 //bash문서에서 발췌
 //If a command fails because of an error during expansion or redirection, the exit status is greater than zero.
+// TODO: argv[0]이 널인 경우에 대한 처리 추가 (인풋에 word가 없을 때)
  void	child_exec_cmd(t_info *info)
 {
 	struct stat	s_statbuf;

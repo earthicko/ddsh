@@ -7,6 +7,7 @@
 #include "envmanager.h"
 #include "heredoc_internal.h"
 
+// TODO: 히스토리 삭제
 static int	_write_io_file_loop(int fd, int expand, char *delimeter)
 {
 	int		stat;
