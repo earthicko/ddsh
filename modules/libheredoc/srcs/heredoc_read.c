@@ -51,7 +51,8 @@ static void	_abort_write_to_file(int fd, char *filename, char *delim, int stat)
 {
 	close(fd);
 	free(delim);
-	unlink(filename);
+	if (stat)
+		unlink(filename);
 	exit(stat);
 }
 
@@ -62,8 +63,7 @@ static void	_write_to_file(char *filename, char *delimeter)
 	int		expand;
 	char	*delim_dup;
 
-	unlink(filename);
-	fd = open(filename, O_WRONLY | O_CREAT | O_EXCL | O_TRUNC, 0600);
+	fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0600);
 	if (fd < 0)
 		exit(1);
 	delim_dup = ft_strdup(delimeter);
@@ -83,7 +83,7 @@ static void	_write_to_file(char *filename, char *delimeter)
 	_abort_write_to_file(fd, filename, delim_dup, 0);
 }
 
-int	_heredoc_read(int *n_heredoc, char *temp_dir, char *delimeter)
+int	_heredoc_read(int *n_heredoc, char *prefix_filename, char *delimeter)
 {
 	pid_t	pid;
 	char	*filename;
@@ -91,7 +91,7 @@ int	_heredoc_read(int *n_heredoc, char *temp_dir, char *delimeter)
 
 	(*n_heredoc)++;
 	stat = _heredoc_get_filename(
-			*n_heredoc, temp_dir, (*n_heredoc) - 1, &filename);
+			*n_heredoc, prefix_filename, (*n_heredoc) - 1, &filename);
 	(*n_heredoc)--;
 	if (stat)
 		return (stat);
