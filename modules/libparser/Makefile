@@ -6,6 +6,7 @@ BASE_DIR		= ../..
 INC_DIR			= \
 				-I./includes \
 				-I$(BASE_DIR)/modules/libft/includes \
+				-I$(BASE_DIR)/modules/libheredoc/includes \
 				-I$(BASE_DIR)/modules/liblexer/includes \
 				-I$(BASE_DIR)/includes
 
