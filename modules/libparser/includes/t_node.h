@@ -26,9 +26,9 @@ enum e_nodetype
 	NODETYPE_HERE_END,
 };
 
-t_node	*_node_create(int type, char *content, int n_tokens);
-t_node	*_node_destroy(t_node *node);
-int		_node_addchild(t_node *node, t_node *child);
+t_node	*node_create(int type, char *content, int n_tokens);
+t_node	*node_destroy(t_node *node);
+int		node_addchild(t_node *node, t_node *child);
 int		node_getntokens(t_node *node);
 
 #endif

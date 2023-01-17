@@ -9,7 +9,7 @@ t_node	*_parse_pipe_sequence(t_parser *p)
 	t_node	*root;
 	t_node	*child;
 
-	root = _node_create(NODETYPE_PIPE_SEQUENCE, NULL, 0);
+	root = node_create(NODETYPE_PIPE_SEQUENCE, NULL, 0);
 	if (!root)
 		return (NULL);
 	while (TRUE)
@@ -17,7 +17,7 @@ t_node	*_parse_pipe_sequence(t_parser *p)
 		child = _parse_simple_command(p);
 		if (!child)
 			return (_parse_abort(p, root, NULL));
-		if (_node_addchild(root, child))
+		if (node_addchild(root, child))
 			return (_parse_abort(p, root, child));
 		if (_parser_is_last_token(p))
 			return (root);

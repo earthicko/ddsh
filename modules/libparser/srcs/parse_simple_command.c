@@ -9,7 +9,7 @@ t_node	*_parse_simple_command(t_parser *p)
 	t_node	*root;
 	t_node	*child;
 
-	root = _node_create(NODETYPE_SIMPLE_COMMAND, NULL, 0);
+	root = node_create(NODETYPE_SIMPLE_COMMAND, NULL, 0);
 	if (!root)
 		return (NULL);
 	while (TRUE)
@@ -21,7 +21,7 @@ t_node	*_parse_simple_command(t_parser *p)
 				return (root);
 			return (_parse_abort(p, root, NULL));
 		}
-		if (_node_addchild(root, child))
+		if (node_addchild(root, child))
 			return (_parse_abort(p, root, child));
 	}
 }

@@ -8,7 +8,7 @@ t_node	*_parse_io_redirect(t_parser *p)
 	t_node	*root;
 	t_node	*child;
 
-	root = _node_create(NODETYPE_IO_REDIRECT, NULL, 0);
+	root = node_create(NODETYPE_IO_REDIRECT, NULL, 0);
 	if (!root)
 		return (NULL);
 	child = _parse_io_file(p);

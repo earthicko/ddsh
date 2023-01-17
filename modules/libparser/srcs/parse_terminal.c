@@ -25,7 +25,7 @@ t_node	*_parse_terminal(t_parser *p, int nodetype)
 		return (NULL);
 	if (!_is_correct_tokentype(nodetype, p->tok_curr->type))
 		return (NULL);
-	root = _node_create(nodetype, p->tok_curr->content, 1);
+	root = node_create(nodetype, p->tok_curr->content, 1);
 	if (!root)
 		return (NULL);
 	p->tok_curr++;

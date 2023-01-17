@@ -2,7 +2,7 @@
 #include "libft.h"
 #include "t_node.h"
 
-t_node	*_node_create(int type, char *content, int n_tokens)
+t_node	*node_create(int type, char *content, int n_tokens)
 {
 	t_node	*new_node;
 
@@ -15,7 +15,7 @@ t_node	*_node_create(int type, char *content, int n_tokens)
 	{
 		new_node->content = ft_strdup(content);
 		if (!(new_node->content))
-			return (_node_destroy(new_node));
+			return (node_destroy(new_node));
 	}
 	new_node->type = type;
 	new_node->n_tokens = n_tokens;
@@ -36,7 +36,7 @@ static void	_node_destroy_internal(void *root)
 	free(node);
 }
 
-t_node	*_node_destroy(t_node *node)
+t_node	*node_destroy(t_node *node)
 {
 	if (!node)
 		return (NULL);
@@ -48,7 +48,7 @@ t_node	*_node_destroy(t_node *node)
 	return (NULL);
 }
 
-int	_node_addchild(t_node *node, t_node *child)
+int	node_addchild(t_node *node, t_node *child)
 {
 	t_list	*new_child;
 

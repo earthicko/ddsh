@@ -6,7 +6,7 @@
 
 t_node	*_parse_addchild_and_return(t_parser *p, t_node *root, t_node *child)
 {
-	if (_node_addchild(root, child))
+	if (node_addchild(root, child))
 		return (_parse_abort(p, root, child));
 	return (root);
 }
@@ -22,7 +22,7 @@ int	_parse_terminal_and_addchild(t_parser *p, int n_t, t_node *root)
 		_parse_abort(p, root, NULL);
 		return (CODE_ERROR_GENERIC);
 	}
-	stat = _node_addchild(root, child);
+	stat = node_addchild(root, child);
 	if (stat)
 	{
 		_parse_abort(p, root, child);
@@ -39,12 +39,12 @@ t_node	*_parse_abort(t_parser *p, t_node *root, t_node *child)
 	if (root)
 	{
 		rewind_counter += node_getntokens(root);
-		_node_destroy(root);
+		node_destroy(root);
 	}
 	if (child)
 	{
 		rewind_counter += node_getntokens(child);
-		_node_destroy(child);
+		node_destroy(child);
 	}
 	p->tok_curr -= rewind_counter;
 	return (NULL);
