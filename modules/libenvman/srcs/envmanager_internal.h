@@ -12,18 +12,19 @@ typedef struct s_enventry
 	char	*val;
 }	t_enventry;
 
-void		free_entry(void *content);
-t_list		*find_list_with_entry(t_list *envlist, char *name);
-int			envman_addentry(t_list **p_list, char *env);
-t_enventry	*envman_getentry(t_list *envlist, char *name);
+void		_free_entry(void *content);
+t_list		*_find_list_with_entry(t_list *envlist, char *name);
+int			_envman_addentry(t_list **p_list, char *env);
+t_enventry	*_envman_getentry(t_list *envlist, char *name);
 
-int			envmanager(char **envp, void *buf, char *name, char *val);
+int			_envmanager(char **envp, void *buf, char *name, char *val);
 
-int			envman_init_(t_list **p_list, char **envp);
-int			envman_clear_(t_list **p_list);
-int			envman_getval_(t_list *envlist, char **buf, char *name);
-int			envman_setval_(t_list **envlist, char *name, char *val);
-int			envman_unsetval_(t_list **envlist, char *name);
-int			envman_getenvp_(t_list *envlist, char ***buf);
+// TODO: internal 함수 앞에 _
+int			_envman_init(t_list **p_list, char **envp);
+int			_envman_clear(t_list **p_list);
+int			_envman_getval(t_list *envlist, char **buf, char *name);
+int			_envman_setval(t_list **envlist, char *name, char *val);
+int			_envman_unsetval(t_list **envlist, char *name);
+int			_envman_getenvp(t_list *envlist, char ***buf);
 
 #endif

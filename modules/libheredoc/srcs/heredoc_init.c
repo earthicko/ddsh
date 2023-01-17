@@ -4,7 +4,7 @@
 #include "envmanager.h"
 #include "heredoc_internal.h"
 
-int	heredoc_init_(int *n_heredoc, int *i_current, char **temp_dir)
+int	_heredoc_init(int *n_heredoc, int *i_current, char **temp_dir)
 {
 	char	*home_dir;
 	int		stat;
@@ -22,6 +22,6 @@ int	heredoc_init_(int *n_heredoc, int *i_current, char **temp_dir)
 		return (stat);
 	}
 	*temp_dir = home_dir;
-	heredoc_clear_(n_heredoc, i_current, *temp_dir, -1);
+	_heredoc_clear(n_heredoc, i_current, *temp_dir, -1);
 	return (CODE_OK);
 }

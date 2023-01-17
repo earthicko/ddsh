@@ -31,7 +31,7 @@ int	main(void)
 		// toks_destroy(&toks);
 		if (exec_tree)
 			node_print(exec_tree, 0);
-		node_destroy(exec_tree);
+		_node_destroy(exec_tree);
 		system("leaks minishell");
 	}
 	return (CODE_OK);

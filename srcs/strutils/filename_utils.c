@@ -1,7 +1,7 @@
 #include <unistd.h>
 #include "libft.h"
 
-static void	init_is_builtin_command(char **parr)
+static void	_init_is_builtin_command(char **parr)
 {
 	parr[0] = "cd";
 	parr[1] = "echo";
@@ -17,7 +17,7 @@ int	is_builtin_command(char *str)
 	char	*dict[7];
 	int		i;
 
-	init_is_builtin_command(dict);
+	_init_is_builtin_command(dict);
 	i = 0;
 	while (i < 7)
 	{

@@ -2,9 +2,9 @@
 #include "libft.h"
 #include "strutils.h"
 
-int	find_exec_from_path(char **buf);
+int	_find_exec_from_path(char **buf);
 
-int	is_file_existent(char *path)
+int	_is_file_existent(char *path)
 {
 	struct stat	buf;
 
@@ -24,9 +24,9 @@ int	find_exec(char **buf)
 		return (1);
 	if (ft_strchr(*buf, '/'))
 	{
-		if (is_file_existent(*buf))
+		if (_is_file_existent(*buf))
 			return (CODE_OK);
 		return (CODE_ERROR_GENERIC);
 	}
-	return (find_exec_from_path(buf));
+	return (_find_exec_from_path(buf));
 }

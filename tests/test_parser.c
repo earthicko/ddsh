@@ -76,7 +76,7 @@ int	main(void)
 	{
 		node_print(root, 0);
 		printf("%p\n", ((t_node *)(root->childs->content)));
-		node_destroy(root);
+		_node_destroy(root);
 	}
 	system("leaks test_parser");
 	return (0);

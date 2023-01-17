@@ -89,7 +89,7 @@ static void	test_build_unit(char *str)
 		i++;
 	}
 	printf("\n\n");
-	node_destroy(root);
+	_node_destroy(root);
 	token_destroy(&toks);
 	units_destroy(&units);
 }
@@ -119,7 +119,7 @@ static void	test_get_n_redir(char *str, t_toks *toks)
 	simple_cmd = root->childs->content;
 	printf("input: %s\n\n", str);
 	printf("n_redir: %d\n\n", get_n_redir(simple_cmd));
-	node_destroy(root);
+	_node_destroy(root);
 	token_destroy(toks);
 	printf("\n>=========================<\n\n");
 }

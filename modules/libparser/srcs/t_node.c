@@ -2,7 +2,7 @@
 #include "libft.h"
 #include "t_node.h"
 
-t_node	*node_create(int type, char *content, int n_tokens)
+t_node	*_node_create(int type, char *content, int n_tokens)
 {
 	t_node	*new_node;
 
@@ -15,14 +15,14 @@ t_node	*node_create(int type, char *content, int n_tokens)
 	{
 		new_node->content = ft_strdup(content);
 		if (!(new_node->content))
-			return (node_destroy(new_node));
+			return (_node_destroy(new_node));
 	}
 	new_node->type = type;
 	new_node->n_tokens = n_tokens;
 	return (new_node);
 }
 
-static void	node_destroy_internal(void *root)
+static void	_node_destroy_internal(void *root)
 {
 	t_node	*node;
 
@@ -30,25 +30,25 @@ static void	node_destroy_internal(void *root)
 	if (!node)
 		return ;
 	if (node->childs)
-		ft_lstclear(&(node->childs), node_destroy_internal);
+		ft_lstclear(&(node->childs), _node_destroy_internal);
 	if (node->content)
 		free(node->content);
 	free(node);
 }
 
-t_node	*node_destroy(t_node *node)
+t_node	*_node_destroy(t_node *node)
 {
 	if (!node)
 		return (NULL);
 	if (node->childs)
-		ft_lstclear(&(node->childs), node_destroy_internal);
+		ft_lstclear(&(node->childs), _node_destroy_internal);
 	if (node->content)
 		free(node->content);
 	free(node);
 	return (NULL);
 }
 
-int	node_addchild(t_node *node, t_node *child)
+int	_node_addchild(t_node *node, t_node *child)
 {
 	t_list	*new_child;
 

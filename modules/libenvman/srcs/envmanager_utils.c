@@ -22,7 +22,7 @@ char	*envman_compose_envstr(char *name, char *val)
 	return (temp);
 }
 
-static int	split_envstr_abort(char **name, char **val, int stat)
+static int	_split_envstr_abort(char **name, char **val, int stat)
 {
 	if (*name)
 		free(*name);
@@ -45,8 +45,8 @@ int	envman_split_envstr(char *str, char **ret_name, char **ret_val)
 	*ret_name = ft_substr(str, 0, i_split);
 	*ret_val = ft_substr(str, i_split + 1, len_str - i_split - 1);
 	if (!(*ret_name && *ret_val))
-		return (split_envstr_abort(ret_name, ret_val, CODE_ERROR_MALLOC));
+		return (_split_envstr_abort(ret_name, ret_val, CODE_ERROR_MALLOC));
 	if (!is_valid_name(*ret_name))
-		return (split_envstr_abort(ret_name, ret_val, CODE_ERROR_DATA));
+		return (_split_envstr_abort(ret_name, ret_val, CODE_ERROR_DATA));
 	return (CODE_OK);
 }

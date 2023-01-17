@@ -2,7 +2,7 @@
 #include "libft.h"
 #include "envmanager_internal.h"
 
-t_enventry	*enventry_destroy(t_enventry *enventry)
+t_enventry	*_enventry_destroy(t_enventry *enventry)
 {
 	if (!enventry)
 		return (NULL);
@@ -14,12 +14,12 @@ t_enventry	*enventry_destroy(t_enventry *enventry)
 	return (NULL);
 }
 
-void	free_entry(void *content)
+void	_free_entry(void *content)
 {
-	enventry_destroy(content);
+	_enventry_destroy(content);
 }
 
-t_list	*find_list_with_entry(t_list *envlist, char *name)
+t_list	*_find_list_with_entry(t_list *envlist, char *name)
 {
 	char	*lstname;
 
@@ -33,17 +33,17 @@ t_list	*find_list_with_entry(t_list *envlist, char *name)
 	return (NULL);
 }
 
-t_enventry	*envman_getentry(t_list *envlist, char *name)
+t_enventry	*_envman_getentry(t_list *envlist, char *name)
 {
 	t_list	*list;
 
-	list = find_list_with_entry(envlist, name);
+	list = _find_list_with_entry(envlist, name);
 	if (list)
 		return (list->content);
 	return (NULL);
 }
 
-int	envman_addentry(t_list **p_list, char *env)
+int	_envman_addentry(t_list **p_list, char *env)
 {
 	t_list		*newlst;
 	t_enventry	*entry;
@@ -56,13 +56,13 @@ int	envman_addentry(t_list **p_list, char *env)
 	stat = envman_split_envstr(env, &(entry->name), &(entry->val));
 	if (stat)
 	{
-		enventry_destroy(entry);
+		_enventry_destroy(entry);
 		return (stat);
 	}
 	newlst = ft_lstnew(entry);
 	if (!newlst)
 	{
-		enventry_destroy(entry);
+		_enventry_destroy(entry);
 		return (CODE_ERROR_MALLOC);
 	}
 	ft_lstadd_back(p_list, newlst);

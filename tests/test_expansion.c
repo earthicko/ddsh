@@ -12,7 +12,7 @@ void	test_expansion(char *str, int remove_quote)
 	str = strdup(str);
 	echo_str = ft_strmerge(3, "echo \"", str, "\"");
 	printf("quote removal %d before: <%s>\n", remove_quote, str);
-	stat = do_shell_expansion(&str, remove_quote, 1);
+	stat = do_shell_expansion(&str, remove_quote);
 	printf("                after:  <%s>\n", str);
 	printf("exit status %d\n", stat);
 	free(str);

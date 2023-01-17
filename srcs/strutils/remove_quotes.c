@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include "libft.h"
 
-static int	count_quotes(char *str)
+static int	_count_quotes(char *str)
 {
 	int	i;
 
@@ -21,7 +21,7 @@ int	remove_quotes(char **buf)
 	int		i;
 	int		j;
 
-	backup = malloc(sizeof(char) * (ft_strlen(*buf) - count_quotes(*buf) + 1));
+	backup = malloc(sizeof(char) * (ft_strlen(*buf) - _count_quotes(*buf) + 1));
 	if (!backup)
 		return (CODE_ERROR_MALLOC);
 	i = 0;

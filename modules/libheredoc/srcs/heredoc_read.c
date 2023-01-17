@@ -7,7 +7,7 @@
 #include "envmanager.h"
 #include "heredoc_internal.h"
 
-static int	write_io_file_loop(int fd, int expand, char *delimeter)
+static int	_write_io_file_loop(int fd, int expand, char *delimeter)
 {
 	int		stat;
 	char	*line;
@@ -35,7 +35,7 @@ static int	write_io_file_loop(int fd, int expand, char *delimeter)
 	return (0);
 }
 
-static int	should_expand(char *str)
+static int	_should_expand(char *str)
 {
 	while (*str)
 	{
@@ -46,7 +46,7 @@ static int	should_expand(char *str)
 	return (TRUE);
 }
 
-static void	abort_write_to_file(int fd, char *filename, char *delim, int stat)
+static void	_abort_write_to_file(int fd, char *filename, char *delim, int stat)
 {
 	close(fd);
 	free(delim);
@@ -54,7 +54,7 @@ static void	abort_write_to_file(int fd, char *filename, char *delim, int stat)
 	exit(stat);
 }
 
-static void	write_to_file(char *filename, char *delimeter)
+static void	_write_to_file(char *filename, char *delimeter)
 {
 	int		fd;
 	int		stat;
@@ -68,28 +68,28 @@ static void	write_to_file(char *filename, char *delimeter)
 	delim_dup = ft_strdup(delimeter);
 	if (!delim_dup)
 		exit(1);
-	expand = should_expand(delim_dup);
+	expand = _should_expand(delim_dup);
 	if (remove_quotes(&delim_dup))
-		abort_write_to_file(fd, filename, delim_dup, 1);
+		_abort_write_to_file(fd, filename, delim_dup, 1);
 	while (TRUE)
 	{
-		stat = write_io_file_loop(fd, expand, delim_dup);
+		stat = _write_io_file_loop(fd, expand, delim_dup);
 		if (stat < 0)
-			abort_write_to_file(fd, filename, delim_dup, 1);
+			_abort_write_to_file(fd, filename, delim_dup, 1);
 		if (stat > 0)
 			break ;
 	}
-	abort_write_to_file(fd, filename, delim_dup, 0);
+	_abort_write_to_file(fd, filename, delim_dup, 0);
 }
 
-int	heredoc_read_(int *n_heredoc, char *temp_dir, char *delimeter)
+int	_heredoc_read(int *n_heredoc, char *temp_dir, char *delimeter)
 {
 	pid_t	pid;
 	char	*filename;
 	int		stat;
 
 	(*n_heredoc)++;
-	stat = heredoc_get_filename_(
+	stat = _heredoc_get_filename(
 			*n_heredoc, temp_dir, (*n_heredoc) - 1, &filename);
 	(*n_heredoc)--;
 	if (stat)
@@ -101,7 +101,7 @@ int	heredoc_read_(int *n_heredoc, char *temp_dir, char *delimeter)
 	if (pid)
 		wait4(pid, &stat, 0, NULL);
 	else
-		write_to_file(filename, delimeter);
+		_write_to_file(filename, delimeter);
 	free(filename);
 	stat = WEXITSTATUS(stat);
 	if (!stat)

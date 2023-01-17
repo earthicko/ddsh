@@ -1,14 +1,14 @@
 #include "libft.h"
 #include "envmanager_internal.h"
 
-int	envman_clear_(t_list **p_list)
+int	_envman_clear(t_list **p_list)
 {
 	if (*p_list)
-		ft_lstclear(p_list, free_entry);
+		ft_lstclear(p_list, _free_entry);
 	return (CODE_OK);
 }
 
 int	envman_clear(void)
 {
-	return (envmanager(0, 0, 0, 0));
+	return (_envmanager(0, 0, 0, 0));
 }

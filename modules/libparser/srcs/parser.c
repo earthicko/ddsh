@@ -4,7 +4,7 @@
 #include "t_node.h"
 #include "parser_internal.h"
 
-int	parser_is_last_token(t_parser *parser)
+int	_parser_is_last_token(t_parser *parser)
 {
 	if (parser->tok_curr == parser->tok_last)
 		return (TRUE);
@@ -19,5 +19,5 @@ t_node	*parse_tokens(t_token *tokenarr, int n_tokens)
 	parser.tok_curr = tokenarr;
 	parser.tok_last = tokenarr + n_tokens;
 	parser.n_tokens = n_tokens;
-	return (parse_pipe_sequence(&parser));
+	return (_parse_pipe_sequence(&parser));
 }
