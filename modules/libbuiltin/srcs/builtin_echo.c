@@ -16,7 +16,11 @@ int	builtin_echo(char **argv)
 {
 	int	flag_n;
 
-	flag_n = builtin_flag_n_on(*argv);
+	flag_n = builtin_flag_n_on(argv[1]);
+	if (flag_n)
+		argv += 2;
+	else
+		argv += 1;
 	while (*argv)
 	{
 		if (printf("%s", *argv) < 0)
