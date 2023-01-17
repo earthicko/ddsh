@@ -47,6 +47,7 @@ int	main(int argc, char **argv, char **envp)
 		{
 			exit_stat_manager(258);
 			ft_printf("%s: Error while lexing\n", __func__);
+			system("leaks minishell");
 			continue ;
 		}
 		ft_printf("%s: lexer done\n", __func__, str);
@@ -57,6 +58,7 @@ int	main(int argc, char **argv, char **envp)
 		{
 			exit_stat_manager(258);
 			ft_printf("%s: Error while parsing\n", __func__);
+			system("leaks minishell");
 			continue ;
 		}
 		ft_printf("%s: parsing done\n", __func__, str);
@@ -66,6 +68,7 @@ int	main(int argc, char **argv, char **envp)
 		if (stat)
 		{
 			ft_printf("%s: Error while shell expansion\n", __func__);
+			system("leaks minishell");
 			continue ;
 		}
 
@@ -74,6 +77,7 @@ int	main(int argc, char **argv, char **envp)
 		if (stat)
 		{
 			ft_printf("%s: Error while building exec unit\n", __func__);
+			system("leaks minishell");
 			continue ;
 		}
 		ft_printf("%s: exec build done\n", __func__, str);
@@ -84,11 +88,12 @@ int	main(int argc, char **argv, char **envp)
 		if (stat)
 		{
 			ft_printf("%s: Error while exec\n", __func__);
+			system("leaks minishell");
 			continue ;
 		}
 		ft_printf("%s: exec done\n", __func__, str);
 
-		// system("leaks minishell");
+		system("leaks minishell");
 	}
 	return (CODE_OK);
 }
