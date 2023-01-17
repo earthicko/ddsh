@@ -80,8 +80,9 @@ int	executor(t_unit_arr *units)
 	//n_unit이 0이하인 경우는 없긴함..
 	if (units->n_unit <= 0)
 		return (CODE_ERROR_SCOPE);
-	if (units->n_unit == 1)
-		if (is_builtin_command(units->arr->argv[0]))
+	if (units->n_unit == 1
+		&& units->arr->argv[0]
+		&& is_builtin_command(units->arr->argv[0]))
 			return (exec_builtin_cmd(units->arr));
 	return (fork_exec(units));
 }
