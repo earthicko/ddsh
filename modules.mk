@@ -2,6 +2,7 @@
 LIB_DIR				= modules
 
 LINK_READLINE		= -L${HOME}/.brew/opt/readline/lib -lreadline
+INC_DIR_READLINE	= -I${HOME}/.brew/opt/readline/include
 
 LIBFT_DIR			= $(LIB_DIR)/libft
 LIBFT				= $(LIBFT_DIR)/libft.a
@@ -56,6 +57,7 @@ LINK_LIBS			= \
 					$(LINK_LIBBUILTIN) \
 					$(LINK_LIBEXEC)
 INC_DIR				= -I. -Iincludes \
+					$(INC_DIR_READLINE) \
 					$(INC_DIR_LIBFT) \
 					$(INC_DIR_LIBLEXER) \
 					$(INC_DIR_LIBPARSER) \
