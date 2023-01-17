@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <stdio.h>
 #include <fcntl.h>
 #include "heredoc.h"
@@ -66,14 +67,13 @@ int do_redir_in_here(t_redir *redir_arr)
 	int		fd;
 	char	*heredoc_file;
 
+	(void)redir_arr;
 	if (heredoc_get_next_filename(&heredoc_file) != CODE_OK)
-	{
 		return (CODE_ERROR_IO);
-	}
-	fd = open(redir_arr->content, O_RDONLY);
+	fd = open(heredoc_file, O_RDONLY);
+	free(heredoc_file);
 	if (fd < 0 || dup2(fd, STDIN_FILENO) < 0 || close(fd) < 0)
 		return (CODE_ERROR_IO);
-	//free(heredoc_file);
 	return (CODE_OK);
 }
 
