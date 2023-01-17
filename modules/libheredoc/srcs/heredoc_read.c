@@ -8,7 +8,6 @@
 #include "heredoc_internal.h"
 #include "sighandler.h"
 
-// TODO: 히스토리 삭제
 static int	_write_io_file_loop(int fd, int expand, char *delimeter)
 {
 	int		stat;
@@ -64,6 +63,7 @@ static void	_write_to_file(char *filename, char *delimeter)
 	int		expand;
 	char	*delim_dup;
 
+	rl_clear_history();
 	stat = signal_set_state_heredoc();
 	if (stat)
 		exit(1);
