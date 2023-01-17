@@ -78,8 +78,8 @@ void	ft_lstunlink(t_list **lst_head, t_list *lst, void (*del)(void *))
 	{
 		if (prev->next == lst)
 		{
-			prev->next = prev->next->next;
 			ft_lstdelone(prev->next, del);
+			prev->next = prev->next->next;
 			return ;
 		}
 		prev = prev->next;
