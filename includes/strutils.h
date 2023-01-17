@@ -16,6 +16,8 @@ t_pchararr	*pchararr_create(void);
 t_pchararr	*pchararr_destroy(t_pchararr *pchararr);
 int			pchararr_expand(t_pchararr *pchararr);
 int			pchararr_append(t_pchararr *pchararr, char *data);
+char		*pchararr_merge(t_pchararr *strarr);
+void		pchararr_free_all_pchars(t_pchararr *strarr);
 
 int			remove_quotes(char **buf);
 

@@ -13,6 +13,7 @@ FILENAME			= \
 					strutils/expansion/expand_envvar \
 					strutils/ft_strmerge \
 					strutils/pchararr \
+					strutils/pchararr_utils \
 					strutils/remove_quotes \
 					strutils/is_valid_str \
 					strutils/filename_utils \
