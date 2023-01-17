@@ -49,6 +49,9 @@ static int	map_cmd(char *cmd)
 	return (CODE_ERROR_GENERIC);
 }
 
+// TODO: 리다이션 수행 후, 입출력을 원래대로 복원해야함
+// TODO: backup_stdinout 구현할 것
+// 명령어 실행전에 redir부터 먼저 처리할 것
 int	exec_builtin_cmd(t_exec_unit *unit)
 {
 	const t_exec_builtin	exec_builtin[7] = {
@@ -62,12 +65,8 @@ int	exec_builtin_cmd(t_exec_unit *unit)
 	};
 	const int				cmd_idx = map_cmd(unit->argv[0]);
 
-	//이렇게하면 개망함, 표준 입출력 리다이렉션을 어디다가 반드시 저장해놔야함
-	//backup_stdinout();
-	//순서는 리다이렉션 먼저 무조건!
 	if (process_redir(unit->redir_arr, unit->n_redir) == CODE_ERROR_IO)
 		return (CODE_ERROR_IO);
-	//리턴값 고칠 것
 	if (cmd_idx == CODE_ERROR_GENERIC)
 	{
 		dprintf(2, "Failed to map proper cmd index: builtin command\n");
