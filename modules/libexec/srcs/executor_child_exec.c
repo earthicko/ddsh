@@ -54,11 +54,13 @@ static int	set_fd_stream(t_info *info)
 		ft_printf("%s: error while getenvp, stat %d\n", __func__, status);
 	}
 	status = find_exec(&argv[0]);
-	//바로 아래 status가 1이면 빌트인
-	if (status == 1)
+	dprintf(2, "%s, find_exec ret: %d\n", __func__, status);
+	if (status > 0)
 	{
-		ft_printf("%s: Unimplemented builtin execution\n", __func__);
-		exit(0);
+		builtin_stat = exec_builtin_cmd(info->units->arr + info->cur_idx, SUBSHELL);
+		if (builtin_stat != CODE_OK)
+			exit(EXIT_FAILURE);
+		exit(CODE_OK);
 	}
 	if (status == CODE_ERROR_MALLOC)
 		exit(EXIT_FAILURE);
