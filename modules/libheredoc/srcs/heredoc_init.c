@@ -40,7 +40,7 @@ int	_heredoc_init(
 	if (!home_dir)
 		return (CODE_ERROR_GENERIC);
 	temp = ft_strmerge(
-			5, home_dir, "/", ttyfilename, PREFIX_HEREDOC_TEMPFILE, "_");
+			4, home_dir, "/", ttyfilename, PREFIX_HEREDOC_TEMPFILE);
 	free(home_dir);
 	free(ttyfilename);
 	*prefix_filename = temp;
