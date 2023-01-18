@@ -22,7 +22,7 @@ static int	wait_children(pid_t last_cmd, int n_unit)
 		if (last_cmd == wait(&status))
 			exit_status = WEXITSTATUS(status);
 	}
-	dprintf(2, "in %s, exit_status: %d\n", __func__, exit_status);
+	dprintf(2, "in %s, exit_status: %d\n\n", __func__, exit_status);
 	return (exit_status);
 }
 
