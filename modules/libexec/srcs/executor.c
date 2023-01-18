@@ -76,11 +76,21 @@ static int	fork_exec(t_unit_arr *units)
 
 int	executor(t_unit_arr *units)
 {
+	int	stat;
+
 	if (units->n_unit <= 0)
 		return (CODE_ERROR_SCOPE);
+	if (units->arr->n_word == 0)
+	{
+		io_manager(STDINOUT_BACKUP);
+		stat = process_redir(units->arr->redir_arr, units->arr->n_redir);
+		io_manager(STDINOUT_RESTORE);
+		if (stat == CODE_ERROR_IO)
+			return (1);
+		return (CODE_OK);
+	}
 	if (units->n_unit == 1
-		&& units->arr->argv[0]
 		&& is_builtin_command(units->arr->argv[0]))
-			return (exec_builtin_cmd(units->arr));
+		return (exec_builtin_cmd(units->arr, PARENTSHELL));
 	return (fork_exec(units));
 }
