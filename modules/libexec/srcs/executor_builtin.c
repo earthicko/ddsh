@@ -33,11 +33,8 @@ static int	map_cmd(char *cmd)
 	return (CODE_ERROR_GENERIC);
 }
 
-// TODO: 리다이션 수행 후, 입출력을 원래대로 복원해야함
-// TODO: backup_stdinout 구현할 것
 // TODO: cmd_idx 매핑 오류(발생하지 않는 경우)의 오류 처리가 필요한지
 // TODO : builtin exit status 공부할 것
-// 명령어 실행전에 redir부터 먼저 처리할 것
 int	exec_builtin_cmd(t_exec_unit *unit, int mode)
 {
 	const t_exec_builtin	exec_builtin[8] = {
@@ -58,9 +55,7 @@ int	exec_builtin_cmd(t_exec_unit *unit, int mode)
 		dprintf(2, "%s, Failed to map proper cmd index\n", __func__);
 		return (-42);
 	}
-	dprintf(2, "%s, cmd_idx: %d\n", __func__, cmd_idx);
 	stat = exec_builtin[cmd_idx](unit->argv);
-	dprintf(2, "%s, builtin ret: %d\n", __func__, stat);
 	if (mode == PARENTSHELL)
 		io_manager(STDINOUT_RESTORE);
 	return (stat);
