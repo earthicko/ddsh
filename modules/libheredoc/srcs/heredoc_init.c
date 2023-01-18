@@ -26,6 +26,8 @@ static char	*_extract_filename(int slot)
 	return (ft_strdup(cursor));
 }
 
+// TODO: prefix_filename에 현재 cwd가 저장됨.
+// cwd를 만약 heredoc진행 중 삭제해버린다면, 이에 대한 예외처리가 필요해보임
 int	_heredoc_init(
 		int *n_heredoc, int *i_current, char **prefix_filename)
 {
