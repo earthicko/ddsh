@@ -6,6 +6,8 @@
 #include "libft_def.h"
 #include "t_exec_unit.h"
 
+// TODO: 반복문 조건 깔끔하게 고칠 것
+
 int	process_redir(t_redir *redir_arr, int n_redir)
 {
 	//놈에러 왜뜸????? 아나
