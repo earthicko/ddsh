@@ -148,6 +148,9 @@ static void	test_exec(char *input)
 		dprintf(2, "Failed while building exec_units\n");
 	if (root && (status = executor(&units)) != CODE_OK)
 		dprintf(2, "Failed while executing\n");
+	token_destroy(&toks);
+	node_destroy(root);
+	units_destroy(&units);
 	dprintf(2, "in %s, status code: %d\n", __func__, status);
 	dprintf(2, "\n>============================<\n\n\n");
 	toks.arr = 0;
@@ -156,7 +159,7 @@ static void	test_exec(char *input)
 
 void	set_command_1(char *command[20])
 {
-	ft_bzero(command, 160);
+	ft_bzero(command, 320);
 	command[0] = "a";
 	//command[0] = "<a <b cat -e file >a > c >d";
 	command[1] = "cat <a file -e file <a >b <<b";
@@ -167,7 +170,7 @@ void	set_command_1(char *command[20])
 
 void	set_command_2(char *command[20])
 {
-	ft_bzero(command, 160);
+	ft_bzero(command, 320);
 	command[0] = "a";
 	//command[0] = "<a <b cat -e file >a > c >d";
 	command[1] = "<a <b cat -e | file >a > c >d";
@@ -178,7 +181,7 @@ void	set_command_2(char *command[20])
 
 void	set_command_3(char *command[20])
 {
-	ft_bzero(command, 160);
+	ft_bzero(command, 320);
 	/********basic test***********/
 	command[0] = "cat README.md -e";
 	command[1] = "cat -e README.md";
@@ -186,22 +189,52 @@ void	set_command_3(char *command[20])
 	command[3] = "cat | no_cmd";
 	command[4] = "cat Makefile | head -n 5 | cat | tail -n 5";
 	command[5] = "echo -e hi | cat | ls | cat -e";
+
 	/*******uncloosed pipe test*********/
 	command[6] = "yes you | cat | no_cmd";
 	command[7] = "yes you | ls | cat";
 	command[8] = "yes you | cat | cat | head -n 5";
 	command[9] = "cat </dev/urandom | cat | cat | head -n 5";
+
 	/*******redirection test***********/
 	command[10] = "echo hi > a > b | cat | no_cmd";
 	command[11] = "<README.md cat > hi";
 	command[12] = "cat README.md > a > b>c | ls | cat c";
 	command[13] = "echo append >> c";
+
+	/*******edge case: only redir, only word********/
+	// TODO:  두번째, 세번째 각각 렉싱, 파싱에서 터짐
+	// 터지는게 정상적인지 고려할 것
+	command[14] = "<a";
+	command[15] = "";
+	command[16] = 0;
+	command[17] = "<README.md >a";
+	command[18] = "<README.md <Makefile >nofile";
+	command[19] = ">out <nofile";
+	command[20] = "<nofile >out";
+	
+	/********* 빌트인 관련 명령어 점검 *************/
+	command[21] = "echo hi";
+	command[22] = "cd ..";
+	command[23] = "echo hi | echo hi";
+	command[24] = "echo hi | echo hello | cat";
+	command[24] = "env | echo hello | cat";
+	//exit하면 프로세스 종료되어서 테스트 진행이 안됨
+	//command[25] = "exit";
+	//
+	//
+	/********* 권한이 없는 파일, 디렉토리 등 엣지케이스 **********/
+	command[31] = "./srcs";
+	command[32] = "./no_permission_file";
+
+	/********* 히어독 관련 로직 점검 **************/
+	
 }
 
 int	main(int argc, char *argv[], char *envp[])
 {
 	t_toks	toks;
-	char	*commands[20];
+	char	*commands[40];
 	int		i;
 	int		stat;
 
@@ -233,13 +266,15 @@ int	main(int argc, char *argv[], char *envp[])
 	if (stat)
 		return (1);
 	set_command_3(commands);
-	i = -1;
-	while (++i < 0)
+	//5, 9, 13 단위로 서로 다른 테스트
+	i = 20;
+	while (++i <= 33)
 		test_exec(commands[i]);
-	test_exec("cat");
-	//test_exec("cat | cat | cat | ls");
+	//test_exec("./srcs");
+	//test_exec("./no_permission_file");
+	//test_exec("exit");
 	//아래 테케는 아직 동작하지 않음
 	//test_exec("<< EOF cat");
-	//system("leaks test_exec");
+	system("leaks --list test_exec");
 	return (0);
 }
