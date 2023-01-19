@@ -13,6 +13,7 @@ static void	_init_is_builtin_command(char **parr)
 	parr[7] = "exit";
 }
 
+// FIXED: is_builtin_command 함수에서 인덱스값 리턴하게 변경
 int	is_builtin_command(char *str)
 {
 	char	*dict[8];
