@@ -1,6 +1,7 @@
 #include "parser.h"
 #include "t_node.h"
 #include "testers.h"
+#include "heredoc.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
@@ -67,6 +68,7 @@ int	main(void)
 	t_token	tokens[10];
 	int		n_tokens;
 
+	heredoc_init();
 	srand(time(NULL));
 	set_tokens(tokens, &n_tokens);
 	shuffle(tokens, n_tokens, 10);
@@ -76,8 +78,9 @@ int	main(void)
 	{
 		node_print(root, 0);
 		printf("%p\n", ((t_node *)(root->childs->content)));
-		_node_destroy(root);
+		node_destroy(root);
 	}
+	heredoc_clear(-1);
 	system("leaks test_parser");
 	return (0);
 }
