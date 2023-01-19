@@ -6,6 +6,10 @@
 
 # define WRITE 1
 # define READ 0
+# define STDINOUT_BACKUP 0
+# define STDINOUT_RESTORE 1
+# define SUBSHELL 0
+# define PARENTSHELL 1
 
 typedef struct s_info
 {
@@ -25,8 +29,10 @@ int		do_redir_out(t_redir *redir_arr);
 int		do_redir_in_here(t_redir *redir_arr);
 int		do_redir_out_append(t_redir *redir_arr);
 
+void	io_manager(int mode);
+
 void	child_exec_cmd(t_info *info);
 
-int		exec_builtin_cmd(t_exec_unit *unit);
+int		exec_builtin_cmd(t_exec_unit *unit, int mode);
 
 #endif

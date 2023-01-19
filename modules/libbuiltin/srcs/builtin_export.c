@@ -43,6 +43,8 @@ static int	export_var(char *word)
 	return (stat);
 }
 
+// TODO: 모든 환경변수를 언셋했을 때, export가 제대로 되는지 확인
+// TODO: export에 비정상적인 argv가 들어오는 경우에 대한 로직 추가(잘못된 사용)
 int	builtin_export(char **argv)
 {
 	int	stat;
