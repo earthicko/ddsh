@@ -33,8 +33,8 @@ static int	map_cmd(char *cmd)
 	return (CODE_ERROR_GENERIC);
 }
 
-// TODO: cmd_idx 매핑 오류(발생하지 않는 경우)의 오류 처리가 필요한지
-// TODO : builtin exit status 공부할 것
+// TODO: cmd_idx 매핑 오류(절대 발생하지 않을 경우)의 오류 방어 처리가 필요한지
+// 마지막에 최종 검토 마치고 삭제하는 것으로
 int	exec_builtin_cmd(t_exec_unit *unit, int mode)
 {
 	const t_exec_builtin	exec_builtin[8] = {
@@ -49,7 +49,8 @@ int	exec_builtin_cmd(t_exec_unit *unit, int mode)
 	stat = process_redir(unit->redir_arr, unit->n_redir);
 	if (stat == CODE_ERROR_IO)
 		return (1);
-	//빠져도 되는 분기
+
+	// CODE TO BE REMOVED: 삭제해도 되는 분기
 	if (cmd_idx == CODE_ERROR_GENERIC)
 	{
 		dprintf(2, "%s, Failed to map proper cmd index\n", __func__);

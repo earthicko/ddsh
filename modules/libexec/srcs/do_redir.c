@@ -5,6 +5,9 @@
 #include "executor_internal.h"
 #include "libft_def.h"
 #include "t_exec_unit.h"
+
+// TODO: redir_arr 타입 none인 경우에 방어로직 (발생하지 않는 경우)
+// 마지막에 최종 검토 마치고 삭제하는 것으로
 int	process_redir(t_redir *redir_arr, int n_redir)
 {
 	const t_do_redir	do_redir[5] = {
@@ -16,6 +19,7 @@ int	process_redir(t_redir *redir_arr, int n_redir)
 	i = -1;
 	while (++i < n_redir)
 	{
+		// CODE TO BE REMOVED: 삭제해도 되는 분기
 		if (redir_arr[i].type == REDIR_NONE)
 		{
 			dprintf(2, "redir type is none: must be critial error\n");
