@@ -1,5 +1,6 @@
 #include "parser.h"
 #include "t_node.h"
+#include "heredoc.h"
 #include "testers.h"
 #include "heredoc.h"
 #include <stdlib.h>

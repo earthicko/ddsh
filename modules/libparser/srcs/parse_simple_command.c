@@ -11,7 +11,10 @@ t_node	*_parse_simple_command(t_parser *p)
 
 	root = node_create(NODETYPE_SIMPLE_COMMAND, NULL, 0);
 	if (!root)
+	{
+		p->exit_stat = CODE_ERROR_MALLOC;
 		return (NULL);
+	}
 	while (TRUE)
 	{
 		child = _parse_cmd_element(p);
@@ -22,6 +25,9 @@ t_node	*_parse_simple_command(t_parser *p)
 			return (_parse_abort(p, root, NULL));
 		}
 		if (node_addchild(root, child))
+		{
+			p->exit_stat = CODE_ERROR_MALLOC;
 			return (_parse_abort(p, root, child));
+		}
 	}
 }

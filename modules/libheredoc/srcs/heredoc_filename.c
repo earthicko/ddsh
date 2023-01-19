@@ -4,43 +4,65 @@
 #include "strutils.h"
 #include "heredoc_internal.h"
 
+static char	*_extract_ttyslotname(void)
+{
+	char	*cursor;
+	char	*fullname;
+
+	fullname = ttyname(ttyslot());
+	if (!fullname)
+		return (NULL);
+	cursor = fullname;
+	while (*cursor)
+		cursor++;
+	while (cursor != fullname)
+	{
+		if (*cursor == '/')
+			break ;
+		cursor--;
+	}
+	if (*cursor == '/')
+		cursor++;
+	return (ft_strdup(cursor));
+}
+
 static int	_setval_and_return(char **buf, char *val, int ret)
 {
 	*buf = val;
 	return (ret);
 }
 
-static char	*_merge_filename(char *prefix_filename, int doc_id)
+int	_heredoc_get_filename(int n_heredoc, int doc_id, char **buf)
 {
-	char	*docidstr;
-	char	*result;
-
-	docidstr = ft_itoa(doc_id);
-	if (!docidstr)
-		return (NULL);
-	result = ft_strjoin(prefix_filename, docidstr);
-	free(docidstr);
-	return (result);
-}
-
-int	_heredoc_get_filename(int n_heredoc, char *prefix_filename, int doc_id, char **buf)
-{
+	char	*_ttyname;
+	char	*docname;
 	char	*result;
 
 	if (doc_id < 0 || n_heredoc <= doc_id)
 		return (_setval_and_return(buf, NULL, CODE_ERROR_SCOPE));
-	result = _merge_filename(prefix_filename, doc_id);
+	_ttyname = _extract_ttyslotname();
+	if (!_ttyname)
+		return (_setval_and_return(buf, NULL, CODE_ERROR_MALLOC));
+	docname = ft_itoa(doc_id);
+	if (!docname)
+	{
+		free(_ttyname);
+		return (_setval_and_return(buf, NULL, CODE_ERROR_MALLOC));
+	}
+	result = ft_strmerge(6, DIR_HEREDOC, "/", PREFIX_HEREDOC_TEMPFILE,
+			_ttyname, "_", docname);
+	free(_ttyname);
+	free(docname);
 	if (!result)
-		return (_setval_and_return(buf, NULL, CODE_ERROR_GENERIC));
+		return (_setval_and_return(buf, NULL, CODE_ERROR_MALLOC));
 	return (_setval_and_return(buf, result, CODE_OK));
 }
 
-int	_heredoc_get_next_filename(
-		int n_heredoc, char *temp_dir, int *i_current, char **buf)
+int	_heredoc_get_next_filename(int n_heredoc, int *i_current, char **buf)
 {
 	int	stat;
 
-	stat = _heredoc_get_filename(n_heredoc, temp_dir, *i_current, buf);
+	stat = _heredoc_get_filename(n_heredoc, *i_current, buf);
 	if (!stat)
 		(*i_current)++;
 	return (stat);

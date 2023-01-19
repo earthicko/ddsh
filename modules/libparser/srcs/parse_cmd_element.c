@@ -11,7 +11,10 @@ t_node	*_parse_cmd_element(t_parser *p)
 
 	root = node_create(NODETYPE_CMD_ELEMENT, NULL, 0);
 	if (!root)
+	{
+		p->exit_stat = CODE_ERROR_MALLOC;
 		return (NULL);
+	}
 	child = _parse_terminal(p, NODETYPE_CMD_WORD);
 	if (child)
 		return (_parse_addchild_and_return(p, root, child));

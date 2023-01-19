@@ -22,12 +22,21 @@ t_node	*_parse_terminal(t_parser *p, int nodetype)
 	t_node	*root;
 
 	if (_parser_is_last_token(p))
+	{
+		p->last_error_loc = p->tok_curr;
 		return (NULL);
+	}
 	if (!_is_correct_tokentype(nodetype, p->tok_curr->type))
+	{
+		p->last_error_loc = p->tok_curr;
 		return (NULL);
+	}
 	root = node_create(nodetype, p->tok_curr->content, 1);
 	if (!root)
+	{
+		p->exit_stat = CODE_ERROR_MALLOC;
 		return (NULL);
+	}
 	p->tok_curr++;
 	return (root);
 }

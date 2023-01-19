@@ -28,6 +28,7 @@ FILE_LIBFT	= \
 			ft_printf_fwrite_num \
 			ft_printf_fwrite_ptr \
 			ft_printf_fwrite_utils \
+			ft_print_error \
 			t_intarr \
 			t_chararr
 

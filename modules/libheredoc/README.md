@@ -11,7 +11,6 @@
 # 개요
 
 ```c
-int heredoc_init(void);
 int heredoc_read(char *delimeter);
 int heredoc_get_filename(int doc_id, char **buf);
 int heredoc_get_next_filename(char **buf);
@@ -31,25 +30,9 @@ here-document는 임시 파일로 저장된다. 이들의 파일 이름은 다�
 .heredoc_{TTY 이름}_{doc_id}
 ```
 
-`heredoc_init`을 한번 호출했다면 이들은 `$HOME`에 저장되고, 그렇지 않을 시 현재 디렉토리 (CWD)에 저장된다. 현재 디렉토리는 `cd` 명령으로 변경할 수 있으므로 반드시 셸이 실행되자마자 `heredoc_init`을 호출 해야한다.
+이들은 `/tmp`에 저장된다.
 
 # 기능 설명
-
-### heredoc_init
-
-```c
-int	heredoc_init(void);
-
-heredoc_init();
-```
-
-현재 환경 변수에서 `$HOME`을 찾아 임시 파일을 저장할 디렉토리로 설정한다. 실패 시 현재 디렉토리로 설정한다.
-
-반환 값은 다음과 같다.
-
-- `CODE_OK`: 정상적으로 완료됨
-- `CODE_ERROR_DATA`: 환경 변수에서 `HOME`을 찾을 수 없음
-- `CODE_ERROR_MALLOC`: 메모리를 할당할 수 없음
 
 ### heredoc_read
 

@@ -3,7 +3,7 @@
 #include "strutils.h"
 #include "expansion_internal.h"
 
-static int	exit_shell_expansion(int stat, t_pchararr *strarr, char **buf)
+static int	_exit_do_expansion(int stat, t_pchararr *strarr, char **buf)
 {
 	char	*backup;
 
@@ -36,36 +36,42 @@ static int	_compose_char(int *pos, t_pchararr *strarr, char c)
 	return (_exit_compose(strarr, str));
 }
 
-int	_do_shell_expansion(char **buf, int remove_quote, int squote, int dquote)
+int	_do_expansion(char **buf, int option)
 {
-	t_pchararr	*strarr;
+	t_pchararr	*words;
 	int			i;
 	int			stat;
 
-	strarr = pchararr_create();
-	if (!strarr)
+	words = pchararr_create();
+	if (!words)
 		return (CODE_ERROR_MALLOC);
 	i = 0;
 	stat = 0;
 	while ((*buf)[i])
 	{
-		if ((*buf)[i] == '\'' && squote)
-				stat |= _compose_squote((*buf), &i, strarr, remove_quote);
-		else if ((*buf)[i] == '\'' && !squote)
-				stat |= _compose_char(&i, strarr, '\'');
-		else if ((*buf)[i] == '\"' && dquote)
-				stat |= _compose_dquote((*buf), &i, strarr, remove_quote);
-		else if ((*buf)[i] == '\"' && !dquote)
-				stat |= _compose_char(&i, strarr, '\"');
+		if ((*buf)[i] == '\'' && (option & O_PARSESQUOTE))
+				stat |= _compose_squote((*buf), &i, words, option);
+		else if ((*buf)[i] == '\'' && !(option & O_PARSESQUOTE))
+				stat |= _compose_char(&i, words, '\'');
+		else if ((*buf)[i] == '\"' && (option & O_PARSEDQUOTE))
+				stat |= _compose_dquote((*buf), &i, words, option);
+		else if ((*buf)[i] == '\"' && !(option & O_PARSEDQUOTE))
+				stat |= _compose_char(&i, words, '\"');
 		else if ((*buf)[i] == '$')
-			stat |= _compose_envvar((*buf), &i, strarr);
+			stat |= _compose_envvar((*buf), &i, words, option);
 		else
-			stat |= _compose_str((*buf), &i, strarr);
+			stat |= _compose_str((*buf), &i, words);
 	}
-	return (exit_shell_expansion(stat, strarr, buf));
+	return (_exit_do_expansion(stat, words, buf));
 }
 
-int	do_shell_expansion(char **buf, int remove_quote)
+int	do_shell_expansion(char **buf)
 {
-	return (_do_shell_expansion(buf, remove_quote, TRUE, TRUE));
+	return (_do_expansion(buf,
+			O_REMQUOTE | O_PARSESQUOTE | O_PARSEDQUOTE | O_REMEMPTYVAR));
+}
+
+int	do_heredoc_expansion(char **buf)
+{
+	return (_do_expansion(buf, O_PARSESQUOTE | O_PARSEDQUOTE));
 }

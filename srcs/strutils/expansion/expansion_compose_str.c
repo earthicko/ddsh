@@ -4,7 +4,7 @@
 #include "strutils.h"
 #include "expansion_internal.h"
 
-static void	init_skip_envvar(char *str, int *pos, int *start)
+static void	_init_compose_envvar(char *str, int *pos, int *start)
 {
 	(*pos)++;
 	*start = *pos;
@@ -21,18 +21,32 @@ static void	init_skip_envvar(char *str, int *pos, int *start)
 		(*pos)++;
 }
 
+static int	_handle_empty_varname(t_pchararr *strarr, char *varname)
+{
+	char	*val;
+
+	free(varname);
+	val = ft_strdup("$");
+	if (!val)
+		return (CODE_ERROR_MALLOC);
+	return (_exit_compose(strarr, val));
+}
+
 int	_compose_envvar(
-	char *str, int *pos, t_pchararr *strarr)
+	char *str, int *pos, t_pchararr *strarr, int option)
 {
 	int		start;
 	int		stat;
 	char	*varname;
 	char	*val;
 
-	init_skip_envvar(str, pos, &start);
+	_init_compose_envvar(str, pos, &start);
 	varname = ft_substr(str, start, *pos - start);
 	if (!varname)
 		return (CODE_ERROR_MALLOC);
+	if (ft_strlen(varname) == 0
+		&& (!(option & O_REMEMPTYVAR) || str[*pos] == '\0'))
+		return (_handle_empty_varname(strarr, varname));
 	stat = envman_getval(varname, &val);
 	free(varname);
 	if (stat)

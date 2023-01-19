@@ -1,29 +1,14 @@
-#include <stdlib.h>
 #include <signal.h>
-#include <stdio.h>
-#include <readline/readline.h>
 #include "libft.h"
 
-typedef	struct sigaction	t_sigact;
+typedef struct sigaction	t_sigact;
 
-static void	_sighandler_int_interactive(int signo)
-{
-	ft_printf("%s: got SIGINT(%d)\n", __func__, signo);
-	rl_replace_line("", TRUE);
-	rl_on_new_line();
-	rl_redisplay();
-	return ;
-}
-
-static void	_sighandler_int_heredoc(int signo)
-{
-	ft_printf("%s: got SIGINT(%d)\n", __func__, signo);
-	exit(0);
-	return ;
-}
+void	_sighandler_int_interactive(int signo);
+void	_sighandler_int_heredoc(int signo);
 
 int	signal_set_state_default(void)
 {
+	int			stat;
 	t_sigact	action_term;
 	t_sigact	action_quit;
 	t_sigact	action_int;
@@ -37,15 +22,16 @@ int	signal_set_state_default(void)
 	action_term.sa_flags = 0;
 	action_quit.sa_flags = 0;
 	action_int.sa_flags = 0;
-	// TODO: 예외 처리
-	sigaction(SIGTERM, &action_term, NULL);
-	sigaction(SIGQUIT, &action_quit, NULL);
-	sigaction(SIGINT, &action_int, NULL);
-	return (CODE_OK);
+	stat = 0;
+	stat |= sigaction(SIGTERM, &action_term, NULL);
+	stat |= sigaction(SIGQUIT, &action_quit, NULL);
+	stat |= sigaction(SIGINT, &action_int, NULL);
+	return (stat);
 }
 
 int	signal_set_state_interactive(void)
 {
+	int			stat;
 	t_sigact	action_term;
 	t_sigact	action_quit;
 	t_sigact	action_int;
@@ -59,15 +45,16 @@ int	signal_set_state_interactive(void)
 	action_term.sa_flags = 0;
 	action_quit.sa_flags = 0;
 	action_int.sa_flags = 0;
-	// TODO: 예외 처리
-	sigaction(SIGTERM, &action_term, NULL);
-	sigaction(SIGQUIT, &action_quit, NULL);
-	sigaction(SIGINT, &action_int, NULL);
-	return (CODE_OK);
+	stat = 0;
+	stat |= sigaction(SIGTERM, &action_term, NULL);
+	stat |= sigaction(SIGQUIT, &action_quit, NULL);
+	stat |= sigaction(SIGINT, &action_int, NULL);
+	return (stat);
 }
 
 int	signal_set_state_heredoc(void)
 {
+	int			stat;
 	t_sigact	action_term;
 	t_sigact	action_quit;
 	t_sigact	action_int;
@@ -81,15 +68,16 @@ int	signal_set_state_heredoc(void)
 	action_term.sa_flags = 0;
 	action_quit.sa_flags = 0;
 	action_int.sa_flags = 0;
-	// TODO: 예외 처리
-	sigaction(SIGTERM, &action_term, NULL);
-	sigaction(SIGQUIT, &action_quit, NULL);
-	sigaction(SIGINT, &action_int, NULL);
-	return (CODE_OK);
+	stat = 0;
+	stat |= sigaction(SIGTERM, &action_term, NULL);
+	stat |= sigaction(SIGQUIT, &action_quit, NULL);
+	stat |= sigaction(SIGINT, &action_int, NULL);
+	return (stat);
 }
 
 int	signal_set_state_executing(void)
 {
+	int			stat;
 	t_sigact	action_term;
 	t_sigact	action_quit;
 	t_sigact	action_int;
@@ -103,9 +91,9 @@ int	signal_set_state_executing(void)
 	action_term.sa_flags = 0;
 	action_quit.sa_flags = 0;
 	action_int.sa_flags = 0;
-	// TODO: 예외 처리
-	sigaction(SIGTERM, &action_term, NULL);
-	sigaction(SIGQUIT, &action_quit, NULL);
-	sigaction(SIGINT, &action_int, NULL);
-	return (CODE_OK);
+	stat = 0;
+	stat |= sigaction(SIGTERM, &action_term, NULL);
+	stat |= sigaction(SIGQUIT, &action_quit, NULL);
+	stat |= sigaction(SIGINT, &action_int, NULL);
+	return (stat);
 }

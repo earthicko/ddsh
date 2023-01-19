@@ -29,9 +29,6 @@ int	main(int argc, char **argv, char **envp)
 	stat = envman_init(envp);
 	if (stat)
 		return (1);
-	stat = heredoc_init();
-	if (stat)
-		return (1);
 	while (TRUE)
 	{
 		stat = signal_set_state_interactive();

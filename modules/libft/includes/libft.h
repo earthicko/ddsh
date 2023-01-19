@@ -79,6 +79,8 @@ char		*get_next_line(int fd);
 //			ft_printf
 int			ft_printf(const char *format, ...);
 int			ft_dprintf(int fd, const char *format, ...);
+//			ft_print_error
+void		ft_print_error(char *prefix, int code);
 //			t_intarr
 t_intarr	*create_intarr(int cap);
 t_intarr	*del_intarr(t_intarr *arr);
