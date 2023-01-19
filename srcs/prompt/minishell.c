@@ -85,9 +85,8 @@ int	main(int argc, char **argv, char **envp)
 			ft_printf("%s: Error while building exec unit\n", __func__);
 			continue ;
 		}
-		ft_printf("%s: exec build done\n\n\n", __func__, str);
+		ft_printf("%s: exec build done\n", __func__, str);
 
-		ft_printf(">===== 출력 <======\n\n");
 		stat = executor(&units);
 		exit_stat_manager(stat);
 		units_destroy(&units);
@@ -96,7 +95,7 @@ int	main(int argc, char **argv, char **envp)
 			ft_printf("%s: Error while exec\n", __func__);
 			continue ;
 		}
-		ft_printf("%s: exec done\n\n\n", __func__, str);
+		ft_printf("%s: exec done\n", __func__, str);
 
 		// system("leaks minishell");
 	}

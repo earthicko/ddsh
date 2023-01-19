@@ -2,8 +2,6 @@
 #include <unistd.h>
 #include "libft.h"
 
-// TODO: echo -nn hi 배쉬는 hi뒤에 개행 제거해서 출력
-// 우리 쉘은 -nn hi 출력
 static int	builtin_flag_n_on(char *first_arg)
 {
 	if (!first_arg)
