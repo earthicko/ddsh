@@ -11,7 +11,7 @@
 //
 // TODO: 쉘이 처음 실행될 때에도 이미 OLDPWD가 설정돼 있음(수정하지 않아도 된다고 생각함)
 // TODO: 에러메시지 구현 및 놈에 맞게 수정
-//
+// TODO: (구현하지 않을듯)현재 디렉토리 상위디렉토리를 삭제할 경우 cd .. 명령어 동작이 일부 다름
 static int	builtin_cd_internal(char *target)
 {
 	char	*pwd;
