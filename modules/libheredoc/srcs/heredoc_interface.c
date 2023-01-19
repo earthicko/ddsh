@@ -1,10 +1,5 @@
 #include "heredoc_internal.h"
 
-int	heredoc_init(void)
-{
-	return (_heredocmanager(HEREDOCMODE_INIT, 0, 0));
-}
-
 int	heredoc_read(char *delimeter)
 {
 	return (_heredocmanager(HEREDOCMODE_READ, 0, delimeter));

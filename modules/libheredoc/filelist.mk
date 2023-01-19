@@ -2,7 +2,6 @@
 FILE_LIBHEREDOC	= \
 				heredoc_clear \
 				heredoc_filename \
-				heredoc_init \
 				heredoc_interface \
 				heredoc_read \
 				heredocmanager
