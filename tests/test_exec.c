@@ -203,7 +203,7 @@ void	set_command_3(char *command[20])
 	command[13] = "echo append >> c";
 
 	/*******edge case: only redir, only word********/
-	// TODO:  두번째, 세번째 각각 렉싱, 파싱에서 터짐
+	// TODO: 15번째, 16번째 테스트 각각 파싱, 렉싱에서 터짐
 	// 터지는게 정상적인지 고려할 것
 	command[14] = "<a";
 	command[15] = "";
@@ -267,8 +267,8 @@ int	main(int argc, char *argv[], char *envp[])
 		return (1);
 	set_command_3(commands);
 	//5, 9, 13 단위로 서로 다른 테스트
-	i = 20;
-	while (++i <= 33)
+	i = 13;
+	while (++i <= 16)
 		test_exec(commands[i]);
 	//test_exec("./srcs");
 	//test_exec("./no_permission_file");
