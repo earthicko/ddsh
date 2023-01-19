@@ -68,7 +68,6 @@ int	main(void)
 	t_token	tokens[10];
 	int		n_tokens;
 
-	heredoc_init();
 	srand(time(NULL));
 	set_tokens(tokens, &n_tokens);
 	shuffle(tokens, n_tokens, 10);
