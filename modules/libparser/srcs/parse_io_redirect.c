@@ -10,7 +10,10 @@ t_node	*_parse_io_redirect(t_parser *p)
 
 	root = node_create(NODETYPE_IO_REDIRECT, NULL, 0);
 	if (!root)
+	{
+		p->exit_stat = CODE_ERROR_MALLOC;
 		return (NULL);
+	}
 	child = _parse_io_file(p);
 	if (child)
 		return (_parse_addchild_and_return(p, root, child));
