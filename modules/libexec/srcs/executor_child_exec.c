@@ -94,17 +94,13 @@ void	child_exec_extern(t_info *info)
 //
  void	child_exec_cmd(t_info *info)
 {
-	struct stat	s_statbuf;
 	char	**argv;
-	int		status;
-	char	**envp_paths;
 	int		builtin_stat;
 
 	if (set_fd_stream(info) < 0)
 		exit(EXIT_FAILURE);
 	argv = (info->units->arr + info->cur_idx)->argv;
-	status = is_builtin_command(argv[0]);
-	if (status != FALSE)
+	if (is_builtin_command(argv[0]) != FALSE)
 	{
 		// TODO: 빌트인함수 에러메시지 출력은 서브루틴에 추가
 		// CODE_OK가 아닌 상황에서 exit status 세분화 필요

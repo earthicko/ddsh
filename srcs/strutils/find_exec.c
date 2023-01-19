@@ -19,8 +19,6 @@ int	_is_file_existent(char *path)
 // only checks if file exists.
 int	find_exec(char **buf)
 {
-	int	builtin_idx;
-
 	if (!(*buf))
 		return (CODE_ERROR_DATA);
 	if (ft_strchr(*buf, '/'))
