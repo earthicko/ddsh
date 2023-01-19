@@ -25,7 +25,7 @@ static int	_write_io_file_loop(int fd, int expand, char *delimeter)
 	}
 	if (expand)
 	{
-		if (do_shell_expansion(&line, FALSE))
+		if (do_heredoc_expansion(&line))
 		{
 			free(line);
 			return (-1);

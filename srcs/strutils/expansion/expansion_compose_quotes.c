@@ -3,8 +3,7 @@
 #include "strutils.h"
 #include "expansion_internal.h"
 
-static int	init_skip_and_append_quote(
-		int	*start, int *pos, char *str, char quote)
+static int	_init_compose_squote(int *start, int *pos, char *str, char quote)
 {
 	*start = *pos;
 	(*pos)++;
@@ -19,21 +18,20 @@ static int	init_skip_and_append_quote(
 	return (CODE_OK);
 }
 
-int	_compose_squote(
-		char *str, int *pos, t_pchararr *strarr, int remove_quote)
+int	_compose_squote(char *str, int *pos, t_pchararr *strarr, int option)
 {
 	int		stat;
 	int		start;
 	char	*word;
 	char	*temp;
 
-	stat = init_skip_and_append_quote(&start, pos, str, '\'');
+	stat = _init_compose_squote(&start, pos, str, '\'');
 	if (stat)
 		return (stat);
 	word = ft_substr(str, start, *pos - start);
 	if (!word)
 		return (CODE_ERROR_MALLOC);
-	if (remove_quote)
+	if (option & O_REMQUOTE)
 	{
 		temp = ft_substr(word, 1, ft_strlen(word) - 2);
 		free(word);
@@ -44,7 +42,7 @@ int	_compose_squote(
 	return (_exit_compose(strarr, word));
 }
 
-static int	skip_and_append_dquote_recurse(char **buf, int remove_quote)
+static int	_compose_dquote_recurse(char **buf, int option)
 {
 	int		stat;
 	char	*temp[2];
@@ -52,13 +50,13 @@ static int	skip_and_append_dquote_recurse(char **buf, int remove_quote)
 	temp[0] = ft_substr(*buf, 1, ft_strlen(*buf) - 2);
 	if (!temp[0])
 		return (CODE_ERROR_MALLOC);
-	stat = _do_shell_expansion(&(temp[0]), FALSE, FALSE, FALSE);
+	stat = _do_expansion(&(temp[0]), option & O_REMEMPTYVAR);
 	if (stat)
 	{
 		free(temp[0]);
 		return (stat);
 	}
-	if (!remove_quote)
+	if (!(option & O_REMQUOTE))
 	{
 		temp[1] = ft_strmerge(3, "\"", temp[0], "\"");
 		free(temp[0]);
@@ -71,20 +69,19 @@ static int	skip_and_append_dquote_recurse(char **buf, int remove_quote)
 	return (CODE_OK);
 }
 
-int	_compose_dquote(
-		char *str, int *pos, t_pchararr *strarr, int remove_quote)
+int	_compose_dquote(char *str, int *pos, t_pchararr *strarr, int option)
 {
 	int		stat;
 	int		start;
 	char	*word;
 
-	stat = init_skip_and_append_quote(&start, pos, str, '\"');
+	stat = _init_compose_squote(&start, pos, str, '\"');
 	if (stat)
 		return (stat);
 	word = ft_substr(str, start, *pos - start);
 	if (!word)
 		return (CODE_ERROR_MALLOC);
-	stat = skip_and_append_dquote_recurse(&word, remove_quote);
+	stat = _compose_dquote_recurse(&word, option);
 	if (stat)
 	{
 		free(word);
