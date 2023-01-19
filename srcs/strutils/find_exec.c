@@ -21,6 +21,8 @@ int	find_exec(char **buf)
 {
 	if (!(*buf))
 		return (CODE_ERROR_DATA);
+	if (is_builtin_command(*buf))
+		return (1);
 	if (ft_strchr(*buf, '/'))
 	{
 		if (_is_file_existent(*buf))

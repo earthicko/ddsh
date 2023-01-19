@@ -43,7 +43,6 @@ t_enventry	*_envman_getentry(t_list *envlist, char *name)
 	return (NULL);
 }
 
-// FIXED: memset 세번째 인자 sizeof(entry)로 적혀있던 내용 수정
 int	_envman_addentry(t_list **p_list, char *env)
 {
 	t_list		*newlst;
@@ -53,7 +52,7 @@ int	_envman_addentry(t_list **p_list, char *env)
 	entry = malloc(sizeof(t_enventry));
 	if (!entry)
 		return (CODE_ERROR_MALLOC);
-	ft_memset(entry, 0, sizeof(t_enventry));
+	ft_memset(entry, 0, sizeof(entry));
 	stat = envman_split_envstr(env, &(entry->name), &(entry->val));
 	if (stat)
 	{
