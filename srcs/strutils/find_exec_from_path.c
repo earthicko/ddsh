@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <dirent.h>
 #include "libft.h"
+#include "msgdef.h"
 #include "envmanager.h"
 #include "strutils.h"
 
@@ -65,7 +66,6 @@ int	_find_exec_from_path(char **buf)
 			return (_find_exec_from_path_abort(path, paths, stat));
 		cursor++;
 	}
-	if (stat)
-		stat = CODE_ERROR_GENERIC;
-	return (_find_exec_from_path_abort(path, paths, stat));
+	ft_dprintf(2, "%s: %s: command not found\n", MSG_ERROR_PREFIX, *buf);
+	return (_find_exec_from_path_abort(path, paths, CODE_ERROR_GENERIC));
 }

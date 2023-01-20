@@ -1,4 +1,5 @@
 #include "libft.h"
+#include "msgdef.h"
 #include "envmanager_internal.h"
 
 static int	_envman_getexitstat(char **buf)
@@ -31,5 +32,10 @@ int	_envman_getval(t_list *envlist, char **buf, char *name)
 
 int	envman_getval(char *name, char **buf)
 {
-	return (_envmanager(0, buf, name, 0));
+	int	stat;
+
+	stat = _envmanager(0, buf, name, 0);
+	if (stat)
+		ft_print_error(MSG_ERROR_PREFIX, stat);
+	return (stat);
 }

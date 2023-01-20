@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include "libft.h"
+#include "msgdef.h"
 #include "envmanager_internal.h"
 
 int	_envman_getenvp(t_list *envlist, char ***buf)
@@ -32,5 +33,10 @@ int	_envman_getenvp(t_list *envlist, char ***buf)
 
 int	envman_getenvp(char ***buf)
 {
-	return (_envmanager(0, buf, 0, 0));
+	int	stat;
+
+	stat = _envmanager(0, buf, 0, 0);
+	if (stat)
+		ft_print_error(MSG_ERROR_PREFIX, stat);
+	return (stat);
 }

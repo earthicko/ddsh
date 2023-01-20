@@ -1,4 +1,4 @@
-#include <stdio.h>
+#include "libft.h"
 #include "exec_internal.h"
 #include "t_node.h"
 
@@ -49,8 +49,8 @@ t_node	*get_child_node(t_node *node, int depth)
 			ret = ret->childs->content;
 		else
 		{
-			printf("Exceed depth range: Current node has no child\n");
-			printf("Current depth is %d\n", i);
+			ft_dprintf(2, "Exceed depth range: Current node has no child\n");
+			ft_dprintf(2, "Current depth is %d\n", i);
 		}
 	}
 	return (ret);

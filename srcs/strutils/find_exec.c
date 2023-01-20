@@ -1,5 +1,6 @@
 #include <sys/stat.h>
 #include "libft.h"
+#include "msgdef.h"
 #include "strutils.h"
 
 int	_find_exec_from_path(char **buf);
@@ -25,6 +26,8 @@ int	find_exec(char **buf)
 	{
 		if (_is_file_existent(*buf))
 			return (CODE_OK);
+		ft_dprintf(2, "%s: %s: No such file or directory\n",
+			MSG_ERROR_PREFIX, *buf);
 		return (CODE_ERROR_GENERIC);
 	}
 	return (_find_exec_from_path(buf));

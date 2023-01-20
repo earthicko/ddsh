@@ -1,4 +1,5 @@
 #include "envmanager_internal.h"
+#include "msgdef.h"
 #include "libft.h"
 
 int	_envman_unsetval(t_list **envlist, char *name)
@@ -14,5 +15,10 @@ int	_envman_unsetval(t_list **envlist, char *name)
 
 int	envman_unsetval(char *name)
 {
-	return (_envmanager(0, 0, name, 0));
+	int	stat;
+
+	stat = _envmanager(0, 0, name, 0);
+	if (stat)
+		ft_print_error(MSG_ERROR_PREFIX, stat);
+	return (stat);
 }

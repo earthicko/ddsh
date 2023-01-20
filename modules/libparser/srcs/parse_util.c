@@ -1,5 +1,6 @@
 #include <stddef.h>
 #include "libft.h"
+#include "msgdef.h"
 #include "t_token.h"
 #include "t_node.h"
 #include "parser_internal.h"
@@ -54,18 +55,15 @@ t_node	*_parse_abort(t_parser *p, t_node *root, t_node *child)
 	return (NULL);
 }
 
-// TODO: 에러 메시지 통일
 void	_parse_perror(t_parser *p)
 {
 	if (p->exit_stat)
-	{
-		ft_print_error("parser", p->exit_stat);
-	}
+		ft_print_error(MSG_ERROR_PREFIX, p->exit_stat);
 	else
 	{
 		if (p->last_error_loc == p->tok_last)
 			p->last_error_loc--;
-		ft_dprintf(2, "syntax error near unexpected token `%s`\n",
-			p->last_error_loc->content);
+		ft_dprintf(2, "%s: syntax error near unexpected token `%s`\n",
+			MSG_ERROR_PREFIX, p->last_error_loc->content);
 	}
 }

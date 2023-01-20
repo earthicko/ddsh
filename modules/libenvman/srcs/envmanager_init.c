@@ -1,4 +1,5 @@
-#include "libft_def.h"
+#include "libft.h"
+#include "msgdef.h"
 #include "envmanager_internal.h"
 
 int	_envman_init(t_list **p_list, char **envp)
@@ -22,5 +23,10 @@ int	_envman_init(t_list **p_list, char **envp)
 
 int	envman_init(char **envp)
 {
-	return (_envmanager(envp, 0, 0, 0));
+	int	stat;
+
+	stat = _envmanager(envp, 0, 0, 0);
+	if (stat)
+		ft_print_error(MSG_ERROR_PREFIX, stat);
+	return (stat);
 }

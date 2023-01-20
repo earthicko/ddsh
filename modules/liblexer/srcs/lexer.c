@@ -1,4 +1,5 @@
 #include "libft.h"
+#include "msgdef.h"
 #include "lexer_internal.h"
 
 static void	get_word_token(t_toks *toks, int idx, char *str)
@@ -68,15 +69,24 @@ static int	build_toks_arr(t_toks *toks, char *str)
 
 int	lexer(char *str, t_toks *toks)
 {
-	if (!str)
-		return (CODE_ERROR_DATA);
+	int	stat;
+
 	toks->n_toks = get_n_toks(str);
 	if (toks->n_toks == -1)
+	{
+		ft_dprintf(2, "%s: syntax error: unclosed quotes\n", MSG_ERROR_PREFIX);
 		return (UNCLOSED_QUOTE);
+	}
 	toks->arr = (t_token *)malloc(sizeof(t_token) * (toks->n_toks + 1));
 	if (!toks->arr)
+	{
+		ft_print_error(MSG_ERROR_PREFIX, CODE_ERROR_MALLOC);
 		return (CODE_ERROR_MALLOC);
+	}
 	toks->arr[toks->n_toks].type = TOKENTYPE_NULL;
 	toks->arr[toks->n_toks].content = 0;
-	return (build_toks_arr(toks, str));
+	stat = build_toks_arr(toks, str);
+	if (stat)
+		ft_print_error(MSG_ERROR_PREFIX, stat);
+	return (stat);
 }

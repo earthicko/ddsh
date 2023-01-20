@@ -1,10 +1,10 @@
-#include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/stat.h>
 #include "envmanager.h"
 #include "executor_internal.h"
 #include "sighandler.h"
+#include "msgdef.h"
 #include "libft.h"
 #include "strutils.h"
 
@@ -47,12 +47,13 @@ void	if_dir_then_exit_126(char *cmd_name)
 
 	if (stat(cmd_name, &s_statbuf) != 0)
 	{
-		perror("stat function failed\n");
+		ft_dprintf(2, "%s: %s: failed to fetch stat\n",
+			MSG_ERROR_PREFIX, cmd_name);
 		exit(EXIT_FAILURE);
 	}
 	if (S_ISDIR(s_statbuf.st_mode))
 	{
-		dprintf(2, "shell: %s: is a directory\n", cmd_name);
+		ft_dprintf(2, "%s: %s: is a directory\n", MSG_ERROR_PREFIX, cmd_name);
 		exit(126);
 	}
 }
@@ -66,13 +67,8 @@ void	child_exec_extern(t_info *info)
 	argv = (info->units->arr + info->cur_idx)->argv;
 	status = envman_getenvp(&envp_paths);
 	if (status)
-	{
-		// TODO: 에러메시지를 상위루틴(이 함수)에서 출력하는 것이 나아보임
-		ft_printf("%s: error while getenvp, stat %d\n", __func__, status);
 		exit(EXIT_FAILURE);
-	}
 	status = find_exec(&argv[0]);
-	// TODO: 아래 두 경우에 대한 에러메시지는 서브루틴에서 처리
 	if (status == CODE_ERROR_MALLOC)
 		exit(EXIT_FAILURE);
 	if (status == CODE_ERROR_GENERIC)
@@ -82,7 +78,7 @@ void	child_exec_extern(t_info *info)
 		execve(argv[0], argv, envp_paths);
 	else 
 	{
-		dprintf(2, "shell: %s: Permission denied\n", argv[0]);
+		ft_dprintf(2, "%s: %s: Permission denied\n", MSG_ERROR_PREFIX, argv[0]);
 		exit(126);
 	}
 	//As the convention, call _exit(127) in such case

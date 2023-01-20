@@ -62,8 +62,8 @@ int	main(int argc, char **argv, char **envp)
 		token_destroy(&toks);
 		if (!parse_tree)
 		{
+			ft_print_error(MSG_ERROR_PREFIX, stat);
 			exit_stat_manager(258);
-			ft_printf("%s: Error while parsing\n", __func__);
 			system("leaks minishell");
 			continue ;
 		}
@@ -73,7 +73,7 @@ int	main(int argc, char **argv, char **envp)
 		stat = expand_node(parse_tree);
 		if (stat)
 		{
-			ft_printf("%s: Error while shell expansion\n", __func__);
+			ft_print_error(MSG_ERROR_PREFIX, stat);
 			system("leaks minishell");
 			continue ;
 		}
@@ -82,7 +82,7 @@ int	main(int argc, char **argv, char **envp)
 		node_destroy(parse_tree);
 		if (stat)
 		{
-			ft_printf("%s: Error while building exec unit\n", __func__);
+			ft_print_error(MSG_ERROR_PREFIX, stat);
 			system("leaks minishell");
 			continue ;
 		}
@@ -94,7 +94,7 @@ int	main(int argc, char **argv, char **envp)
 		units_destroy(&units);
 		if (stat)
 		{
-			ft_printf("%s: Error while exec\n", __func__);
+			ft_print_error(MSG_ERROR_PREFIX, stat);
 			system("leaks minishell");
 			continue ;
 		}

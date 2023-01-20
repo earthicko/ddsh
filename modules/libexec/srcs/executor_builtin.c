@@ -53,7 +53,7 @@ int	exec_builtin_cmd(t_exec_unit *unit, int mode)
 	// CODE TO BE REMOVED: 삭제해도 되는 분기
 	if (cmd_idx == CODE_ERROR_GENERIC)
 	{
-		dprintf(2, "%s, Failed to map proper cmd index\n", __func__);
+		ft_dprintf(2, "Failed to map proper cmd index\n");
 		return (-42);
 	}
 	stat = exec_builtin[cmd_idx](unit->argv);

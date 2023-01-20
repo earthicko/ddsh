@@ -1,9 +1,8 @@
 #include <stdlib.h>
-#include <stdio.h>
 #include <fcntl.h>
 #include "heredoc.h"
 #include "executor_internal.h"
-#include "libft_def.h"
+#include "libft.h"
 #include "t_exec_unit.h"
 
 // TODO: redir_arr 타입 none인 경우에 방어로직 (발생하지 않는 경우)
@@ -22,7 +21,7 @@ int	process_redir(t_redir *redir_arr, int n_redir)
 		// CODE TO BE REMOVED: 삭제해도 되는 분기
 		if (redir_arr[i].type == REDIR_NONE)
 		{
-			dprintf(2, "redir type is none: must be critial error\n");
+			ft_dprintf(2, "critical error: redir type is none\n");
 			continue ;
 		}
 		if (do_redir[redir_arr[i].type](redir_arr + i) != CODE_OK)
