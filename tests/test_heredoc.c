@@ -15,7 +15,6 @@ int	main(int argc, char **argv, char **envp)
 	envman_init(envp);
 	delim1 = strdup("EO\"F");
 	delim2 = strdup("EOF");
-	heredoc_init();
 	heredoc_read(delim1);
 	heredoc_read(delim2);
 	free(delim1);

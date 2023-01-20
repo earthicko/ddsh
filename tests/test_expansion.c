@@ -4,16 +4,19 @@
 #include "envmanager.h"
 #include "strutils.h"
 
-void	test_expansion(char *str, int remove_quote)
+void	test_expansion(char *str, int mode)
 {
 	int		stat;
 	char	*echo_str;
 
 	str = strdup(str);
 	echo_str = ft_strmerge(3, "echo \"", str, "\"");
-	printf("quote removal %d before: <%s>\n", remove_quote, str);
-	stat = do_shell_expansion(&str, remove_quote);
-	printf("                after:  <%s>\n", str);
+	printf("before: <%s>\n", str);
+	if (!mode)
+		stat = do_shell_expansion(&str);
+	else
+		stat = do_heredoc_expansion(&str);
+	printf("after:  <%s>\n", str);
 	printf("exit status %d\n", stat);
 	free(str);
 	free(echo_str);
@@ -35,6 +38,12 @@ int	main(int argc, char **argv, char **envp)
 	test_expansion("abc\"de\'fg\'hijkl\"mnop", 1);
 	test_expansion("abc\"de\'fg\"hijkl\'mnop", 0);
 	test_expansion("abc\"de\'fg\"hijkl\'mnop", 1);
+	test_expansion("$\"\"", 0);
+	test_expansion("$\"\"", 1);
+	test_expansion("$123PATH", 0);
+	test_expansion("$123PATH", 1);
+	test_expansion("$", 0);
+	test_expansion("$", 1);
 	execname = strdup("brew");
 	printf("before: <%s>\n", execname);
 	find_exec(&execname);

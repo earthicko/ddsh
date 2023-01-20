@@ -1,13 +1,14 @@
 #include <stdio.h>
 #include <unistd.h>
-#include "builtin_internal.h"
 #include "libft.h"
 
+// TODO: echo -nn hi 배쉬는 hi뒤에 개행 제거해서 출력
+// 우리 쉘은 -nn hi 출력
 static int	builtin_flag_n_on(char *first_arg)
 {
 	if (!first_arg)
 		return (FALSE);
-	if (ft_strncmp(FLAG_N, first_arg, ft_strlen(FLAG_N) + 1))
+	if (ft_strncmp("-n", first_arg, 3))
 		return (FALSE);
 	return (TRUE);
 }
@@ -16,11 +17,10 @@ int	builtin_echo(char **argv)
 {
 	int	flag_n;
 
-	flag_n = builtin_flag_n_on(argv[1]);
+	argv++;
+	flag_n = builtin_flag_n_on(*argv);
 	if (flag_n)
-		argv += 2;
-	else
-		argv += 1;
+		argv++;
 	while (*argv)
 	{
 		if (printf("%s", *argv) < 0)

@@ -2,11 +2,12 @@
 #include <stdio.h>
 #include <unistd.h>
 
-int	builtin_pwd(void)
+int	builtin_pwd(char **argv)
 {
 	char	*pwd;
 	int		stat;
 
+	(void)argv;
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
 		return (1);

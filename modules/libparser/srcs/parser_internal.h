@@ -4,13 +4,14 @@
 # include "t_token.h"
 # include "parser.h"
 
-// TODO: last error stat을 터미널 파서에서 업데이트
 typedef struct s_parser
 {
 	t_token	*tok_start;
 	t_token	*tok_curr;
 	t_token	*tok_last;
 	int		n_tokens;
+	t_token	*last_error_loc;
+	int		exit_stat;
 }	t_parser;
 
 int		_parser_is_last_token(t_parser *parser);
@@ -24,6 +25,7 @@ void	_map_setter_here_end(int *token_map);
 t_node	*_parse_addchild_and_return(t_parser *p, t_node *root, t_node *child);
 int		_parse_terminal_and_addchild(t_parser *p, int n_t, t_node *root);
 t_node	*_parse_abort(t_parser *parser, t_node *root, t_node *child);
+void	_parse_perror(t_parser *p);
 
 t_node	*_parse_terminal(t_parser *parser, int nodetype);
 t_node	*_parse_simple_command(t_parser *parser);

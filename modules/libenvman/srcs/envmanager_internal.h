@@ -19,7 +19,6 @@ t_enventry	*_envman_getentry(t_list *envlist, char *name);
 
 int			_envmanager(char **envp, void *buf, char *name, char *val);
 
-// TODO: internal 함수 앞에 _
 int			_envman_init(t_list **p_list, char **envp);
 int			_envman_clear(t_list **p_list);
 int			_envman_getval(t_list *envlist, char **buf, char *name);

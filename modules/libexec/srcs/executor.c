@@ -22,7 +22,7 @@ static int	wait_children(pid_t last_cmd, int n_unit)
 		if (last_cmd == wait(&status))
 			exit_status = WEXITSTATUS(status);
 	}
-	dprintf(2, "in %s, exit_status: %d\n", __func__, exit_status);
+	dprintf(2, "in %s, exit_status: %d\n\n", __func__, exit_status);
 	return (exit_status);
 }
 
@@ -74,15 +74,23 @@ static int	fork_exec(t_unit_arr *units)
 	return (wait_children(pid, info.n_unit));
 }
 
-//executor의 리턴값을 $?에 저장하기
 int	executor(t_unit_arr *units)
 {
-	//n_unit이 0이하인 경우는 없긴함..
+	int	stat;
+
 	if (units->n_unit <= 0)
 		return (CODE_ERROR_SCOPE);
+	if (units->arr->n_word == 0)
+	{
+		io_manager(STDINOUT_BACKUP);
+		stat = process_redir(units->arr->redir_arr, units->arr->n_redir);
+		io_manager(STDINOUT_RESTORE);
+		if (stat == CODE_ERROR_IO)
+			return (1);
+		return (CODE_OK);
+	}
 	if (units->n_unit == 1
-		&& units->arr->argv[0]
 		&& is_builtin_command(units->arr->argv[0]))
-			return (exec_builtin_cmd(units->arr));
+		return (exec_builtin_cmd(units->arr, PARENTSHELL));
 	return (fork_exec(units));
 }

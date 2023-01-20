@@ -6,8 +6,10 @@
 #include "libft.h"
 #include "envmanager.h"
 #include "heredoc_internal.h"
+#include "sighandler.h"
 
-// TODO: 히스토리 삭제
+void	rl_clear_history(void);
+
 static int	_write_io_file_loop(int fd, int expand, char *delimeter)
 {
 	int		stat;
@@ -23,7 +25,7 @@ static int	_write_io_file_loop(int fd, int expand, char *delimeter)
 	}
 	if (expand)
 	{
-		if (do_shell_expansion(&line, FALSE))
+		if (do_heredoc_expansion(&line))
 		{
 			free(line);
 			return (-1);
@@ -36,15 +38,19 @@ static int	_write_io_file_loop(int fd, int expand, char *delimeter)
 	return (0);
 }
 
-static int	_should_expand(char *str)
+static int	_handle_delimeter_expansion(char *delim, char **delim2, int *expand)
 {
-	while (*str)
+	*delim2 = ft_strdup(delim);
+	if (!(*delim2))
+		exit(1);
+	*expand = TRUE;
+	while (*delim)
 	{
-		if (*str == '\'' || *str == '\"')
-			return (FALSE);
-		str++;
+		if (*delim == '\'' || *delim == '\"')
+			*expand = FALSE;
+		delim++;
 	}
-	return (TRUE);
+	return (remove_quotes(delim2));
 }
 
 static void	_abort_write_to_file(int fd, char *filename, char *delim, int stat)
@@ -56,6 +62,7 @@ static void	_abort_write_to_file(int fd, char *filename, char *delim, int stat)
 	exit(stat);
 }
 
+// TODO: heredoc도 history에서 읽어옴, (단 heredoc을 통해 입력받은 내용은 history에 기록되지 않음)
 static void	_write_to_file(char *filename, char *delimeter)
 {
 	int		fd;
@@ -63,14 +70,14 @@ static void	_write_to_file(char *filename, char *delimeter)
 	int		expand;
 	char	*delim_dup;
 
+	rl_clear_history();
+	stat = signal_set_state_heredoc();
+	if (stat)
+		exit(1);
 	fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0600);
 	if (fd < 0)
 		exit(1);
-	delim_dup = ft_strdup(delimeter);
-	if (!delim_dup)
-		exit(1);
-	expand = _should_expand(delim_dup);
-	if (remove_quotes(&delim_dup))
+	if (_handle_delimeter_expansion(delimeter, &delim_dup, &expand))
 		_abort_write_to_file(fd, filename, delim_dup, 1);
 	while (TRUE)
 	{
@@ -78,20 +85,18 @@ static void	_write_to_file(char *filename, char *delimeter)
 		if (stat < 0)
 			_abort_write_to_file(fd, filename, delim_dup, 1);
 		if (stat > 0)
-			break ;
+			_abort_write_to_file(fd, filename, delim_dup, 0);
 	}
-	_abort_write_to_file(fd, filename, delim_dup, 0);
 }
 
-int	_heredoc_read(int *n_heredoc, char *prefix_filename, char *delimeter)
+int	_heredoc_read(int *n_heredoc, char *delimeter)
 {
 	pid_t	pid;
 	char	*filename;
 	int		stat;
 
 	(*n_heredoc)++;
-	stat = _heredoc_get_filename(
-			*n_heredoc, prefix_filename, (*n_heredoc) - 1, &filename);
+	stat = _heredoc_get_filename(*n_heredoc, (*n_heredoc) - 1, &filename);
 	(*n_heredoc)--;
 	if (stat)
 		return (stat);

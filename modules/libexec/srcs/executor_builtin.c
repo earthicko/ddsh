@@ -9,32 +9,16 @@
 #include <stdio.h>
 #include <unistd.h>
 
-//pwd2에서 실행되게 했는데 pwd로 바꾸어야함
-static int	builtin_pwd2(char **argv)
-{
-	char	*pwd;
-	int		stat;
 
-	(void)argv;
-	pwd = getcwd(NULL, 0);
-	if (!pwd)
-		return (1);
-	stat = printf("%s\n", pwd);
-	free(pwd);
-	if (stat < 0)
-		return (1);
-	return (0);
-}
-
-//무조건 반복문에서 return되긴 함
-//cmd자체가 is_builtin_command로부터 온 인자이기 때문
 static int	map_cmd(char *cmd)
 {
-	const char	*builtin_cmds[7] = {
-		"echo",
+
+	const char	*builtin_cmds[8] = {
+		"",
 		"cd",
-		"pwd",
+		"echo",
 		"export",
+		"pwd",
 		"unset",
 		"env",
 		"exit"
@@ -43,35 +27,37 @@ static int	map_cmd(char *cmd)
 	int			i;
 
 	i = -1;
-	while (++i < 7)
+	while (++i < 8)
 		if (ft_strncmp(builtin_cmds[i], cmd, cmd_len + 1) == 0)
 			return (i);
 	return (CODE_ERROR_GENERIC);
 }
 
-int	exec_builtin_cmd(t_exec_unit *unit)
+// TODO: cmd_idx 매핑 오류(절대 발생하지 않을 경우)의 오류 방어 처리가 필요한지
+// 마지막에 최종 검토 마치고 삭제하는 것으로
+int	exec_builtin_cmd(t_exec_unit *unit, int mode)
 {
-	const t_exec_builtin	exec_builtin[7] = {
-		builtin_echo,
-		builtin_cd,
-		builtin_pwd2,
-		builtin_export,
-		builtin_unset,
-		builtin_env,
-		builtin_exit
+	const t_exec_builtin	exec_builtin[8] = {
+		0, builtin_cd, builtin_echo,  builtin_export,
+		builtin_pwd, builtin_unset, builtin_env, builtin_exit
 	};
 	const int				cmd_idx = map_cmd(unit->argv[0]);
+	int						stat;
 
-	//이렇게하면 개망함, 표준 입출력 리다이렉션을 어디다가 반드시 저장해놔야함
-	//backup_stdinout();
-	//순서는 리다이렉션 먼저 무조건!
-	if (process_redir(unit->redir_arr, unit->n_redir) == CODE_ERROR_IO)
-		return (CODE_ERROR_IO);
-	//리턴값 고칠 것
+	if (mode == PARENTSHELL)
+		io_manager(STDINOUT_BACKUP);
+	stat = process_redir(unit->redir_arr, unit->n_redir);
+	if (stat == CODE_ERROR_IO)
+		return (1);
+
+	// CODE TO BE REMOVED: 삭제해도 되는 분기
 	if (cmd_idx == CODE_ERROR_GENERIC)
 	{
-		dprintf(2, "Failed to map proper cmd index: builtin command\n");
+		dprintf(2, "%s, Failed to map proper cmd index\n", __func__);
 		return (-42);
 	}
-	return (exec_builtin[cmd_idx](unit->argv));
+	stat = exec_builtin[cmd_idx](unit->argv);
+	if (mode == PARENTSHELL)
+		io_manager(STDINOUT_RESTORE);
+	return (stat);
 }

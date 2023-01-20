@@ -1,6 +1,8 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include <unistd.h>
 #include <readline/readline.h>
+#include <readline/history.h>
 #include "libft.h"
 #include "strutils.h"
 #include "envmanager.h"
@@ -12,6 +14,7 @@
 #include "testers.h"
 #include "build_exec.h"
 #include "executor.h"
+#include "sighandler.h"
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -26,11 +29,11 @@ int	main(int argc, char **argv, char **envp)
 	stat = envman_init(envp);
 	if (stat)
 		return (1);
-	stat = heredoc_init();
-	if (stat)
-		return (1);
 	while (TRUE)
 	{
+		stat = signal_set_state_interactive();
+		if (stat)
+			return (1);
 		heredoc_clear(-1);
 		
 		str = readline(MSG_SHELL_PROMPT);
@@ -38,6 +41,9 @@ int	main(int argc, char **argv, char **envp)
 			continue ;
 		if (ft_strlen(str) == 0)
 			continue ;
+		stat = signal_set_state_executing();
+		if (stat)
+			return (1);
 		add_history(str);
 		ft_printf("%s: got str %s\n", __func__, str);
 
@@ -80,8 +86,9 @@ int	main(int argc, char **argv, char **envp)
 			system("leaks minishell");
 			continue ;
 		}
-		ft_printf("%s: exec build done\n", __func__, str);
+		ft_printf("%s: exec build done\n\n\n", __func__, str);
 
+		ft_printf(">===== 출력 <======\n\n");
 		stat = executor(&units);
 		exit_stat_manager(stat);
 		units_destroy(&units);
@@ -91,7 +98,7 @@ int	main(int argc, char **argv, char **envp)
 			system("leaks minishell");
 			continue ;
 		}
-		ft_printf("%s: exec done\n", __func__, str);
+		ft_printf("%s: exec done\n\n\n", __func__, str);
 
 		system("leaks minishell");
 	}

@@ -1,5 +1,5 @@
 #include <stddef.h>
-#include "libft_def.h"
+#include "libft.h"
 #include "t_token.h"
 #include "t_node.h"
 #include "parser_internal.h"
@@ -7,7 +7,10 @@
 t_node	*_parse_addchild_and_return(t_parser *p, t_node *root, t_node *child)
 {
 	if (node_addchild(root, child))
+	{
+		p->exit_stat = CODE_ERROR_MALLOC;
 		return (_parse_abort(p, root, child));
+	}
 	return (root);
 }
 
@@ -25,6 +28,7 @@ int	_parse_terminal_and_addchild(t_parser *p, int n_t, t_node *root)
 	stat = node_addchild(root, child);
 	if (stat)
 	{
+		p->exit_stat = CODE_ERROR_MALLOC;
 		_parse_abort(p, root, child);
 		return (stat);
 	}
@@ -48,4 +52,20 @@ t_node	*_parse_abort(t_parser *p, t_node *root, t_node *child)
 	}
 	p->tok_curr -= rewind_counter;
 	return (NULL);
+}
+
+// TODO: 에러 메시지 통일
+void	_parse_perror(t_parser *p)
+{
+	if (p->exit_stat)
+	{
+		ft_print_error("parser", p->exit_stat);
+	}
+	else
+	{
+		if (p->last_error_loc == p->tok_last)
+			p->last_error_loc--;
+		ft_dprintf(2, "syntax error near unexpected token `%s`\n",
+			p->last_error_loc->content);
+	}
 }
