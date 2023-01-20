@@ -7,22 +7,25 @@ static int	export_display(void)
 {
 	char	**envp;
 	char	**cursor;
-	char	*name;
-	char	*val;
+	char	*pair[2];
 
 	if (envman_getenvp(&envp))
 		return (1);
 	cursor = envp;
 	while (*cursor)
 	{
-		if (envman_split_envstr(*cursor, &name, &val))
+		if (envman_split_envstr(*cursor, &(pair[0]), &(pair[1])))
 		{
 			ft_free_strarr(envp);
 			return (1);
 		}
-		ft_printf("declare -x %s=\"%s\"\n", name, val);
-		free(name);
-		free(val);
+		if (ft_printf("declare -x %s=\"%s\"\n", pair[0], pair[1]) < 0)
+		{
+			ft_free_strarr(envp);
+			return (1);
+		}
+		free(pair[0]);
+		free(pair[1]);
 		cursor++;
 	}
 	ft_free_strarr(envp);

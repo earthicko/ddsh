@@ -40,7 +40,9 @@ static int	_builtin_cd_settarget_oldpwd(char **target)
 	stat = envman_getval("OLDPWD", target);
 	if (stat)
 		return (_exit_builtin_cd(stat, "OLDPWD"));
-	ft_printf("%s\n", *target);
+	stat = ft_printf("%s\n", *target);
+	if (stat < 0)
+		return (1);
 	return (0);
 }
 
