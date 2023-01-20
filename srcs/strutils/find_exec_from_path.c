@@ -54,7 +54,11 @@ int	_find_exec_from_path(char **buf)
 	int		stat;
 
 	if (envman_getval("PATH", &path))
+	{
+		ft_dprintf(2, "%s: %s: No such file or directory\n",
+			MSG_ERROR_PREFIX, *buf);
 		return (CODE_ERROR_GENERIC);
+	}
 	paths = ft_split(path, ':');
 	if (!paths)
 		return (_find_exec_from_path_abort(path, paths, CODE_ERROR_MALLOC));

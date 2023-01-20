@@ -18,7 +18,7 @@ int	envman_unsetval(char *name)
 	int	stat;
 
 	stat = _envmanager(0, 0, name, 0);
-	if (stat)
+	if (stat && stat != CODE_ERROR_DATA)
 		ft_print_error(MSG_ERROR_PREFIX, stat);
 	return (stat);
 }
