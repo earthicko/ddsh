@@ -1,13 +1,10 @@
 #include <stdlib.h>
-#include <stdio.h>
 #include <unistd.h>
 #include "libft.h"
+#include "msgdef.h"
 #include "envmanager.h"
 #include "libft_def.h"
 
-// TODO: 쉘이 처음 실행될 때에도 이미 OLDPWD가 설정돼 있음(수정하지 않아도 된다고 생각함)
-// TODO: 에러메시지 구현 및 놈에 맞게 수정
-// TODO: (구현하지 않을듯)현재 디렉토리 상위디렉토리를 삭제할 경우 cd .. 명령어 동작이 일부 다름
 static int	builtin_cd_internal(char *target)
 {
 	char	*pwd;
@@ -27,6 +24,36 @@ static int	builtin_cd_internal(char *target)
 	return (CODE_OK);
 }
 
+static int	_exit_builtin_cd(int stat, char *cause)
+{
+	if (stat == CODE_ERROR_DATA)
+		ft_dprintf(2, "%s: cd: %s not set\n", MSG_ERROR_PREFIX, cause);
+	if (stat)
+		return (1);
+	return (0);
+}
+
+static int	_builtin_cd_settarget_oldpwd(char **target)
+{
+	int	stat;
+
+	stat = envman_getval("OLDPWD", target);
+	if (stat)
+		return (_exit_builtin_cd(stat, "OLDPWD"));
+	ft_printf("%s\n", *target);
+	return (0);
+}
+
+static int	_builtin_cd_settarget_home(char **target)
+{
+	int	stat;
+
+	stat = envman_getval("HOME", target);
+	if (stat)
+		return (_exit_builtin_cd(stat, "HOME"));
+	return (0);
+}
+
 int	builtin_cd(char **argv)
 {
 	int		stat;
@@ -35,24 +62,17 @@ int	builtin_cd(char **argv)
 	argv++;
 	if (*argv && !ft_strncmp(*argv, "-", 2))
 	{
-		if (envman_getval("OLDPWD", &target))
-		{
-			printf("Unimplemented error message of cd.\n");
+		if (_builtin_cd_settarget_oldpwd(&target))
 			return (1);
-		}
-		printf("%s\n", target);
 	}
-	else if (!*argv)
+	else if ((*argv && ft_strlen(*argv) == 0) || !*argv)
 	{
-		if (envman_getval("HOME", &target))
-		{
-			printf("Unimplemented error message of cd.\n");
+		if (_builtin_cd_settarget_home(&target))
 			return (1);
-		}
 	}
 	else
 	{
-		target = ft_strdup(argv[0]);
+		target = ft_strdup(*argv);
 		if (!target)
 			return (1);
 	}
