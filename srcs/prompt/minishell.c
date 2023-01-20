@@ -39,20 +39,22 @@ int	main(int argc, char **argv, char **envp)
 		str = readline(MSG_SHELL_PROMPT);
 		if (!str)
 			exit(0);
-		if (ft_strlen(str) == 0)
-			continue ;
 		stat = signal_set_state_executing();
 		if (stat)
 			return (1);
 		add_history(str);
-		ft_printf("%s: got str %s\n", __func__, str);
 
 		stat = lexer(str, &toks);
 		free(str);
+		if (toks.n_toks == 0)
+		{
+			token_destroy(&toks);
+			system("leaks minishell");
+			continue ;
+		}
 		if (stat)
 		{
 			exit_stat_manager(258);
-			ft_printf("%s: Error while lexing\n", __func__);
 			system("leaks minishell");
 			continue ;
 		}
