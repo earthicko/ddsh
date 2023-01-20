@@ -3,12 +3,15 @@
 #include <unistd.h>
 #include "libft.h"
 #include "envmanager.h"
+#include "libft_def.h"
 
-// TODO: cd non_dir 입력시 exit status를 1(0이 아닌값)으로 수정해야함
-// 이외에도 cd -a 등 전반적으로 exit status를 수정해야함
-// exit status manager 호출하는 위치만 적당힐 설정해두면 될듯
-// TODO: cd에 아무 인자도 입력하지 않을시 seg fault 발생
+// FIXED: 명령어 실패에 대한 exit status 수정
+// FIXED: cd에 아무 인자도 들어오지 않는 경우에 대한 분기 추가
+// cd인자로 디렉토리가 입력되지 않으면 home디렉토리를 사용한다
+//
 // TODO: 쉘이 처음 실행될 때에도 이미 OLDPWD가 설정돼 있음(수정하지 않아도 된다고 생각함)
+// TODO: 에러메시지 구현 및 놈에 맞게 수정
+// TODO: (구현하지 않을듯)현재 디렉토리 상위디렉토리를 삭제할 경우 cd .. 명령어 동작이 일부 다름
 static int	builtin_cd_internal(char *target)
 {
 	char	*pwd;
@@ -23,7 +26,9 @@ static int	builtin_cd_internal(char *target)
 	if (pwd)
 		envman_setval("PWD", pwd);
 	free(pwd);
-	return (stat);
+	if (stat)
+		return (1);
+	return (CODE_OK);
 }
 
 int	builtin_cd(char **argv)
@@ -40,6 +45,14 @@ int	builtin_cd(char **argv)
 			return (1);
 		}
 		printf("%s\n", target);
+	}
+	else if (!*argv)
+	{
+		if (envman_getval("HOME", &target))
+		{
+			printf("Unimplemented error message of cd.\n");
+			return (1);
+		}
 	}
 	else
 	{
