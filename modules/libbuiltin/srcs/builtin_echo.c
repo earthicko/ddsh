@@ -1,16 +1,38 @@
 #include <stdio.h>
 #include <unistd.h>
 #include "libft.h"
+#include "libft_def.h"
 
-// TODO: echo -nn hi 배쉬는 hi뒤에 개행 제거해서 출력
-// 우리 쉘은 -nn hi 출력
+
+// FIXED: echo -n -nn hi 등 옵션이 여러개 따라오는 경우에 대한 로직 추가
+static int has_only_ch(char *str, char ch)	
+{
+	int	i;
+
+	i = -1;
+	while (str[++i])
+		if (str[i] != ch)
+			return (FALSE);
+	return (TRUE);
+
+}
+
+static int	is_valid_option(char *arg)
+{
+	if (!arg)
+		return (FALSE);
+	if (ft_strncmp(arg, "-n", 2) == 0 && has_only_ch(arg + 2, 'n'))
+		return (TRUE);
+	return (FALSE);
+}
+
 static int	builtin_flag_n_on(char *first_arg)
 {
 	if (!first_arg)
 		return (FALSE);
-	if (ft_strncmp("-n", first_arg, 3))
-		return (FALSE);
-	return (TRUE);
+	if (is_valid_option(first_arg))
+		return (TRUE);
+	return (FALSE);
 }
 
 int	builtin_echo(char **argv)
@@ -19,7 +41,7 @@ int	builtin_echo(char **argv)
 
 	argv++;
 	flag_n = builtin_flag_n_on(*argv);
-	if (flag_n)
+	while (flag_n && is_valid_option(*argv))
 		argv++;
 	while (*argv)
 	{
