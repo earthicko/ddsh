@@ -38,7 +38,7 @@ int	main(int argc, char **argv, char **envp)
 		
 		str = readline(MSG_SHELL_PROMPT);
 		if (!str)
-			continue ;
+			exit(0);
 		if (ft_strlen(str) == 0)
 			continue ;
 		stat = signal_set_state_executing();
