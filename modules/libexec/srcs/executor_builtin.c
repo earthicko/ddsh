@@ -50,7 +50,7 @@ int	exec_builtin_cmd(t_exec_unit *unit, int mode)
 	if (cmd_idx == CODE_ERROR_GENERIC)
 	{
 		ft_dprintf(2, "Failed to map proper cmd index\n");
-		return (-42);
+		return (-1);
 	}
 	stat = exec_builtin[cmd_idx](unit->argv);
 	if (mode == PARENTSHELL)
