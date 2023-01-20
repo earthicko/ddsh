@@ -1,28 +1,31 @@
 #include <stdlib.h>
-#include <stdio.h>
 #include "libft.h"
+#include "msgdef.h"
 #include "envmanager.h"
 
 static int	export_display(void)
 {
 	char	**envp;
 	char	**cursor;
-	char	*name;
-	char	*val;
+	char	*pair[2];
 
 	if (envman_getenvp(&envp))
 		return (1);
 	cursor = envp;
 	while (*cursor)
 	{
-		if (envman_split_envstr(*cursor, &name, &val))
+		if (envman_split_envstr(*cursor, &(pair[0]), &(pair[1])))
 		{
 			ft_free_strarr(envp);
 			return (1);
 		}
-		printf("declare -x %s=\"%s\"\n", name, val);
-		free(name);
-		free(val);
+		if (ft_printf("declare -x %s=\"%s\"\n", pair[0], pair[1]) < 0)
+		{
+			ft_free_strarr(envp);
+			return (1);
+		}
+		free(pair[0]);
+		free(pair[1]);
 		cursor++;
 	}
 	ft_free_strarr(envp);
@@ -35,16 +38,24 @@ static int	export_var(char *word)
 	char	*val;
 	int		stat;
 
-	if (envman_split_envstr(word, &name, &val))
+	stat = envman_split_envstr(word, &name, &val);
+	if (stat)
+	{
+		if (stat == CODE_ERROR_DATA)
+			ft_dprintf(2, "%s: export: `%s': not a valid identifier\n",
+				MSG_ERROR_PREFIX, word);
+		else if (stat == CODE_ERROR_MALLOC)
+			ft_print_error(MSG_ERROR_PREFIX, CODE_ERROR_MALLOC);
 		return (1);
+	}
 	stat = envman_setval(name, val);
 	free(name);
 	free(val);
-	return (stat);
+	if (stat)
+		return (1);
+	return (0);
 }
 
-// TODO: 모든 환경변수를 언셋했을 때, export가 제대로 되는지 확인
-// TODO: export에 비정상적인 argv가 들어오는 경우에 대한 로직 추가(잘못된 사용)
 int	builtin_export(char **argv)
 {
 	int	stat;

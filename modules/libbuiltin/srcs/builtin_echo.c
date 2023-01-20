@@ -1,9 +1,7 @@
-#include <stdio.h>
 #include <unistd.h>
 #include "libft.h"
-#include "libft_def.h"
 
-static int has_only_ch(char *str, char ch)	
+static int	has_only_ch(char *str, char ch)
 {
 	int	i;
 
@@ -12,7 +10,6 @@ static int has_only_ch(char *str, char ch)
 		if (str[i] != ch)
 			return (FALSE);
 	return (TRUE);
-
 }
 
 static int	is_valid_option(char *arg)
@@ -43,18 +40,18 @@ int	builtin_echo(char **argv)
 		argv++;
 	while (*argv)
 	{
-		if (printf("%s", *argv) < 0)
+		if (ft_printf("%s", *argv) < 0)
 			return (1);
 		argv++;
 		if (*argv)
 		{
-			if (printf("%c", ' ') < 0)
+			if (ft_printf("%c", ' ') < 0)
 				return (1);
 		}
 	}
 	if (!flag_n)
 	{
-		if (printf("%c", '\n') < 0)
+		if (ft_printf("%c", '\n') < 0)
 			return (1);
 	}
 	return (0);
