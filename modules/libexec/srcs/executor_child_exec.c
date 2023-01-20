@@ -4,8 +4,8 @@
 #include <sys/stat.h>
 #include "envmanager.h"
 #include "executor_internal.h"
+#include "sighandler.h"
 #include "libft.h"
-#include "libft_def.h"
 #include "strutils.h"
 
 
@@ -97,7 +97,7 @@ void	child_exec_extern(t_info *info)
 	char	**argv;
 	int		builtin_stat;
 
-	if (set_fd_stream(info) < 0)
+	if (signal_set_state_default() || set_fd_stream(info) < 0)
 		exit(EXIT_FAILURE);
 	argv = (info->units->arr + info->cur_idx)->argv;
 	if (is_builtin_command(argv[0]) != FALSE)
