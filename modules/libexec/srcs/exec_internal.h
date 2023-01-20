@@ -1,9 +1,8 @@
 #ifndef EXEC_INTERNAL_H
 # define EXEC_INTERNAL_H
 
-# include <stdlib.h>
-# include "t_exec_unit.h"
 # include "t_node.h"
+# include "t_exec_unit.h"
 
 int		get_n_unit(t_node *root);
 int		get_n_redir(t_node *node);

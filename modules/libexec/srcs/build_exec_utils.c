@@ -1,6 +1,5 @@
 #include "libft.h"
 #include "exec_internal.h"
-#include "t_node.h"
 
 int	get_n_unit(t_node *root)
 {

@@ -1,7 +1,6 @@
 #ifndef EXECUTOR_INTERNAL_H
 # define EXECUTOR_INTERNAL_H
 
-# include <unistd.h>
 # include "t_exec_unit.h"
 
 # define WRITE 1
