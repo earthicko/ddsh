@@ -139,8 +139,18 @@ static void	test_exec(char *input)
 
 	status = 42;
 	dprintf(2, "input: %s\n\n", input);
+	if (!input)
+	{
+		dprintf(2, "prompt don't pass null input to lexer\n\n\n");
+		return ;
+	}
 	if (lexer(input, &toks) != CODE_OK)
 		dprintf(2, "Failed while lexing\n");
+	if (toks.n_toks == 0)
+	{
+		dprintf(2, "if n_toks is zero, then not pass arg to parser\n\n\n");
+		return ;
+	}
 	root = parse_tokens(toks.arr, toks.n_toks);
 	if (!root)
 		dprintf(2, "Failed while parsing\n");
@@ -205,7 +215,8 @@ void	set_command_3(char *command[20])
 	/*******edge case: only redir, only word********/
 	// 터지는게 정상적인지 고려할 것
 	command[14] = "<a";
-	command[15] = "";
+	//빈 문자열의 경우 렉서에서 처리후 파서로 넘겨주지 않음
+//	command[15] = "";
 	command[16] = 0;
 	command[17] = "<README.md >a";
 	command[18] = "<README.md <Makefile >nofile";
@@ -214,7 +225,7 @@ void	set_command_3(char *command[20])
 	
 	/********* 빌트인 관련 명령어 점검 *************/
 	command[21] = "echo hi";
-	command[22] = "cd ..";
+	//command[22] = "cd ..";
 	command[23] = "echo hi | echo hi";
 	command[24] = "echo hi | echo hello | cat";
 	command[24] = "env | echo hello | cat";
@@ -230,6 +241,7 @@ void	set_command_3(char *command[20])
 	
 }
 
+// usage: 반드시 주석단위로 묶어서 싫행, 앞 명령어가 뒤에 영향을 줄 수도 있음
 int	main(int argc, char *argv[], char *envp[])
 {
 	t_toks	toks;
@@ -266,14 +278,20 @@ int	main(int argc, char *argv[], char *envp[])
 		return (1);
 	set_command_3(commands);
 	//5, 9, 13 단위로 서로 다른 테스트
-	i = 13;
-	while (++i <= 16)
+	i = -1;
+	while (++i <= 32)
+	{
+		printf("%dth test\n", i);
 		test_exec(commands[i]);
+	}
+	test_exec(commands[31]);
+	//test_exec("./srcs");
+	//test_exec("srcs");
 	//test_exec("./srcs");
 	//test_exec("./no_permission_file");
 	//test_exec("exit");
 	//아래 테케는 아직 동작하지 않음
 	//test_exec("<< EOF cat");
-	system("leaks --list test_exec");
+	//system("leaks --list test_exec");
 	return (0);
 }
