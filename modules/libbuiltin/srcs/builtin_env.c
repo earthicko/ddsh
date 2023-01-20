@@ -9,25 +9,25 @@
 
 int	builtin_export(char **argv);
 
-static int	_builtin_env_print(void)
+static void	_builtin_env_print(void)
 {
 	char	**envp;
 	char	**cursor;
 
 	if (envman_getenvp(&envp))
-		return (1);
+		exit(1);
 	cursor = envp;
 	while (*cursor)
 	{
 		if (ft_printf("%s\n", *cursor) < 0)
 		{
 			ft_free_strarr(envp);
-			return (1);
+			exit(1);
 		}
 		cursor++;
 	}
 	ft_free_strarr(envp);
-	return (0);
+	exit(0);
 }
 
 static void	_if_dir_then_exit_126(char *cmd_name)
@@ -69,22 +69,20 @@ static void	_builtin_env_exec(char **argv)
 static void	_builtin_env_child(char **argv)
 {
 	char	*argv_to_export[3];
-	char	*pair[2];
 	int		stat;
 
 	argv_to_export[0] = "export";
 	argv_to_export[2] = NULL;
 	while (*argv)
 	{
-		if (envman_split_envstr(*argv, &(pair[0]), &(pair[1])))
+		if (!ft_strchr(*argv, '='))
 			break ;
-		free(pair[0]);
-		free(pair[1]);
 		argv_to_export[1] = *argv;
-		if (builtin_export(argv_to_export))
-			break ;
+		builtin_export(argv_to_export);
 		argv++;
 	}
+	if (*argv == NULL)
+		_builtin_env_print();
 	stat = find_exec(&argv[0]);
 	if (stat && stat == CODE_ERROR_GENERIC)
 		exit(127);
@@ -100,8 +98,6 @@ int	builtin_env(char **argv)
 	int		stat;
 
 	argv++;
-	if (!(*argv))
-		return (_builtin_env_print());
 	pid = fork();
 	if (pid == -1)
 		return (1);
