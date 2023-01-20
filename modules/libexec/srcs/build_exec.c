@@ -1,6 +1,5 @@
+#include <stdlib.h>
 #include "libft.h"
-#include "t_exec_unit.h"
-#include "t_node.h"
 #include "exec_internal.h"
 
 static int	init_unit(t_exec_unit *unit, t_node *simple_cmd)

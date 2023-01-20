@@ -1,18 +1,9 @@
+#include "libft.h"
 #include "builtin_commands.h"
 #include "executor_internal.h"
-#include "libft.h"
-#include "libft_def.h"
-#include "t_exec_unit.h"
-
-
-#include <stdlib.h>
-#include <stdio.h>
-#include <unistd.h>
-
 
 static int	map_cmd(char *cmd)
 {
-
 	const char	*builtin_cmds[8] = {
 		"",
 		"cd",
@@ -36,7 +27,7 @@ static int	map_cmd(char *cmd)
 int	exec_builtin_cmd(t_exec_unit *unit, int mode)
 {
 	const t_exec_builtin	exec_builtin[8] = {
-		0, builtin_cd, builtin_echo,  builtin_export,
+		0, builtin_cd, builtin_echo, builtin_export,
 		builtin_pwd, builtin_unset, builtin_env, builtin_exit
 	};
 	const int				cmd_idx = map_cmd(unit->argv[0]);

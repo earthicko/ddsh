@@ -1,9 +1,9 @@
 #include <stdlib.h>
 #include <fcntl.h>
+#include <unistd.h>
 #include "heredoc.h"
 #include "executor_internal.h"
 #include "libft.h"
-#include "t_exec_unit.h"
 
 int	process_redir(t_redir *redir_arr, int n_redir)
 {

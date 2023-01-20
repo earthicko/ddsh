@@ -1,12 +1,12 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/stat.h>
-#include "envmanager.h"
-#include "executor_internal.h"
-#include "sighandler.h"
-#include "msgdef.h"
 #include "libft.h"
+#include "envmanager.h"
+#include "sighandler.h"
 #include "strutils.h"
+#include "msgdef.h"
+#include "executor_internal.h"
 
 static int	set_fd_stream(t_info *info)
 {
@@ -69,10 +69,10 @@ void	child_exec_extern(t_info *info)
 		exit(EXIT_FAILURE);
 	if (status == CODE_ERROR_GENERIC)
 		exit(127);
-	if_dir_then_exit_126(argv[0]);	
+	if_dir_then_exit_126(argv[0]);
 	if (access(argv[0], X_OK) == 0)
 		execve(argv[0], argv, envp_paths);
-	else 
+	else
 	{
 		ft_dprintf(2, "%s: %s: Permission denied\n", MSG_ERROR_PREFIX, argv[0]);
 		exit(126);
@@ -81,20 +81,22 @@ void	child_exec_extern(t_info *info)
 }
 
 // TODO: 빌트인 커맨드 실패에 대한 exit status 세분화
- void	child_exec_cmd(t_info *info)
+// TODO: 빌트인함수 에러메시지 출력은 서브루틴에 추가
+// CODE_OK가 아닌 상황에서 exit status 세분화 필요
+void	child_exec_cmd(t_info *info)
 {
-	char	**argv;
-	int		builtin_stat;
+	t_exec_unit	*unit;
+	char		**argv;
+	int			stat;
 
 	if (signal_set_state_default() || set_fd_stream(info) < 0)
 		exit(EXIT_FAILURE);
-	argv = (info->units->arr + info->cur_idx)->argv;
+	unit = info->units->arr + info->cur_idx;
+	argv = unit->argv;
 	if (is_builtin_command(argv[0]) != FALSE)
 	{
-		// TODO: 빌트인함수 에러메시지 출력은 서브루틴에 추가
-		// CODE_OK가 아닌 상황에서 exit status 세분화 필요
-		builtin_stat = exec_builtin_cmd(info->units->arr + info->cur_idx, SUBSHELL);
-		if (builtin_stat != CODE_OK)
+		stat = exec_builtin_cmd(unit, SUBSHELL);
+		if (stat != CODE_OK)
 			exit(EXIT_FAILURE);
 		exit(CODE_OK);
 	}

@@ -1,11 +1,6 @@
-#include <stdio.h>
-
-
-#include <stdlib.h>
 #include <unistd.h>
 #include <sys/wait.h>
 #include "libft.h"
-#include "libft_def.h"
 #include "strutils.h"
 #include "executor_internal.h"
 
@@ -15,14 +10,14 @@ static int	wait_children(pid_t last_cmd, int n_unit)
 	int	status;
 	int	exit_status;
 
-	exit_status = EXIT_FAILURE;
+	exit_status = 1;
 	i = -1;
 	while (++i < n_unit)
 	{
 		if (last_cmd == wait(&status))
 			exit_status = WEXITSTATUS(status);
 	}
-	dprintf(2, "in %s, exit_status: %d\n\n", __func__, exit_status);
+	ft_dprintf(2, "in %s, exit_status: %d\n\n", __func__, exit_status);
 	return (exit_status);
 }
 
