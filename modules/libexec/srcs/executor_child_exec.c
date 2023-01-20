@@ -8,10 +8,6 @@
 #include "libft.h"
 #include "strutils.h"
 
-
-//TODO: 시그널 함수 추가
-//int	signal_set_state_default(void);
-
 static int	set_fd_stream(t_info *info)
 {
 	const t_exec_unit	cur_unit = info->units->arr[info->cur_idx];
@@ -81,13 +77,10 @@ void	child_exec_extern(t_info *info)
 		ft_dprintf(2, "%s: %s: Permission denied\n", MSG_ERROR_PREFIX, argv[0]);
 		exit(126);
 	}
-	//As the convention, call _exit(127) in such case
 	exit(127);
 }
 
-// 참고만: stat, lstat 심볼릭 링크파일인 경우 동작이 다르대..
 // TODO: 빌트인 커맨드 실패에 대한 exit status 세분화
-//
  void	child_exec_cmd(t_info *info)
 {
 	char	**argv;

@@ -14,8 +14,7 @@ int	_is_file_existent(char *path)
 	return (TRUE);
 }
 
-// if builtin, return (TODO) index of builtin function.
-// else replace word with absolute path and return 0.
+// replace word with absolute path and return 0.
 // if not found in path return CODE_ERROR_GENERIC.
 // only checks if file exists.
 int	find_exec(char **buf)

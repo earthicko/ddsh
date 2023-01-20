@@ -203,7 +203,6 @@ void	set_command_3(char *command[20])
 	command[13] = "echo append >> c";
 
 	/*******edge case: only redir, only word********/
-	// TODO: 15번째, 16번째 테스트 각각 파싱, 렉싱에서 터짐
 	// 터지는게 정상적인지 고려할 것
 	command[14] = "<a";
 	command[15] = "";

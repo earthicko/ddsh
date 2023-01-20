@@ -62,7 +62,6 @@ static void	_abort_write_to_file(int fd, char *filename, char *delim, int stat)
 	exit(stat);
 }
 
-// TODO: heredoc도 history에서 읽어옴, (단 heredoc을 통해 입력받은 내용은 history에 기록되지 않음)
 static void	_write_to_file(char *filename, char *delimeter)
 {
 	int		fd;

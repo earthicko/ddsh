@@ -3,8 +3,6 @@
 #include "libft.h"
 #include "libft_def.h"
 
-
-// FIXED: echo -n -nn hi 등 옵션이 여러개 따라오는 경우에 대한 로직 추가
 static int has_only_ch(char *str, char ch)	
 {
 	int	i;
