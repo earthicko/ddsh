@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include "libft.h"
+#include "msgdef.h"
 #include "strutils.h"
 #include "expansion_internal.h"
 
@@ -11,7 +12,7 @@ static int	_init_compose_squote(int *start, int *pos, char *str, char quote)
 		(*pos)++;
 	if (str[*pos] == '\0')
 	{
-		ft_printf("%s: Unimplemented error msg\n", __func__);
+		ft_dprintf(2, "%s: syntax error: unclosed quotes\n", MSG_ERROR_PREFIX);
 		return (CODE_ERROR_DATA);
 	}
 	(*pos)++;
