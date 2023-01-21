@@ -3,57 +3,78 @@
 #include "libft.h"
 #include "msgdef.h"
 #include "envmanager.h"
-#include "libft_def.h"
 
 static int	builtin_cd_internal(char *target)
 {
 	char	*pwd;
 	int		stat;
 
+	stat = 0;
 	pwd = getcwd(NULL, 0);
 	if (pwd)
-		envman_setval("OLDPWD", pwd);
+		stat |= envman_setval("OLDPWD", pwd);
 	free(pwd);
-	stat = chdir(target);
+	stat |= chdir(target);
 	pwd = getcwd(NULL, 0);
 	if (pwd)
-		envman_setval("PWD", pwd);
+		stat |= envman_setval("PWD", pwd);
 	free(pwd);
 	if (stat)
 		return (1);
 	return (CODE_OK);
 }
 
-static int	_exit_builtin_cd(int stat, char *cause)
+static int	_builtin_cd_to_oldpwd(void)
 {
-	if (stat == CODE_ERROR_DATA)
-		ft_dprintf(2, "%s: cd: %s not set\n", MSG_ERROR_PREFIX, cause);
+	int		stat;
+	char	*target;
+
+	stat = envman_getval("OLDPWD", &target);
 	if (stat)
+	{
+		if (stat == CODE_ERROR_DATA)
+			ft_dprintf(2, "%s: cd: OLDPWD not set\n", MSG_ERROR_PREFIX);
 		return (1);
-	return (0);
-}
-
-static int	_builtin_cd_settarget_oldpwd(char **target)
-{
-	int	stat;
-
-	stat = envman_getval("OLDPWD", target);
-	if (stat)
-		return (_exit_builtin_cd(stat, "OLDPWD"));
-	stat = ft_printf("%s\n", *target);
+	}
+	stat = ft_printf("%s\n", target);
 	if (stat < 0)
 		return (1);
-	return (0);
+	stat = builtin_cd_internal(target);
+	free(target);
+	return (stat);
 }
 
-static int	_builtin_cd_settarget_home(char **target)
+static int	_builtin_cd_to_home(void)
 {
-	int	stat;
+	int		stat;
+	char	*target;
 
-	stat = envman_getval("HOME", target);
+	stat = envman_getval("HOME", &target);
 	if (stat)
-		return (_exit_builtin_cd(stat, "HOME"));
-	return (0);
+	{
+		if (stat == CODE_ERROR_DATA)
+			ft_dprintf(2, "%s: cd: HOME not set\n", MSG_ERROR_PREFIX);
+		return (1);
+	}
+	stat = builtin_cd_internal(target);
+	free(target);
+	return (stat);
+}
+
+static int	_builtin_cd_to_cwd(void)
+{
+	int		stat;
+	char	*target;
+
+	target = getcwd(NULL, 0);
+	if (!target)
+	{
+		ft_print_error(MSG_ERROR_PREFIX, CODE_ERROR_MALLOC);
+		return (1);
+	}
+	stat = builtin_cd_internal(target);
+	free(target);
+	return (stat);
 }
 
 int	builtin_cd(char **argv)
@@ -62,22 +83,15 @@ int	builtin_cd(char **argv)
 	char	*target;
 
 	argv++;
-	if (*argv && !ft_strncmp(*argv, "-", 2))
-	{
-		if (_builtin_cd_settarget_oldpwd(&target))
-			return (1);
-	}
-	else if ((*argv && ft_strlen(*argv) == 0) || !*argv)
-	{
-		if (_builtin_cd_settarget_home(&target))
-			return (1);
-	}
-	else
-	{
-		target = ft_strdup(*argv);
-		if (!target)
-			return (1);
-	}
+	if (!*argv)
+		return (_builtin_cd_to_home());
+	else if (!ft_strncmp(*argv, "-", 2))
+		return (_builtin_cd_to_oldpwd());
+	else if (ft_strlen(*argv) == 0)
+		return (_builtin_cd_to_cwd());
+	target = ft_strdup(*argv);
+	if (!target)
+		return (1);
 	stat = builtin_cd_internal(target);
 	free(target);
 	return (stat);
