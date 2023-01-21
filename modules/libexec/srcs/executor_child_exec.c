@@ -61,14 +61,13 @@ void	child_exec_extern(t_info *info)
 	char	**envp_paths;
 
 	argv = (info->units->arr + info->cur_idx)->argv;
-	status = envman_getenvp(&envp_paths);
-	if (status)
-		exit(EXIT_FAILURE);
 	status = find_exec(&argv[0]);
 	if (status == CODE_ERROR_MALLOC)
 		exit(EXIT_FAILURE);
 	if (status == CODE_ERROR_GENERIC)
 		exit(127);
+	if (envman_getenvp(&envp_paths) || envman_setval("_", argv[0]))
+		exit(EXIT_FAILURE);
 	if_dir_then_exit_126(argv[0]);
 	if (access(argv[0], X_OK) == 0)
 		execve(argv[0], argv, envp_paths);
