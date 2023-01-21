@@ -6,7 +6,7 @@
 /*   By: donghyle <donghyle@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 14:27:02 by donghyle          #+#    #+#             */
-/*   Updated: 2022/07/10 14:27:03 by donghyle         ###   ########.fr       */
+/*   Updated: 2023/01/21 23:34:49 by dahkang          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,9 @@ void	ft_lstunlink(t_list **lst_head, t_list *lst, void (*del)(void *))
 	{
 		if (prev->next == lst)
 		{
-			ft_lstdelone(prev->next, del);
+			temp = prev->next;
 			prev->next = prev->next->next;
+			ft_lstdelone(temp, del);
 			return ;
 		}
 		prev = prev->next;
