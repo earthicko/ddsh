@@ -27,3 +27,10 @@ void	_sighandler_int_interactive(int signo)
 	exit_stat_manager(1);
 	return ;
 }
+
+void	_sighandler_int_heredoc(int signo)
+{
+	(void)signo;
+	ft_printf("\r> %s  \n", rl_line_buffer);
+	exit(128 + signo);
+}
