@@ -64,9 +64,7 @@ int	main(int argc, char **argv, char **envp)
 		token_destroy(&toks);
 		if (!parse_tree)
 		{
-			ft_print_error(MSG_ERROR_PREFIX, stat);
-			exit_stat_manager(258);
-			system("leaks minishell");
+			ft_dprintf(2, "error while parsing\n");
 			continue ;
 		}
 		ft_printf("%s: parsing done\n", __func__, str);
