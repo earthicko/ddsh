@@ -11,10 +11,10 @@ static int	builtin_cd_internal(char *target)
 
 	stat = 0;
 	pwd = getcwd(NULL, 0);
-	if (pwd)
+	stat |= chdir(target);
+	if (stat == 0 && pwd)
 		stat |= envman_setval("OLDPWD", pwd);
 	free(pwd);
-	stat |= chdir(target);
 	pwd = getcwd(NULL, 0);
 	if (pwd)
 		stat |= envman_setval("PWD", pwd);
