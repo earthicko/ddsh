@@ -14,15 +14,16 @@
 #include <unistd.h>
 #include <dirent.h>
 #include "libft.h"
+#include "msgdef.h"
 #include "strutils.h"
 #include "heredoc_internal.h"
 
-static int	_heredoc_clear_entry(int n_heredoc, int doc_id)
+static int	_heredoc_clear_entry(char *ttyname, int n_heredoc, int doc_id)
 {
 	int		stat;
 	char	*filename;
 
-	stat = _heredoc_get_filename(n_heredoc, doc_id, &filename);
+	stat = _heredoc_get_filename(ttyname, n_heredoc, doc_id, &filename);
 	if (stat)
 		return (stat);
 	unlink(filename);
@@ -64,17 +65,25 @@ static int	_heredoc_clear_all(void)
 	return (_closedir_and_return(dp, CODE_OK));
 }
 
-int	_heredoc_clear(int *n_heredoc, int *i_current, int doc_id)
+int	_heredoc_clear(char *ttyname, int *n_heredoc, int *i_current, int doc_id)
 {
+	int	stat;
+
 	if (doc_id < 0)
 	{
 		*n_heredoc = 0;
 		*i_current = 0;
-		return (_heredoc_clear_all());
+		stat = _heredoc_clear_all();
+		if (stat == CODE_ERROR_IO)
+			ft_dprintf(2, "%s: failed to open dir: %s\n",
+				MSG_ERROR_PREFIX, DIR_HEREDOC);
+		if (stat == CODE_ERROR_MALLOC)
+			ft_print_error(MSG_ERROR_PREFIX, stat);
+		return (stat);
 	}
 	else if (0 <= doc_id && doc_id < *n_heredoc)
 	{
-		if (_heredoc_clear_entry(*n_heredoc, doc_id))
+		if (_heredoc_clear_entry(ttyname, *n_heredoc, doc_id))
 			return (CODE_ERROR_GENERIC);
 		return (CODE_OK);
 	}

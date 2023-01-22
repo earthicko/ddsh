@@ -14,6 +14,11 @@
 #include "libft.h"
 #include "msgdef.h"
 
+int	heredoc_init(void)
+{
+	return (_heredocmanager(HEREDOCMODE_INIT, 0, 0));
+}
+
 int	heredoc_read(char *delimeter)
 {
 	int	stat;

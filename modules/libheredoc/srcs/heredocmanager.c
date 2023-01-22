@@ -10,10 +10,48 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <unistd.h>
 #include "libft.h"
+#include "msgdef.h"
 #include "heredoc_internal.h"
 
-// mode: READ | GETFILENAME | CLEAR
+static char	*_extract_ttyslotname(void)
+{
+	char	*cursor;
+	char	*fullname;
+
+	fullname = ttyname(ttyslot());
+	if (!fullname)
+		return (NULL);
+	cursor = fullname;
+	while (*cursor)
+		cursor++;
+	while (cursor != fullname)
+	{
+		if (*cursor == '/')
+			break ;
+		cursor--;
+	}
+	if (*cursor == '/')
+		cursor++;
+	return (ft_strdup(cursor));
+}
+
+static int	_heredoc_init(int *n_heredoc, int *i_current, char **_ttyname)
+{
+	if (*_ttyname)
+		return (CODE_OK);
+	*_ttyname = _extract_ttyslotname();
+	if (!(*_ttyname))
+	{
+		ft_dprintf(2, "%s: failed to fetch ttyname\n", MSG_ERROR_PREFIX);
+		return (CODE_ERROR_IO);
+	}
+	return (_heredoc_clear(*_ttyname, n_heredoc, i_current, -1));
+}
+
+// mode: INIT | READ | GETFILENAME | CLEAR
+// init: gets tty slot name to be saved
 // read: reads here_doc to doc_id, using delimeter (char *)buf
 // getfilename: store filename of doc_id on (char **)buf
 // getnextfilename: store filename of next doc_id on (char **)buf
@@ -22,14 +60,26 @@ int	_heredocmanager(int mode, int doc_id, void *buf)
 {
 	static int	n_heredoc;
 	static int	i_current;
+	static char	*_ttyname;
 
+	if (mode == HEREDOCMODE_INIT)
+		return (_heredoc_init(&n_heredoc, &i_current, &_ttyname));
+	if (!_ttyname)
+	{
+		ft_dprintf(2, "%s: failed to fetch ttyname\n", MSG_ERROR_PREFIX);
+		return (CODE_ERROR_IO);
+	}
 	if (mode == HEREDOCMODE_READ)
-		return (_heredoc_read(&n_heredoc, buf));
+		return (_heredoc_read(
+				_ttyname, &n_heredoc, buf));
 	if (mode == HEREDOCMODE_GETFILENAME)
-		return (_heredoc_get_filename(n_heredoc, doc_id, buf));
+		return (_heredoc_get_filename(
+				_ttyname, n_heredoc, doc_id, buf));
 	if (mode == HEREDOCMODE_GETNEXTFILENAME)
-		return (_heredoc_get_next_filename(n_heredoc, &i_current, buf));
+		return (_heredoc_get_next_filename(
+				_ttyname, n_heredoc, &i_current, buf));
 	if (mode == HEREDOCMODE_CLEAR)
-		return (_heredoc_clear(&n_heredoc, &i_current, doc_id));
+		return (_heredoc_clear(
+				_ttyname, &n_heredoc, &i_current, doc_id));
 	return (CODE_ERROR_SCOPE);
 }

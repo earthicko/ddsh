@@ -16,6 +16,7 @@
 #include <readline/readline.h>
 #include "strutils.h"
 #include "libft.h"
+#include "msgdef.h"
 #include "envmanager.h"
 #include "heredoc_internal.h"
 #include "sighandler.h"
@@ -100,14 +101,15 @@ static void	_write_to_file(char *filename, char *delimeter)
 	}
 }
 
-int	_heredoc_read(int *n_heredoc, char *delimeter)
+int	_heredoc_read(char *ttyname, int *n_heredoc, char *delimeter)
 {
 	pid_t	pid;
 	char	*filename;
 	int		stat;
 
 	(*n_heredoc)++;
-	stat = _heredoc_get_filename(*n_heredoc, (*n_heredoc) - 1, &filename);
+	stat = _heredoc_get_filename(
+			ttyname, *n_heredoc, (*n_heredoc) - 1, &filename);
 	(*n_heredoc)--;
 	if (stat)
 		return (stat);
@@ -120,11 +122,10 @@ int	_heredoc_read(int *n_heredoc, char *delimeter)
 	else
 		_write_to_file(filename, delimeter);
 	free(filename);
-	if (WIFSIGNALED(stat))
-		stat = WTERMSIG(stat) + 128;
-	else
-		stat = WEXITSTATUS(stat);
+	stat = WEXITSTATUS(stat);
 	if (stat == 0 || stat >= 128)
 		(*n_heredoc)++;
+	else
+		ft_dprintf(2, "%s: cannot write to here-document.\n", MSG_ERROR_PREFIX);
 	return (stat);
 }
