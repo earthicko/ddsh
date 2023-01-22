@@ -1,5 +1,5 @@
 NAME				= minishell
-DRIVER_FILENAME		= srcs/prompt/minishell
+DRIVER_FILENAME		= srcs/prompt/prompt_main
 DRIVER_SRC			= $(addsuffix .c, $(DRIVER_FILENAME))
 DRIVER_OBJ			= $(addsuffix .o, $(DRIVER_FILENAME))
 DRIVER_DEP			= $(addsuffix .d, $(DRIVER_FILENAME))
@@ -8,6 +8,7 @@ RM					= rm -f
 CFLAGS				= -Wall -Werror -Wextra -MMD -MP -g $(ACFLAGS)
 ################################ FILENAMES #####################################
 FILENAME			= \
+					prompt/prompt_steps \
 					strutils/expansion/expansion_compose_quotes \
 					strutils/expansion/expansion_compose_str \
 					strutils/expansion/expansion_utils \
