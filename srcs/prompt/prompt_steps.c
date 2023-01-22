@@ -25,6 +25,7 @@
 #include "build_exec.h"
 #include "executor.h"
 #include "sighandler.h"
+#include "builtin_commands.h"
 #include "prompt_internal.h"
 
 int	prompt_init(void)
@@ -41,7 +42,7 @@ int	prompt_getstr(char **buf)
 
 	str = readline(MSG_SHELL_PROMPT);
 	if (!str)
-		exit(0);
+		builtin_exit(NULL);
 	if (signal_set_state_executing())
 		return (CODE_ERROR_GENERIC);
 	add_history(str);

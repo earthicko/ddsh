@@ -20,6 +20,8 @@ int	builtin_exit(char **argv)
 	int	stat;
 	int	ret;
 
+	if (!argv)
+		exit(exit_stat_manager(-1));
 	if (argv[1] && argv[2])
 	{
 		ft_dprintf(2, "%s: exit: too many arguments\n", MSG_ERROR_PREFIX);
