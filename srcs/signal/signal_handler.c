@@ -27,9 +27,3 @@ void	_sighandler_int_interactive(int signo)
 	exit_stat_manager(1);
 	return ;
 }
-
-void	_sighandler_int_heredoc(int signo)
-{
-	exit(128 + signo);
-	return ;
-}

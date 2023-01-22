@@ -16,7 +16,6 @@
 typedef struct sigaction	t_sigact;
 
 void	_sighandler_int_interactive(int signo);
-void	_sighandler_int_heredoc(int signo);
 
 int	signal_set_state_default(void)
 {
@@ -73,7 +72,7 @@ int	signal_set_state_heredoc(void)
 
 	action_term.sa_handler = SIG_IGN;
 	action_quit.sa_handler = SIG_IGN;
-	action_int.sa_handler = _sighandler_int_heredoc;
+	action_int.sa_handler = SIG_DFL;
 	sigemptyset(&(action_term.sa_mask));
 	sigemptyset(&(action_quit.sa_mask));
 	sigemptyset(&(action_int.sa_mask));

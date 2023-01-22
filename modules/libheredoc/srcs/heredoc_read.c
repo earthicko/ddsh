@@ -120,8 +120,11 @@ int	_heredoc_read(int *n_heredoc, char *delimeter)
 	else
 		_write_to_file(filename, delimeter);
 	free(filename);
-	stat = WEXITSTATUS(stat);
-	if (!stat)
+	if (WIFSIGNALED(stat))
+		stat = WTERMSIG(stat) + 128;
+	else
+		stat = WEXITSTATUS(stat);
+	if (stat == 0 || stat >= 128)
 		(*n_heredoc)++;
 	return (stat);
 }
