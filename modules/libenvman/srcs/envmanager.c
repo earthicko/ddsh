@@ -14,29 +14,23 @@
 #include "libft.h"
 #include "envmanager_internal.h"
 
-// init: set envp
-// clear: set none
-// getval: set (char **)buf, name
-// setval: set name, val
-// unsetval: set name
-// getenvp: set (char ***)buf
-int	_envmanager(char **envp, void *buf, char *name, char *val)
+int	_envmanager(int mode, void *buf, char *name, char *val)
 {
 	static t_list	*envlist;
 
-	if (envp && !buf && !name && !val)
-		return (_envman_init(&envlist, envp));
-	else if (!envp && !buf && !name && !val)
+	if (mode == ENVMANMODE_INIT)
+		return (_envman_init(&envlist, buf));
+	else if (mode == ENVMANMODE_CLEAR)
 		return (_envman_clear(&envlist));
-	else if (!envp && buf && name && !val)
+	else if (mode == ENVMANMODE_GETVAL)
 		return (_envman_getval(envlist, buf, name));
-	else if (!envp && !buf && name && val)
+	else if (mode == ENVMANMODE_SETVAL)
 		return (_envman_setval(&envlist, name, val));
-	else if (!envp && !buf && name && !val)
+	else if (mode == ENVMANMODE_UNSETVAL)
 		return (_envman_unsetval(&envlist, name));
-	else if (!envp && buf && !name && !val)
+	else if (mode == ENVMANMODE_GETENVP)
 		return (_envman_getenvp(envlist, buf));
-	else if (envp && buf && !name && !val)
+	else if (mode == ENVMANMODE_EXPORT)
 		return (_envman_export(envlist));
 	return (CODE_ERROR_DATA);
 }

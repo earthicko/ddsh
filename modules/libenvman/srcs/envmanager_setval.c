@@ -44,10 +44,7 @@ int	envman_setval(char *name, char *val)
 {
 	int	stat;
 
-	if (val)
-		stat = _envmanager(0, 0, name, val);
-	else
-		stat = _envmanager(0, 0, name, ENVMAN_NULLVAL);
+	stat = _envmanager(ENVMANMODE_SETVAL, 0, name, val);
 	if (stat && stat != CODE_ERROR_DATA)
 		ft_print_error(MSG_ERROR_PREFIX, stat);
 	return (stat);

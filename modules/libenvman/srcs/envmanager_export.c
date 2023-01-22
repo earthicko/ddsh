@@ -40,5 +40,5 @@ int	_envman_export(t_list *envlist)
 
 int	envman_export(void)
 {
-	return (_envmanager((char **)1, (void *)1, 0, 0));
+	return (_envmanager(ENVMANMODE_EXPORT, 0, 0, 0));
 }

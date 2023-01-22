@@ -37,7 +37,7 @@ int	envman_init(char **envp)
 {
 	int	stat;
 
-	stat = _envmanager(envp, 0, 0, 0);
+	stat = _envmanager(ENVMANMODE_INIT, envp, 0, 0);
 	if (stat)
 		ft_print_error(MSG_ERROR_PREFIX, stat);
 	return (stat);

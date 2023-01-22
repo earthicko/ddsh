@@ -48,7 +48,7 @@ int	envman_getenvp(char ***buf)
 {
 	int	stat;
 
-	stat = _envmanager(0, buf, 0, 0);
+	stat = _envmanager(ENVMANMODE_GETENVP, buf, 0, 0);
 	if (stat)
 		ft_print_error(MSG_ERROR_PREFIX, stat);
 	return (stat);

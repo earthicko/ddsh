@@ -22,5 +22,5 @@ int	_envman_clear(t_list **p_list)
 
 int	envman_clear(void)
 {
-	return (_envmanager(0, 0, 0, 0));
+	return (_envmanager(ENVMANMODE_CLEAR, 0, 0, 0));
 }
