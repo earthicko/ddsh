@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   envmanager_internal.h                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dahkang <dahkang@student.42seoul.kr>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/22 16:42:25 by dahkang           #+#    #+#             */
+/*   Updated: 2023/01/22 16:42:29 by dahkang          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef ENVMANAGER_INTERNAL_H
 # define ENVMANAGER_INTERNAL_H
 # include "libft_def.h"

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exit_stat_manager.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dahkang <dahkang@student.42seoul.kr>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/22 16:40:48 by dahkang           #+#    #+#             */
+/*   Updated: 2023/01/22 16:41:45 by dahkang          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 // set new_stat to negative to retreive prev exit stat.
 // set new stat to 0 <= new_stat to set exit stat.
 int	exit_stat_manager(int new_stat)
