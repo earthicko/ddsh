@@ -8,6 +8,7 @@ INC_DIR			= \
 				-I$(BASE_DIR)/modules/libft/includes \
 				-I$(BASE_DIR)/modules/libheredoc/includes \
 				-I$(BASE_DIR)/modules/liblexer/includes \
+				-I$(BASE_DIR)/modules/libenvman/includes \
 				-I$(BASE_DIR)/includes
 
 include filelist.mk
