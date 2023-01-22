@@ -18,10 +18,10 @@
 int	_envman_setval(t_list **envlist, char *name, char *val)
 {
 	t_enventry	*entry;
-	char		*envstr;
 	char		*temp;
-	int			stat;
 
+	if (val == ENVMAN_NULLVAL)
+		val = NULL;
 	entry = _envman_getentry(*envlist, name);
 	if (entry)
 	{
@@ -33,13 +33,9 @@ int	_envman_setval(t_list **envlist, char *name, char *val)
 	}
 	else
 	{
-		envstr = envman_compose_envstr(name, val);
-		if (!envstr)
-			return (CODE_ERROR_MALLOC);
-		stat = _envman_addentry(envlist, envstr);
-		free(envstr);
-		if (stat)
-			return (stat);
+		if (!is_valid_name(name))
+			return (CODE_ERROR_DATA);
+		return (_envman_addentry_nameval(envlist, name, val));
 	}
 	return (CODE_OK);
 }
@@ -48,7 +44,10 @@ int	envman_setval(char *name, char *val)
 {
 	int	stat;
 
-	stat = _envmanager(0, 0, name, val);
+	if (val)
+		stat = _envmanager(0, 0, name, val);
+	else
+		stat = _envmanager(0, 0, name, ENVMAN_NULLVAL);
 	if (stat && stat != CODE_ERROR_DATA)
 		ft_print_error(MSG_ERROR_PREFIX, stat);
 	return (stat);

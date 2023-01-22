@@ -54,29 +54,3 @@ t_enventry	*_envman_getentry(t_list *envlist, char *name)
 		return (list->content);
 	return (NULL);
 }
-
-int	_envman_addentry(t_list **p_list, char *env)
-{
-	t_list		*newlst;
-	t_enventry	*entry;
-	int			stat;
-
-	entry = malloc(sizeof(t_enventry));
-	if (!entry)
-		return (CODE_ERROR_MALLOC);
-	ft_memset(entry, 0, sizeof(t_enventry));
-	stat = envman_split_envstr(env, &(entry->name), &(entry->val));
-	if (stat)
-	{
-		_enventry_destroy(entry);
-		return (stat);
-	}
-	newlst = ft_lstnew(entry);
-	if (!newlst)
-	{
-		_enventry_destroy(entry);
-		return (CODE_ERROR_MALLOC);
-	}
-	ft_lstadd_back(p_list, newlst);
-	return (CODE_OK);
-}

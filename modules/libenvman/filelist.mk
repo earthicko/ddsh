@@ -9,6 +9,8 @@ FILE_LIBENVMAN	= \
 				envmanager_clear \
 				envmanager_getval \
 				envmanager_unsetval \
+				envmanager_export \
+				envmanager_addentry \
 				envmanager
 
 SRC_LIBENVMAN	= $(addprefix srcs/, $(addsuffix .c, $(FILE_LIBENVMAN)))

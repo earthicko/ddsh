@@ -17,6 +17,7 @@
 # include "envmanager.h"
 # define ENVSTR_DELIM_CHAR '='
 # define ENVSTR_DELIM_STR "="
+# define ENVMAN_NULLVAL (char *)-1
 
 typedef struct s_enventry
 {
@@ -25,8 +26,10 @@ typedef struct s_enventry
 }	t_enventry;
 
 void		_free_entry(void *content);
+t_enventry	*_enventry_destroy(t_enventry *enventry);
 t_list		*_find_list_with_entry(t_list *envlist, char *name);
-int			_envman_addentry(t_list **p_list, char *env);
+int			_envman_addentry_str(t_list **p_list, char *env);
+int			_envman_addentry_nameval(t_list **p_list, char *name, char *val);
 t_enventry	*_envman_getentry(t_list *envlist, char *name);
 
 int			_envmanager(char **envp, void *buf, char *name, char *val);
@@ -37,5 +40,6 @@ int			_envman_getval(t_list *envlist, char **buf, char *name);
 int			_envman_setval(t_list **envlist, char *name, char *val);
 int			_envman_unsetval(t_list **envlist, char *name);
 int			_envman_getenvp(t_list *envlist, char ***buf);
+int			_envman_export(t_list *envlist);
 
 #endif

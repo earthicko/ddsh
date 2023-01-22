@@ -1,44 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   envmanager_init.c                                  :+:      :+:    :+:   */
+/*   envmanager_export.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dahkang <dahkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/22 16:40:48 by dahkang           #+#    #+#             */
+/*   Created: 2023/01/22 16:40:47 by dahkang           #+#    #+#             */
 /*   Updated: 2023/01/22 16:41:44 by dahkang          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "msgdef.h"
 #include "envmanager_internal.h"
 
-int	_envman_init(t_list **p_list, char **envp)
+int	_envman_export(t_list *envlist)
 {
 	int	stat;
 
-	if (*p_list)
-		_envman_clear(p_list);
-	while (*envp)
+	stat = 0;
+	while (envlist)
 	{
-		stat = _envman_addentry_str(p_list, *envp);
-		if (stat)
+		if (((t_enventry *)(envlist->content))->val)
 		{
-			_envman_clear(p_list);
-			return (stat);
+			if (ft_printf("declare -x %s=\"%s\"\n",
+					((t_enventry *)(envlist->content))->name,
+				((t_enventry *)(envlist->content))->val) < 0)
+				stat = 1;
 		}
-		envp++;
+		else
+		{
+			if (ft_printf("declare -x %s\n",
+					((t_enventry *)(envlist->content))->name) < 0)
+				stat = 1;
+		}
+		envlist = envlist->next;
 	}
-	return (CODE_OK);
+	return (stat);
 }
 
-int	envman_init(char **envp)
+int	envman_export(void)
 {
-	int	stat;
-
-	stat = _envmanager(envp, 0, 0, 0);
-	if (stat)
-		ft_print_error(MSG_ERROR_PREFIX, stat);
-	return (stat);
+	return (_envmanager((char **)1, (void *)1, 0, 0));
 }

@@ -36,5 +36,7 @@ int	_envmanager(char **envp, void *buf, char *name, char *val)
 		return (_envman_unsetval(&envlist, name));
 	else if (!envp && buf && !name && !val)
 		return (_envman_getenvp(envlist, buf));
+	else if (envp && buf && !name && !val)
+		return (_envman_export(envlist));
 	return (CODE_ERROR_DATA);
 }

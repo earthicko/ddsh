@@ -19,6 +19,7 @@ int		envman_getval(char *name, char **buf);
 int		envman_setval(char *name, char *val);
 int		envman_unsetval(char *name);
 int		envman_getenvp(char ***buf);
+int		envman_export(void);
 
 int		envman_split_envstr(char *str, char **ret_name, char **ret_val);
 char	*envman_compose_envstr(char *name, char *val);

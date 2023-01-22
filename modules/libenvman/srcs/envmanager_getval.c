@@ -35,7 +35,10 @@ int	_envman_getval(t_list *envlist, char **buf, char *name)
 	entry = _envman_getentry(envlist, name);
 	if (!entry)
 		return (CODE_ERROR_DATA);
-	backup = ft_strdup(entry->val);
+	if (entry->val)
+		backup = ft_strdup(entry->val);
+	else
+		backup = ft_strdup("");
 	if (!backup)
 		return (CODE_ERROR_MALLOC);
 	*buf = backup;

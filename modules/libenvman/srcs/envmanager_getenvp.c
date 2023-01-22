@@ -18,8 +18,6 @@
 int	_envman_getenvp(t_list *envlist, char ***buf)
 {
 	char	**cursor;
-	char	*name;
-	char	*val;
 
 	*buf = malloc(sizeof(char *) * (ft_lstsize(envlist) + 1));
 	if (!(*buf))
@@ -28,16 +26,19 @@ int	_envman_getenvp(t_list *envlist, char ***buf)
 	cursor = *buf;
 	while (envlist)
 	{
-		name = ((t_enventry *)(envlist->content))->name;
-		val = ((t_enventry *)(envlist->content))->val;
-		*cursor = envman_compose_envstr(name, val);
-		if (!(*cursor))
+		if (((t_enventry *)(envlist->content))->val)
 		{
-			ft_free_strarr(*buf);
-			*buf = NULL;
-			return (CODE_ERROR_MALLOC);
+			*cursor = envman_compose_envstr(
+					((t_enventry *)(envlist->content))->name,
+					((t_enventry *)(envlist->content))->val);
+			if (!(*cursor))
+			{
+				ft_free_strarr(*buf);
+				*buf = NULL;
+				return (CODE_ERROR_MALLOC);
+			}
+			cursor++;
 		}
-		cursor++;
 		envlist = envlist->next;
 	}
 	return (CODE_OK);
