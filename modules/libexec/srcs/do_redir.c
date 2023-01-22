@@ -6,16 +6,17 @@
 /*   By: dahkang <dahkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 16:40:48 by dahkang           #+#    #+#             */
-/*   Updated: 2023/01/22 16:41:45 by dahkang          ###   ########.fr       */
+/*   Updated: 2023/01/22 18:34:43 by dahkang          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <fcntl.h>
 #include <unistd.h>
-#include "heredoc.h"
-#include "executor_internal.h"
 #include "libft.h"
+#include "heredoc.h"
+#include "msgdef.h"
+#include "executor_internal.h"
 
 int	process_redir(t_redir *redir_arr, int n_redir)
 {
@@ -43,6 +44,18 @@ int	do_redir_in(t_redir *redir_arr)
 {
 	int	fd;
 
+	if (access(redir_arr->content, F_OK) != 0)
+	{
+		ft_dprintf(2, "%s: %s: No such file or directory\n",
+			MSG_SHELL_PROMPT, redir_arr->content);
+		return (CODE_ERROR_IO);
+	}
+	if (access(redir_arr->content, R_OK) != 0)
+	{
+		ft_dprintf(2, "%s: %s: Permission denied\n",
+			MSG_SHELL_PROMPT, redir_arr->content);
+		return (CODE_ERROR_IO);
+	}
 	fd = open(redir_arr->content, O_RDONLY);
 	if (fd < 0 || dup2(fd, STDIN_FILENO) < 0 || close(fd) < 0)
 		return (CODE_ERROR_IO);
