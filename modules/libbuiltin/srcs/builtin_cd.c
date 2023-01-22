@@ -91,9 +91,6 @@ static int	_builtin_cd_to_cwd(void)
 
 int	builtin_cd(char **argv)
 {
-	int		stat;
-	char	*target;
-
 	argv++;
 	if (!*argv)
 		return (_builtin_cd_to_home());
