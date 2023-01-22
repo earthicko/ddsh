@@ -13,6 +13,7 @@ void	_sighandler_int_interactive(int signo)
 	rl_replace_line("", TRUE);
 	rl_on_new_line();
 	rl_redisplay();
+	exit_stat_manager(1);
 	return ;
 }
 
