@@ -13,6 +13,7 @@
 #include <stdlib.h>
 #include "libft_def.h"
 #include "envmanager.h"
+#include "heredoc.h"
 #include "lexer.h"
 #include "t_node.h"
 #include "prompt_internal.h"
@@ -27,6 +28,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	envman_init(envp);
+	heredoc_init();
 	while (TRUE)
 	{
 		if (prompt_init() || prompt_getstr(&str))
