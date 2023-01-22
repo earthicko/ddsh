@@ -8,7 +8,8 @@
 void	_sighandler_int_interactive(int signo)
 {
 	(void)signo;
-	ft_printf("\r%s%s  \n", MSG_SHELL_PROMPT, rl_line_buffer);
+
+	ft_printf("\r%s  \n", MSG_SHELL_PROMPT);
 	rl_replace_line("", TRUE);
 	rl_on_new_line();
 	rl_redisplay();
