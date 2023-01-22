@@ -15,7 +15,12 @@ static int	wait_children(pid_t last_cmd, int n_unit)
 	while (++i < n_unit)
 	{
 		if (last_cmd == wait(&status))
-			exit_status = WEXITSTATUS(status);
+		{
+			if (WIFSIGNALED(status))
+				exit_status = WTERMSIG(status) + 128;
+			else
+				exit_status = WEXITSTATUS(status);
+		}
 	}
 	ft_dprintf(2, "in %s, exit_status: %d\n\n", __func__, exit_status);
 	return (exit_status);
