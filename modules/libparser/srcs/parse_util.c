@@ -4,6 +4,7 @@
 #include "t_token.h"
 #include "t_node.h"
 #include "parser_internal.h"
+#include "envmanager.h"
 
 t_node	*_parse_addchild_and_return(t_parser *p, t_node *root, t_node *child)
 {
@@ -57,13 +58,19 @@ t_node	*_parse_abort(t_parser *p, t_node *root, t_node *child)
 
 void	_parse_perror(t_parser *p)
 {
-	if (p->exit_stat)
+	if (p->exit_stat == 130)
+		exit_stat_manager(130);
+	else if (p->exit_stat)
+	{
 		ft_print_error(MSG_ERROR_PREFIX, p->exit_stat);
+		exit_stat_manager(258);
+	}
 	else
 	{
 		if (p->last_error_loc == p->tok_last)
 			p->last_error_loc--;
 		ft_dprintf(2, "%s: syntax error near unexpected token `%s`\n",
 			MSG_ERROR_PREFIX, p->last_error_loc->content);
+		exit_stat_manager(258);
 	}
 }

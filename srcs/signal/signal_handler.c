@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <readline/readline.h>
 #include "libft.h"
+#include "envmanager.h"
 #include "msgdef.h"
 
 void	_sighandler_int_interactive(int signo)
@@ -17,6 +18,7 @@ void	_sighandler_int_interactive(int signo)
 void	_sighandler_int_heredoc(int signo)
 {
 	(void)signo;
-	exit(0);
+	
+	exit(128 +signo);
 	return ;
 }
