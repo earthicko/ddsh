@@ -22,7 +22,6 @@ static int	wait_children(pid_t last_cmd, int n_unit)
 				exit_status = WEXITSTATUS(status);
 		}
 	}
-	ft_dprintf(2, "in %s, exit_status: %d\n\n", __func__, exit_status);
 	return (exit_status);
 }
 
