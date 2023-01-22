@@ -8,7 +8,6 @@
 void	_sighandler_int_interactive(int signo)
 {
 	(void)signo;
-
 	ft_printf("\r%s  \n", MSG_SHELL_PROMPT);
 	rl_replace_line("", TRUE);
 	rl_on_new_line();
@@ -19,8 +18,6 @@ void	_sighandler_int_interactive(int signo)
 
 void	_sighandler_int_heredoc(int signo)
 {
-	(void)signo;
-	
-	exit(128 +signo);
+	exit(128 + signo);
 	return ;
 }

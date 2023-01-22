@@ -49,7 +49,6 @@ int	prompt_gettokens(char *str, t_toks *toks)
 	}
 	if (stat)
 	{
-		// error msg
 		exit_stat_manager(258);
 		return (CODE_CONTINUE);
 	}
