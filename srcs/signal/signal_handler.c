@@ -2,12 +2,14 @@
 #include <stdio.h>
 #include <readline/readline.h>
 #include "libft.h"
+#include "envmanager.h"
 #include "msgdef.h"
 
 void	_sighandler_int_interactive(int signo)
 {
 	(void)signo;
-	ft_printf("\r%s%s  \n", MSG_SHELL_PROMPT, rl_line_buffer);
+
+	ft_printf("\r%s  \n", MSG_SHELL_PROMPT);
 	rl_replace_line("", TRUE);
 	rl_on_new_line();
 	rl_redisplay();
@@ -17,6 +19,7 @@ void	_sighandler_int_interactive(int signo)
 void	_sighandler_int_heredoc(int signo)
 {
 	(void)signo;
-	exit(0);
+	
+	exit(128 +signo);
 	return ;
 }

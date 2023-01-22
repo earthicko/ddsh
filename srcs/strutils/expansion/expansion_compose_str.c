@@ -13,11 +13,9 @@ static void	_init_compose_envvar(char *str, int *pos, int *start)
 		(*pos)++;
 		return ;
 	}
-	while (
-		str[*pos] != '\0'
-		&& str[*pos] != '\''
-		&& str[*pos] != '\"'
-		&& str[*pos] != '$')
+	if (ft_isdigit(str[*pos]))
+		return ;
+	while (ft_isalnum(str[*pos]) || str[*pos] == '_')
 		(*pos)++;
 }
 
