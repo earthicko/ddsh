@@ -18,10 +18,10 @@ void	ft_print_error(char *prefix, int code)
 
 	if (code >= CODE_OK || CODE_ERROR_DATA > code)
 		return ;
-	msg[-CODE_ERROR_GENERIC] = "%s: Unknown error.\n";
-	msg[-CODE_ERROR_IO] = "%s: I/O Error.\n";
-	msg[-CODE_ERROR_MALLOC] = "%s: Cannot allocate memory.\n";
-	msg[-CODE_ERROR_SCOPE] = "%s: Value is out of scope.\n";
-	msg[-CODE_ERROR_DATA] = "%s: Invalid data.\n";
+	msg[-CODE_ERROR_GENERIC] = "%sUnknown error.\n";
+	msg[-CODE_ERROR_IO] = "%sI/O Error.\n";
+	msg[-CODE_ERROR_MALLOC] = "%sCannot allocate memory.\n";
+	msg[-CODE_ERROR_SCOPE] = "%sValue is out of scope.\n";
+	msg[-CODE_ERROR_DATA] = "%sInvalid data.\n";
 	ft_dprintf(2, msg[-code], prefix);
 }

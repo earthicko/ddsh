@@ -24,7 +24,7 @@ static int	_init_compose_squote(int *start, int *pos, char *str, char quote)
 		(*pos)++;
 	if (str[*pos] == '\0')
 	{
-		ft_dprintf(2, "%s: syntax error: unclosed quotes\n", MSG_ERROR_PREFIX);
+		ft_dprintf(2, "%ssyntax error: unclosed quotes\n", MSG_ERROR_PREFIX);
 		return (CODE_ERROR_DATA);
 	}
 	(*pos)++;

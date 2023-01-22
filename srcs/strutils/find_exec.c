@@ -37,7 +37,7 @@ int	find_exec(char **buf)
 	{
 		if (_is_file_existent(*buf))
 			return (CODE_OK);
-		ft_dprintf(2, "%s: %s: No such file or directory\n",
+		ft_dprintf(2, "%s%s: No such file or directory\n",
 			MSG_ERROR_PREFIX, *buf);
 		return (CODE_ERROR_GENERIC);
 	}

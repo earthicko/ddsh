@@ -27,7 +27,7 @@ int	builtin_unset(char **argv)
 			envman_unsetval(*argv);
 		else
 		{
-			if (ft_dprintf(2, "%s: unset: `%s': not a valid identifier\n",
+			if (ft_dprintf(2, "%sunset: `%s': not a valid identifier\n",
 					MSG_ERROR_PREFIX, *argv) < 0)
 				stat = 1;
 		}

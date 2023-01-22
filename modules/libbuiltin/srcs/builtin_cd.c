@@ -45,7 +45,7 @@ static int	_builtin_cd_to_oldpwd(void)
 	if (stat)
 	{
 		if (stat == CODE_ERROR_DATA)
-			ft_dprintf(2, "%s: cd: OLDPWD not set\n", MSG_ERROR_PREFIX);
+			ft_dprintf(2, "%scd: OLDPWD not set\n", MSG_ERROR_PREFIX);
 		return (1);
 	}
 	stat = ft_printf("%s\n", target);
@@ -65,7 +65,7 @@ static int	_builtin_cd_to_home(void)
 	if (stat)
 	{
 		if (stat == CODE_ERROR_DATA)
-			ft_dprintf(2, "%s: cd: HOME not set\n", MSG_ERROR_PREFIX);
+			ft_dprintf(2, "%scd: HOME not set\n", MSG_ERROR_PREFIX);
 		return (1);
 	}
 	stat = builtin_cd_internal(target);

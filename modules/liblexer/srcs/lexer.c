@@ -86,7 +86,7 @@ int	lexer(char *str, t_toks *toks)
 	toks->n_toks = get_n_toks(str);
 	if (toks->n_toks == -1)
 	{
-		ft_dprintf(2, "%s: syntax error: unclosed quotes\n", MSG_ERROR_PREFIX);
+		ft_dprintf(2, "%ssyntax error: unclosed quotes\n", MSG_ERROR_PREFIX);
 		return (UNCLOSED_QUOTE);
 	}
 	toks->arr = (t_token *)malloc(sizeof(t_token) * (toks->n_toks + 1));

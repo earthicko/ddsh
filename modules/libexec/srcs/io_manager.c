@@ -26,7 +26,7 @@ int	io_manager(int mode)
 		backup[1] = dup(STDOUT_FILENO);
 		if (backup[0] < 0 || backup[1] < 0)
 		{
-			ft_dprintf(2, "%s: critical I/O error: cannot redirect STDIN/OUT\n",
+			ft_dprintf(2, "%scritical I/O error: cannot redirect STDIN/OUT\n",
 				MSG_ERROR_PREFIX);
 			return (CODE_ERROR_IO);
 		}
@@ -36,7 +36,7 @@ int	io_manager(int mode)
 		if (dup2(backup[0], STDIN_FILENO) < 0 || close(backup[0]) < 0
 			|| dup2(backup[1], STDOUT_FILENO) < 0 || close(backup[1]) < 0)
 		{
-			ft_dprintf(2, "%s: critical I/O error: cannot redirect STDIN/OUT\n",
+			ft_dprintf(2, "%scritical I/O error: cannot redirect STDIN/OUT\n",
 				MSG_ERROR_PREFIX);
 			return (CODE_ERROR_IO);
 		}

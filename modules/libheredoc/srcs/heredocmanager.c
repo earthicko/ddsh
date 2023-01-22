@@ -44,7 +44,7 @@ static int	_heredoc_init(int *n_heredoc, int *i_current, char **_ttyname)
 	*_ttyname = _extract_ttyslotname();
 	if (!(*_ttyname))
 	{
-		ft_dprintf(2, "%s: failed to fetch ttyname\n", MSG_ERROR_PREFIX);
+		ft_dprintf(2, "%sfailed to fetch ttyname\n", MSG_ERROR_PREFIX);
 		return (CODE_ERROR_IO);
 	}
 	return (_heredoc_clear(*_ttyname, n_heredoc, i_current, -1));
@@ -66,7 +66,7 @@ int	_heredocmanager(int mode, int doc_id, void *buf)
 		return (_heredoc_init(&n_heredoc, &i_current, &_ttyname));
 	if (!_ttyname)
 	{
-		ft_dprintf(2, "%s: failed to fetch ttyname\n", MSG_ERROR_PREFIX);
+		ft_dprintf(2, "%sfailed to fetch ttyname\n", MSG_ERROR_PREFIX);
 		return (CODE_ERROR_IO);
 	}
 	if (mode == HEREDOCMODE_READ)

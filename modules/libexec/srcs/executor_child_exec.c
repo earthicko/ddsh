@@ -55,13 +55,13 @@ void	if_dir_then_exit_126(char *cmd_name)
 
 	if (stat(cmd_name, &s_statbuf) != 0)
 	{
-		ft_dprintf(2, "%s: %s: failed to fetch stat\n",
+		ft_dprintf(2, "%s%s: failed to fetch stat\n",
 			MSG_ERROR_PREFIX, cmd_name);
 		exit(EXIT_FAILURE);
 	}
 	if (S_ISDIR(s_statbuf.st_mode))
 	{
-		ft_dprintf(2, "%s: %s: is a directory\n", MSG_ERROR_PREFIX, cmd_name);
+		ft_dprintf(2, "%s%s: is a directory\n", MSG_ERROR_PREFIX, cmd_name);
 		exit(126);
 	}
 }
@@ -85,7 +85,7 @@ void	child_exec_extern(t_info *info)
 		execve(argv[0], argv, envp_paths);
 	else
 	{
-		ft_dprintf(2, "%s: %s: Permission denied\n", MSG_ERROR_PREFIX, argv[0]);
+		ft_dprintf(2, "%s%s: Permission denied\n", MSG_ERROR_PREFIX, argv[0]);
 		exit(126);
 	}
 	exit(127);

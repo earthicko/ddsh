@@ -67,7 +67,7 @@ int	_find_exec_from_path(char **buf)
 
 	if (envman_getval("PATH", &path))
 	{
-		ft_dprintf(2, "%s: %s: No such file or directory\n",
+		ft_dprintf(2, "%s%s: No such file or directory\n",
 			MSG_ERROR_PREFIX, *buf);
 		return (CODE_ERROR_GENERIC);
 	}
@@ -82,6 +82,6 @@ int	_find_exec_from_path(char **buf)
 			return (_find_exec_from_path_abort(path, paths, stat));
 		cursor++;
 	}
-	ft_dprintf(2, "%s: %s: command not found\n", MSG_ERROR_PREFIX, *buf);
+	ft_dprintf(2, "%s%s: command not found\n", MSG_ERROR_PREFIX, *buf);
 	return (_find_exec_from_path_abort(path, paths, CODE_ERROR_GENERIC));
 }

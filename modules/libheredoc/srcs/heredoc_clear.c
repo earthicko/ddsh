@@ -75,7 +75,7 @@ int	_heredoc_clear(char *ttyname, int *n_heredoc, int *i_current, int doc_id)
 		*i_current = 0;
 		stat = _heredoc_clear_all();
 		if (stat == CODE_ERROR_IO)
-			ft_dprintf(2, "%s: failed to open dir: %s\n",
+			ft_dprintf(2, "%sfailed to open dir: %s\n",
 				MSG_ERROR_PREFIX, DIR_HEREDOC);
 		if (stat == CODE_ERROR_MALLOC)
 			ft_print_error(MSG_ERROR_PREFIX, stat);

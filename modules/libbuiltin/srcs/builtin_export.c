@@ -19,7 +19,7 @@
 static int	_exit_export_var(int stat, char *word)
 {
 	if (stat == CODE_ERROR_DATA)
-		ft_dprintf(2, "%s: export: `%s': not a valid identifier\n",
+		ft_dprintf(2, "%sexport: `%s': not a valid identifier\n",
 			MSG_ERROR_PREFIX, word);
 	else if (stat == CODE_ERROR_MALLOC)
 		ft_print_error(MSG_ERROR_PREFIX, CODE_ERROR_MALLOC);

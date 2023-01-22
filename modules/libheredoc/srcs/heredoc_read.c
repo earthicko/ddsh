@@ -126,6 +126,6 @@ int	_heredoc_read(char *ttyname, int *n_heredoc, char *delimeter)
 	if (stat == 0 || stat >= 128)
 		(*n_heredoc)++;
 	else
-		ft_dprintf(2, "%s: cannot write to here-document.\n", MSG_ERROR_PREFIX);
+		ft_dprintf(2, "%scannot write to here-document.\n", MSG_ERROR_PREFIX);
 	return (stat);
 }

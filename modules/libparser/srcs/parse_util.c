@@ -81,7 +81,7 @@ void	_parse_perror(t_parser *p)
 	{
 		if (p->last_error_loc == p->tok_last)
 			p->last_error_loc--;
-		ft_dprintf(2, "%s: syntax error near unexpected token `%s`\n",
+		ft_dprintf(2, "%ssyntax error near unexpected token `%s`\n",
 			MSG_ERROR_PREFIX, p->last_error_loc->content);
 		exit_stat_manager(258);
 	}

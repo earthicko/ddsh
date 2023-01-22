@@ -24,7 +24,7 @@ int	builtin_exit(char **argv)
 		exit(exit_stat_manager(-1));
 	if (argv[1] && argv[2])
 	{
-		ft_dprintf(2, "%s: exit: too many arguments\n", MSG_ERROR_PREFIX);
+		ft_dprintf(2, "%sexit: too many arguments\n", MSG_ERROR_PREFIX);
 		return (1);
 	}
 	if (argv[1])
@@ -32,7 +32,8 @@ int	builtin_exit(char **argv)
 		ret = ft_atoi_if_valid(argv[1], &stat);
 		if (ret)
 		{
-			ft_dprintf(2, "%s: numeric argument required\n", argv[1]);
+			ft_dprintf(2, "%sexit: %s: numeric argument required\n",
+				MSG_ERROR_PREFIX, argv[1]);
 			stat = 2;
 		}
 		exit(stat);

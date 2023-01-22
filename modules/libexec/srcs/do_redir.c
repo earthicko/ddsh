@@ -46,14 +46,14 @@ int	do_redir_in(t_redir *redir_arr)
 
 	if (access(redir_arr->content, F_OK) != 0)
 	{
-		ft_dprintf(2, "%s: %s: No such file or directory\n",
-			MSG_SHELL_PROMPT, redir_arr->content);
+		ft_dprintf(2, "%s%s: No such file or directory\n",
+			MSG_ERROR_PREFIX, redir_arr->content);
 		return (CODE_ERROR_IO);
 	}
 	if (access(redir_arr->content, R_OK) != 0)
 	{
-		ft_dprintf(2, "%s: %s: Permission denied\n",
-			MSG_SHELL_PROMPT, redir_arr->content);
+		ft_dprintf(2, "%s%s: Permission denied\n",
+			MSG_ERROR_PREFIX, redir_arr->content);
 		return (CODE_ERROR_IO);
 	}
 	fd = open(redir_arr->content, O_RDONLY);
