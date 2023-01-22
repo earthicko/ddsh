@@ -73,5 +73,5 @@ int	do_shell_expansion(char **buf)
 
 int	do_heredoc_expansion(char **buf)
 {
-	return (_do_expansion(buf, O_PARSESQUOTE | O_PARSEDQUOTE));
+	return (_do_expansion(buf, 0));
 }
