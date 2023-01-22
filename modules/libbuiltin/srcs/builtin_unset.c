@@ -17,15 +17,21 @@
 
 int	builtin_unset(char **argv)
 {
+	int	stat;
+
+	stat = 0;
 	argv++;
 	while (*argv)
 	{
 		if (is_valid_name(*argv))
 			envman_unsetval(*argv);
 		else
-			ft_dprintf(2, "%s: unset: `%s': not a valid identifier\n",
-				MSG_ERROR_PREFIX, *argv);
+		{
+			if (ft_dprintf(2, "%s: unset: `%s': not a valid identifier\n",
+					MSG_ERROR_PREFIX, *argv) < 0)
+				stat = 1;
+		}
 		argv++;
 	}
-	return (0);
+	return (stat);
 }

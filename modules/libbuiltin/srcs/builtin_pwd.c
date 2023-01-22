@@ -11,8 +11,8 @@
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include <stdio.h>
 #include <unistd.h>
+#include "libft.h"
 
 int	builtin_pwd(char **argv)
 {
@@ -23,7 +23,7 @@ int	builtin_pwd(char **argv)
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
 		return (1);
-	stat = printf("%s\n", pwd);
+	stat = ft_printf("%s\n", pwd);
 	free(pwd);
 	if (stat < 0)
 		return (1);

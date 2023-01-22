@@ -101,10 +101,5 @@ int	builtin_cd(char **argv)
 		return (_builtin_cd_to_oldpwd());
 	else if (ft_strlen(*argv) == 0)
 		return (_builtin_cd_to_cwd());
-	target = ft_strdup(*argv);
-	if (!target)
-		return (1);
-	stat = builtin_cd_internal(target);
-	free(target);
-	return (stat);
+	return (builtin_cd_internal(*argv));
 }
