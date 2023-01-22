@@ -45,8 +45,8 @@ int	exec_builtin_cmd(t_exec_unit *unit, int mode)
 	const int				cmd_idx = map_cmd(unit->argv[0]);
 	int						stat;
 
-	if (mode == PARENTSHELL)
-		io_manager(STDINOUT_BACKUP);
+	if (mode == PARENTSHELL && io_manager(STDINOUT_BACKUP))
+		return (1);
 	stat = process_redir(unit->redir_arr, unit->n_redir);
 	if (stat == CODE_ERROR_IO)
 		return (1);
@@ -56,7 +56,7 @@ int	exec_builtin_cmd(t_exec_unit *unit, int mode)
 		return (-1);
 	}
 	stat = exec_builtin[cmd_idx](unit->argv);
-	if (mode == PARENTSHELL)
-		io_manager(STDINOUT_RESTORE);
+	if (mode == PARENTSHELL && io_manager(STDINOUT_RESTORE))
+		return (1);
 	return (stat);
 }

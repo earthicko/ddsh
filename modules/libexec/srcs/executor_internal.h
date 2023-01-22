@@ -40,7 +40,7 @@ int		do_redir_out(t_redir *redir_arr);
 int		do_redir_in_here(t_redir *redir_arr);
 int		do_redir_out_append(t_redir *redir_arr);
 
-void	io_manager(int mode);
+int		io_manager(int mode);
 
 void	child_exec_cmd(t_info *info);
 

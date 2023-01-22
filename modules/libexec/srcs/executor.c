@@ -93,9 +93,11 @@ int	executor(t_unit_arr *units)
 		return (CODE_ERROR_SCOPE);
 	if (units->arr->n_word == 0)
 	{
-		io_manager(STDINOUT_BACKUP);
+		if (io_manager(STDINOUT_BACKUP))
+			return (1);
 		stat = process_redir(units->arr->redir_arr, units->arr->n_redir);
-		io_manager(STDINOUT_RESTORE);
+		if (io_manager(STDINOUT_RESTORE))
+			return (1);
 		if (stat == CODE_ERROR_IO)
 			return (1);
 		return (CODE_OK);
