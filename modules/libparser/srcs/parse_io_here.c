@@ -35,7 +35,7 @@ t_node	*_parse_io_here(t_parser *p)
 	if (stat)
 	{
 		p->exit_stat = stat;
-		return (node_destroy(root));
+		return (_parse_abort(p, root, NULL));
 	}
 	return (root);
 }

@@ -70,8 +70,8 @@ t_node	*_parse_abort(t_parser *p, t_node *root, t_node *child)
 
 void	_parse_perror(t_parser *p)
 {
-	if (p->exit_stat == 130)
-		exit_stat_manager(130);
+	if (p->exit_stat >= 128)
+		exit_stat_manager(1);
 	else if (p->exit_stat)
 	{
 		ft_print_error(MSG_ERROR_PREFIX, p->exit_stat);
