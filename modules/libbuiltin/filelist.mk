@@ -1,4 +1,3 @@
-################################ FILENAMES #####################################
 FILE_LIBBUILTIN	= \
 					builtin_cd \
 					builtin_echo \

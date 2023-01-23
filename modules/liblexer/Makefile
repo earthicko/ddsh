@@ -1,25 +1,21 @@
-NAME			= liblexer.a
-################################# COMMANDS #####################################
-RM				= rm -f
-CFLAGS			= -Wall -Werror -Wextra -MMD -MP -g $(ACFLAGS)
-BASE_DIR		= ../..
-INC_DIR			= \
-				-I./includes \
-				-I$(BASE_DIR)/modules/libft/includes \
-				-I$(BASE_DIR)/includes
+NAME		= liblexer.a
+
+BASE_DIR	= ../..
+INC_DIR		= \
+			-I./includes \
+			-I$(BASE_DIR)/modules/libft/includes \
+			-I$(BASE_DIR)/includes
+CFLAGS		= -Wall -Werror -Wextra -MMD -MP $(ACFLAGS) $(INC_DIR)
+ARFLAGS		= rcs
 
 include filelist.mk
-################################# TARGETS ######################################
-all:
-	@make $(NAME)
+
+all: $(NAME)
 
 $(NAME): $(OBJ_LIBLEXER)
-	ar -rcs $(NAME) $(OBJ_LIBLEXER)
+	$(AR) $(ARFLAGS) $(NAME) $(OBJ_LIBLEXER)
 
 -include $(DEP_LIBLEXER)
-
-%.o: %.c
-	$(CC) $(CFLAGS) $(INC_DIR) -c $< -o $@
 
 clean:
 	$(RM) $(OBJ_LIBLEXER) $(DEP_LIBLEXER)

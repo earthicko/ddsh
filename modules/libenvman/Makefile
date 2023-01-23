@@ -1,26 +1,22 @@
-NAME			= libenvman.a
-################################# COMMANDS #####################################
-RM				= rm -f
-CFLAGS			= -Wall -Werror -Wextra -MMD -MP -g $(ACFLAGS)
-BASE_DIR		= ../..
-INC_DIR			= \
-				-I./includes \
-				-I$(BASE_DIR)/modules/libft/includes \
-				-I$(BASE_DIR)/modules/libparser/includes \
-				-I$(BASE_DIR)/includes
+NAME		= libenvman.a
+
+BASE_DIR	= ../..
+INC_DIR		= \
+			-I./includes \
+			-I$(BASE_DIR)/modules/libft/includes \
+			-I$(BASE_DIR)/modules/libparser/includes \
+			-I$(BASE_DIR)/includes
+CFLAGS		= -Wall -Werror -Wextra -MMD -MP $(ACFLAGS) $(INC_DIR)
+ARFLAGS		= rcs
 
 include filelist.mk
-################################# TARGETS ######################################
-all:
-	@make $(NAME)
+
+all: $(NAME)
 
 $(NAME): $(OBJ_LIBENVMAN)
-	ar -rcs $(NAME) $(OBJ_LIBENVMAN)
+	$(AR) $(ARFLAGS) $(NAME) $(OBJ_LIBENVMAN)
 
 -include $(DEP_LIBENVMAN)
-
-%.o: %.c
-	$(CC) $(CFLAGS) $(INC_DIR) -c $< -o $@
 
 clean:
 	$(RM) $(OBJ_LIBENVMAN) $(DEP_LIBENVMAN)

@@ -1,4 +1,3 @@
-################################ FILENAMES #####################################
 FILE_LIBEXEC	= build_exec	\
 				  build_exec_utils	\
 				  do_redir	\

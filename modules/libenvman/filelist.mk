@@ -1,4 +1,3 @@
-################################ FILENAMES #####################################
 FILE_LIBENVMAN	= \
 				t_enventry \
 				exit_stat_manager \

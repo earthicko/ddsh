@@ -1,27 +1,23 @@
-NAME			= libbuiltin.a
-################################# COMMANDS #####################################
-RM				= rm -f
-CFLAGS			= -Wall -Werror -Wextra -MMD -MP -g $(ACFLAGS)
-BASE_DIR		= ../..
-INC_DIR			= \
-				-I./includes \
-				-I$(BASE_DIR)/modules/libft/includes \
-				-I$(BASE_DIR)/modules/libparser/includes \
-				-I$(BASE_DIR)/modules/libenvman/includes \
-				-I$(BASE_DIR)/includes
+NAME		= libbuiltin.a
+
+BASE_DIR	= ../..
+INC_DIR		= \
+			-I./includes \
+			-I$(BASE_DIR)/modules/libft/includes \
+			-I$(BASE_DIR)/modules/libparser/includes \
+			-I$(BASE_DIR)/modules/libenvman/includes \
+			-I$(BASE_DIR)/includes
+CFLAGS		= -Wall -Werror -Wextra -MMD -MP $(ACFLAGS) $(INC_DIR)
+ARFLAGS		= rcs
 
 include filelist.mk
-################################# TARGETS ######################################
-all:
-	@make $(NAME)
+
+all: $(NAME)
 
 $(NAME): $(OBJ_LIBBUILTIN)
-	ar -rcs $(NAME) $(OBJ_LIBBUILTIN)
+	$(AR) $(ARFLAGS) $(NAME) $(OBJ_LIBBUILTIN)
 
 -include $(DEP_LIBBUILTIN)
-
-%.o: %.c
-	$(CC) $(CFLAGS) $(INC_DIR) -c $< -o $@
 
 clean:
 	$(RM) $(OBJ_LIBBUILTIN) $(DEP_LIBBUILTIN)

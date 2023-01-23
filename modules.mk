@@ -1,4 +1,3 @@
-################################# LIBRARIES ####################################
 LIB_DIR				= modules
 
 LINK_READLINE		= -L${HOME}/.brew/opt/readline/lib -lreadline
@@ -39,7 +38,7 @@ LIBEXEC				= $(LIBEXEC_DIR)/libexec.a
 LINK_LIBEXEC		= -L$(LIBEXEC_DIR)
 INC_DIR_LIBEXEC		= -I$(LIBEXEC_DIR)/includes
 
-LIB_ALL				= \
+LDLIBS				= \
 					$(LIBFT) \
 					$(LIBLEXER) \
 					$(LIBPARSER) \
@@ -47,7 +46,7 @@ LIB_ALL				= \
 					$(LIBHEREDOC) \
 					$(LIBBUILTIN)\
 					$(LIBEXEC)
-LINK_LIBS			= \
+LDFLAGS				= \
 					$(LINK_READLINE) \
 					$(LINK_LIBFT) \
 					$(LINK_LIBLEXER) \
@@ -65,7 +64,7 @@ INC_DIR				= -I. -Iincludes \
 					$(INC_DIR_LIBHEREDOC) \
 					$(INC_DIR_LIBBUILTIN) \
 					$(INC_DIR_LIBEXEC)
-################################# TARGETS ######################################
+
 include $(LIBFT_DIR)/filelist.mk
 include $(LIBLEXER_DIR)/filelist.mk
 include $(LIBPARSER_DIR)/filelist.mk

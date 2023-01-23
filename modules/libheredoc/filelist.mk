@@ -1,4 +1,3 @@
-################################ FILENAMES #####################################
 FILE_LIBHEREDOC	= \
 				heredoc_clear \
 				heredoc_filename \

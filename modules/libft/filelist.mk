@@ -1,4 +1,3 @@
-################################ FILENAMES #####################################
 FILE_LIBFT	= \
 			ft_asciitools \
 			ft_asciitools2 \
