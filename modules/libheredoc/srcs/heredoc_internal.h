@@ -34,6 +34,6 @@ int	_heredoc_get_filename(
 int	_heredoc_get_next_filename(
 		char *ttyname, int n_heredoc, int *i_current, char **buf);
 int	_heredoc_clear(
-		char *ttyname, int *n_heredoc, int *i_current, int doc_id);
+		char *ttyname, int *n_heredoc, int *i_current);
 
 #endif

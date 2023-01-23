@@ -25,7 +25,7 @@ int	main(int argc, char **argv, char **envp)
 	heredoc_get_filename(1, &filename);
 	printf("filename: %s\n", filename);
 	free(filename);
-	heredoc_clear(-1);
+	heredoc_clear();
 	system("leaks test_heredoc");
 	return (0);
 }

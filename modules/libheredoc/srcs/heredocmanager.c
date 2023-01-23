@@ -47,7 +47,7 @@ static int	_heredoc_init(int *n_heredoc, int *i_current, char **_ttyname)
 		ft_dprintf(2, "%sfailed to fetch ttyname\n", MSG_ERROR_PREFIX);
 		return (CODE_ERROR_IO);
 	}
-	return (_heredoc_clear(*_ttyname, n_heredoc, i_current, -1));
+	return (_heredoc_clear(*_ttyname, n_heredoc, i_current));
 }
 
 // mode: INIT | READ | GETFILENAME | CLEAR
@@ -80,6 +80,6 @@ int	_heredocmanager(int mode, int doc_id, void *buf)
 				_ttyname, n_heredoc, &i_current, buf));
 	if (mode == HEREDOCMODE_CLEAR)
 		return (_heredoc_clear(
-				_ttyname, &n_heredoc, &i_current, doc_id));
+				_ttyname, &n_heredoc, &i_current));
 	return (CODE_ERROR_SCOPE);
 }

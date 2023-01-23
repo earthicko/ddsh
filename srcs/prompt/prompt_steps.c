@@ -32,7 +32,7 @@ int	prompt_init(void)
 {
 	if (signal_set_state_interactive())
 		return (CODE_ERROR_GENERIC);
-	heredoc_clear(-1);
+	heredoc_clear();
 	return (CODE_OK);
 }
 

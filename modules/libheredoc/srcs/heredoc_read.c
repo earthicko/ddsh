@@ -91,7 +91,7 @@ static void	_write_to_file(char *filename, char *delimeter)
 		exit(1);
 	if (_handle_delimeter_expansion(delimeter, &delim_dup, &expand))
 		_abort_write_to_file(fd, filename, delim_dup, 1);
-	while (TRUE)
+	while (access(filename, R_OK) == 0)
 	{
 		stat = _write_io_file_loop(fd, expand, delim_dup);
 		if (stat < 0)
@@ -99,6 +99,7 @@ static void	_write_to_file(char *filename, char *delimeter)
 		if (stat > 0)
 			_abort_write_to_file(fd, filename, delim_dup, 0);
 	}
+	_abort_write_to_file(fd, filename, delim_dup, 1);
 }
 
 int	_heredoc_read(char *ttyname, int *n_heredoc, char *delimeter)

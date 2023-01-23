@@ -81,7 +81,7 @@ int	main(void)
 		printf("%p\n", ((t_node *)(root->childs->content)));
 		node_destroy(root);
 	}
-	heredoc_clear(-1);
+	heredoc_clear();
 	system("leaks test_parser");
 	return (0);
 }

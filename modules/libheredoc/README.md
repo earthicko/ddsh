@@ -14,13 +14,13 @@
 int heredoc_read(char *delimeter);
 int heredoc_get_filename(int doc_id, char **buf);
 int heredoc_get_next_filename(char **buf);
-int heredoc_clear(int doc_id);
+int heredoc_clear(void);
 ```
 
 각각의 함수는 here-document를 생성하고 삭제한다.
 이 유틸리티는 지금까지 생성된 here-document의 수 (이하 `n_heredoc`)를 기록한다. 이 값은 `heredoc_read`를 한번 호출할 때마다 `1`씩 증가한다.
 
-생성된 N개의 here-document들은 각각 `0`...`N-1`번의 번호를 가지고 있다. 이는 `heredoc_get_filename`이나 `heredoc_clear`를 호출할 때 필요한 값이다.
+생성된 N개의 here-document들은 각각 `0`...`N-1`번의 번호를 가지고 있다. 이는 `heredoc_get_filename`을 호출할 때 필요한 값이다.
 
 ### here-document가 저장되는 위치
 
@@ -83,15 +83,13 @@ int	heredoc_get_next_filename(char **buf);
 ```c
 int	heredoc_clear(int doc_id);
 
-heredoc_clear(-1);
+heredoc_clear();
 ```
 
-`doc_id`가 음수일 시 모든 임시 파일을 삭제한다. `doc_id`가 `0` 이상 `n_heredoc` 미만일 시 `doc_id`번 임시 파일을 삭제한다.
+현재 터미널과 연관된 모든 임시 파일을 삭제한다.
 
 반환 값은 다음과 같다.
 
 - `CODE_OK`: 정상적으로 완료됨
-- `CODE_ERROR_SCOPE`: 올바르지 않은 `doc_id` (`n_heredoc` 이상)
-- `CODE_ERROR_GENERIC`: 현재 TTY의 이름을 찾을 수 없거나 메모리가 부족함
-
-모든 임시 파일을 삭제하는 모드에서는 항상 `CODE_OK`를 반환한다.
+- `CODE_ERROR_MALLOC`: 현재 TTY의 이름을 찾을 수 없거나 메모리가 부족함
+- `CODE_ERROR_IO`: 임시 파일 디렉토리를 열 수 없음

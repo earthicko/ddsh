@@ -49,11 +49,11 @@ int	heredoc_get_next_filename(char **buf)
 	return (stat);
 }
 
-int	heredoc_clear(int doc_id)
+int	heredoc_clear(void)
 {
 	int	stat;
 
-	stat = _heredocmanager(HEREDOCMODE_CLEAR, doc_id, 0);
+	stat = _heredocmanager(HEREDOCMODE_CLEAR, 0, 0);
 	if (stat)
 		ft_print_error(MSG_ERROR_PREFIX, stat);
 	return (stat);
