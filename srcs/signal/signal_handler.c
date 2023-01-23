@@ -17,6 +17,8 @@
 #include "envmanager.h"
 #include "msgdef.h"
 
+void	rl_replace_line(const char *str, int clear_undo);
+
 void	_sighandler_int_interactive(int signo)
 {
 	(void)signo;

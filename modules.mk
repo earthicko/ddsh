@@ -1,7 +1,9 @@
 LIB_DIR				= modules
 
-LINK_READLINE		= -L${HOME}/.brew/opt/readline/lib -lreadline
-INC_DIR_READLINE	= -I${HOME}/.brew/opt/readline/include
+LIBREADLINE_DIR		= $(LIB_DIR)/readline
+LIBREADLINE			= $(LIBREADLINE_DIR)/lib/libreadline.a
+LINK_LIBREADLINE	= -L$(LIBREADLINE_DIR)/lib -lreadline
+INC_DIR_LIBREADLINE	= -I$(LIBREADLINE_DIR)/include
 
 LIBFT_DIR			= $(LIB_DIR)/libft
 LIBFT				= $(LIBFT_DIR)/libft.a
@@ -47,7 +49,7 @@ LDLIBS				= \
 					$(LIBBUILTIN)\
 					$(LIBEXEC)
 LDFLAGS				= \
-					$(LINK_READLINE) \
+					$(LINK_LIBREADLINE) \
 					$(LINK_LIBFT) \
 					$(LINK_LIBLEXER) \
 					$(LINK_LIBPARSER) \
@@ -56,7 +58,7 @@ LDFLAGS				= \
 					$(LINK_LIBBUILTIN) \
 					$(LINK_LIBEXEC)
 INC_DIR				= -I. -Iincludes \
-					$(INC_DIR_READLINE) \
+					$(INC_DIR_LIBREADLINE) \
 					$(INC_DIR_LIBFT) \
 					$(INC_DIR_LIBLEXER) \
 					$(INC_DIR_LIBPARSER) \
@@ -82,6 +84,9 @@ ABS_SRC_LIBBUILTIN = $(addprefix $(LIBBUILTIN_DIR)/, $(SRC_LIBBUILTIN))
 ABS_SRC_LIBEXEC = $(addprefix $(LIBEXEC_DIR)/, $(SRC_LIBEXEC))
 
 export ACFLAGS
+
+$(LIBREADLINE):
+	./modules/make_symlink_readline.sh
 
 $(LIBFT): $(ABS_SRC_LIBFT)
 	@make -j4 -C $(LIBFT_DIR)/

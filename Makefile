@@ -6,7 +6,7 @@ include	modules.mk
 include	filelist.mk
 CFLAGS	= -Wall -Werror -Wextra -MMD -MP $(ACFLAGS) $(INC_DIR)
 
-$(NAME): $(LDLIBS) $(OBJ) $(DRIVER_OBJ)
+$(NAME): $(LDLIBS) $(OBJ) $(DRIVER_OBJ) $(LIBREADLINE)
 	$(CC) $(CFLAGS) $(LDLIBS) $(OBJ) $(DRIVER_OBJ) -o $@ $(LDFLAGS)
 
 test_lexer: $(LDLIBS) $(OBJ) $(TEST_OBJ) tests/test_lexer.o
