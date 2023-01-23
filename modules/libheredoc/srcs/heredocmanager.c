@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredocmanager.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dahkang <dahkang@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: donghyle <donghyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/22 16:41:01 by dahkang           #+#    #+#             */
-/*   Updated: 2023/01/22 16:41:52 by dahkang          ###   ########.fr       */
+/*   Created: 2023/01/22 16:41:01 by donghyle          #+#    #+#             */
+/*   Updated: 2023/01/22 16:41:52 by donghyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

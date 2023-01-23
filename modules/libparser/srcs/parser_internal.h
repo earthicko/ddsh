@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_internal.h                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dahkang <dahkang@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: donghyle <donghyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/22 16:42:26 by dahkang           #+#    #+#             */
-/*   Updated: 2023/01/22 16:42:31 by dahkang          ###   ########.fr       */
+/*   Created: 2023/01/22 16:42:26 by donghyle          #+#    #+#             */
+/*   Updated: 2023/01/22 16:42:31 by donghyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

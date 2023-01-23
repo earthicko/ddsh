@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   filename_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dahkang <dahkang@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: donghyle <donghyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/22 16:45:07 by dahkang           #+#    #+#             */
-/*   Updated: 2023/01/22 16:45:24 by dahkang          ###   ########.fr       */
+/*   Created: 2023/01/22 16:45:07 by donghyle          #+#    #+#             */
+/*   Updated: 2023/01/22 16:45:24 by donghyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
