@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include <stdlib.h>
+#include <stdio.h>
 #include <unistd.h>
 #include "libft.h"
 #include "msgdef.h"
@@ -24,6 +25,11 @@ static int	builtin_cd_internal(char *target)
 	stat = 0;
 	pwd = getcwd(NULL, 0);
 	stat |= chdir(target);
+	if (stat)
+	{
+		ft_dprintf(2, "%scd: %s: ", MSG_ERROR_PREFIX, target);
+		perror(NULL);
+	}
 	if (stat == 0 && pwd)
 		stat |= envman_setval("OLDPWD", pwd);
 	free(pwd);
