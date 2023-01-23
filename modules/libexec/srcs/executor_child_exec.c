@@ -6,7 +6,7 @@
 /*   By: dahkang <dahkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 16:40:48 by dahkang           #+#    #+#             */
-/*   Updated: 2023/01/22 16:41:46 by dahkang          ###   ########.fr       */
+/*   Updated: 2023/01/23 13:31:28 by dahkang          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,9 +91,6 @@ void	child_exec_extern(t_info *info)
 	exit(127);
 }
 
-// TODO: 빌트인 커맨드 실패에 대한 exit status 세분화
-// TODO: 빌트인함수 에러메시지 출력은 서브루틴에 추가
-// CODE_OK가 아닌 상황에서 exit status 세분화 필요
 void	child_exec_cmd(t_info *info)
 {
 	t_exec_unit	*unit;
