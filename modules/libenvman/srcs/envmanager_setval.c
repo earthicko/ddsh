@@ -23,7 +23,7 @@ int	_envman_setval(t_list **envlist, char *name, char *val)
 	if (val == ENVMAN_NULLVAL)
 		val = NULL;
 	entry = _envman_getentry(*envlist, name);
-	if (entry)
+	if (entry && val)
 	{
 		temp = ft_strdup(val);
 		if (!temp)
@@ -31,7 +31,7 @@ int	_envman_setval(t_list **envlist, char *name, char *val)
 		free(entry->val);
 		entry->val = temp;
 	}
-	else
+	else if (!entry)
 	{
 		if (!is_valid_name(name))
 			return (CODE_ERROR_DATA);
