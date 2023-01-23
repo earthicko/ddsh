@@ -17,8 +17,8 @@ int envman_getval(char *name, char **buf);
 int envman_setval(char *name, char *val);
 int envman_unsetval(char *name);
 int envman_getenvp(char ***buf);
+int envman_export(void);
 
-int envman_replace_envvar(char **buf, int quote_removal);
 int envman_split_envstr(char *str, char **ret_name, char **ret_val);
 char *envman_compose_envstr(char *name, char *val);
 int exit_stat_manager(int new_stat);
@@ -32,12 +32,12 @@ int exit_stat_manager(int new_stat);
 - `envman_setval`: 변수 생성/값 설정/값 변경
 - `envman_unsetval`: 변수 삭제
 - `envman_getenvp`: `execve()`에 사용할 `(char **)envp` 생성
+- `envman_export`: 모든 엔트리를 builtin `export` 형식에 맞추어 출력
 
 이 모듈은 내부적으로 `struct s_enventry`를 사용하여 환경 변수의 <이름>-<값> 쌍을 관리한다.
 
 각 유틸리티의 기능은 다음과 같다.
 
-- `envman_replace_envvar`: 문자열 내부에서 `$name`꼴의 패턴을 찾아 해당하는 환경 변수의 값으로 대체한다.
 - `envman_split_envstr`: `name=value` 꼴의 패턴을 가진 문자열을 `name`과 `value`로 분리한다.
 - `envman_compose_envstr`: `name`, `value` 2개의 문자열을 `name=value`꼴로 합친다.
 - `exit_stat_manager`: 마지막 exit status를 설정하거나 반환한다.
@@ -124,7 +124,7 @@ char *val = "BAR";
 int stat = envman_setval(name, val);
 ```
 
-`name`의 이름을 가진 변수의 값을 `val`로 설정한다. 이때 일치하는 이름이 없을 경우 엔트리가 새로 생성된 뒤 설정된다. 일치하는 이름이 존재할 경우 기존의 값은 삭제되고 새 값이 설정된다.
+`name`의 이름을 가진 변수의 값을 `val`로 설정한다. 변수를 생성하기만 하고 값을 지정하고 싶지 않다면 `val`에 `NULL`을 전달한다. 이때 일치하는 이름이 없을 경우 엔트리가 새로 생성된 뒤 설정된다. 일치하는 이름이 존재할 경우 기존의 값은 삭제되고 새 값이 설정된다.
 
 반환 값은 다음과 같다.
 
@@ -157,7 +157,7 @@ char	**new_envp;
 int stat = envman_getenvp(&new_envp);
 ```
 
-현재의 환경 변수를 `execve()`에 매개 변수로 입력하도록 형식을 맞추어서 문자열의 배열 형태로 생성한다. 이것은 `"<name>=<val>"`의 형식으로 이루어져 있고 변수가 N개일 시 N + 1개의 원소를 가지고 있으며 마지막 원소는 `NULL`로 설정된다.
+현재의 환경 변수를 `execve()`에 매개 변수로 입력하도록 형식을 맞추어서 문자열의 배열 형태로 생성한다. 이것은 `"<name>=<val>"`의 형식으로 이루어져 있고 변수가 N개일 시 N + 1개의 원소를 가지고 있으며 마지막 원소는 `NULL`로 설정된다. 이때 값이 지정되어 있지 않은 변수는 무시된다.
 
 `buf`가 가리키는 주소에 `char **` 자료형으로 `char *`의 배열이 동적 할당된다.
 
@@ -168,26 +168,20 @@ int stat = envman_getenvp(&new_envp);
 
 비정상 종료시에도 기존 엔트리가 보존된다. 따라서 이 기능을 호출하는 함수에는 비정상 종료를 감지할 시 프로그램을 종료시킬 것인지 결정하는 로직이 필요하다.
 
-## 유틸리티
-
-### 환경 변수 확장
+### export
 
 ```c
-int envmanager_replace_envvar(char **buf, int quote_removal);
-
-char *str = strdup("HOME=\"$HOME\"");
-printf("%s\n", str); // HOME="$HOME"
-envmanager_replace_envar(&str, 1);
-printf("%s\n", str); // HOME=/Users/donghyle
+envman_export();
 ```
 
-`buf`가 가리키는 문자열에서 `$name`꼴의 패턴을 찾아 해당하는 환경 변수의 값으로 대체한다.
-이때 `*buf`는 반드시 `free()` 가능해야 한다. `quote_removal`은 `0` 또는 `1`의 값을 입력받을 수 있고, `1`을 입력할 시 환경 변수의 값이 아닌 부분에서 따옴표가 제거된다.
+모든 엔트리의 목록을 출력한다.
 
-반환 값은 다음과 같다.
+- 값이 지정되어 있을 시: `"declare -x %s=%s"`, name, value
+- 값이 지정되어 있지 않을 시: `"declare -x %s"`, name
 
-- `CODE_OK`: 정상적으로 완료됨
-- `CODE_ERROR_MALLOC`: 메모리를 할당할 수 없음
+값이 지정되어 있지 않은 변수는 `envman_getenvp`가 무시하기 때문에 필요한 기능이다.
+
+## 유틸리티
 
 ### 환경 변수 문자열 처리
 
