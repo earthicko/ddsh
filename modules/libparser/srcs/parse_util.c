@@ -6,7 +6,7 @@
 /*   By: dahkang <dahkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 16:41:01 by dahkang           #+#    #+#             */
-/*   Updated: 2023/01/22 16:41:53 by dahkang          ###   ########.fr       */
+/*   Updated: 2023/01/23 13:26:52 by dahkang          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ t_node	*_parse_abort(t_parser *p, t_node *root, t_node *child)
 void	_parse_perror(t_parser *p)
 {
 	if (p->exit_stat >= 128)
-		exit_stat_manager(1);
+		exit_stat_manager(p->exit_stat);
 	else if (p->exit_stat)
 	{
 		ft_print_error(MSG_ERROR_PREFIX, p->exit_stat);
