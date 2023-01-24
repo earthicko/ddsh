@@ -21,31 +21,32 @@
 #include "msgdef.h"
 #include "executor_internal.h"
 
-static int	_set_fd_stream(t_execstate *state, t_execunit *units, int n_units)
+static int	_set_fd_stream(
+		t_pipeset *pipeset, t_execunit *units, int n_units, int idx)
 {
-	const t_execunit	cur_unit = units[state->cur_idx];
+	const t_execunit	cur_unit = units[idx];
 
 	if (n_units == 1)
 		return (_process_redir(cur_unit.redir_arr, cur_unit.n_redir));
-	if (state->cur_idx == 0)
+	if (idx == 0)
 	{
-		if (close(state->new_pipe[READ]) < 0
-			|| dup2(state->new_pipe[WRITE], STDOUT_FILENO) < 0
-			|| close(state->new_pipe[WRITE]) < 0)
+		if (close(pipeset->new_pipe[READ]) < 0
+			|| dup2(pipeset->new_pipe[WRITE], STDOUT_FILENO) < 0
+			|| close(pipeset->new_pipe[WRITE]) < 0)
 			return (CODE_ERROR_IO);
 	}
-	else if (state->cur_idx == n_units - 1)
+	else if (idx == n_units - 1)
 	{
-		if (dup2(state->old_pipe[READ], STDIN_FILENO) < 0
-			|| close(state->old_pipe[READ]) < 0)
+		if (dup2(pipeset->old_pipe[READ], STDIN_FILENO) < 0
+			|| close(pipeset->old_pipe[READ]) < 0)
 			return (CODE_ERROR_IO);
 	}
 	else
-		if (close(state->new_pipe[READ]) < 0
-			|| dup2(state->old_pipe[READ], STDIN_FILENO) < 0
-			|| close(state->old_pipe[READ]) < 0
-			|| dup2(state->new_pipe[WRITE], STDOUT_FILENO) < 0
-			|| close(state->new_pipe[WRITE]) < 0)
+		if (close(pipeset->new_pipe[READ]) < 0
+			|| dup2(pipeset->old_pipe[READ], STDIN_FILENO) < 0
+			|| close(pipeset->old_pipe[READ]) < 0
+			|| dup2(pipeset->new_pipe[WRITE], STDOUT_FILENO) < 0
+			|| close(pipeset->new_pipe[WRITE]) < 0)
 			return (CODE_ERROR_IO);
 	return (_process_redir(cur_unit.redir_arr, cur_unit.n_redir));
 }
@@ -67,13 +68,15 @@ void	_if_dir_then_exit_126(char *cmd_name)
 	}
 }
 
-void	_child_exec_extern(t_execstate *state, t_execunit *units)
+void	_child_exec_extern(t_execunit *units, int idx)
 {
 	char	**argv;
 	int		status;
 	char	**envp_paths;
 
-	argv = (units[state->cur_idx]).argv;
+	argv = (units[idx]).argv;
+	if (!argv[0])
+		exit(EXIT_SUCCESS);
 	status = find_exec(&argv[0]);
 	if (status == CODE_ERROR_MALLOC)
 		exit(EXIT_FAILURE);
@@ -92,22 +95,19 @@ void	_child_exec_extern(t_execstate *state, t_execunit *units)
 	exit(127);
 }
 
-void	_child_exec_cmd(t_execstate *state, t_execunit *units, int n_units)
+void	_child_exec_cmd(
+		t_pipeset *pipeset, t_execunit *units, int n_units, int idx)
 {
-	t_execunit	*unit;
+	t_execunit	*unit_ptr;
 	char		**argv;
-	int			stat;
 
-	if (signal_set_state_default() || _set_fd_stream(state, units, n_units) < 0)
+	unit_ptr = units + idx;
+	argv = unit_ptr->argv;
+	if (signal_set_state_default()
+		|| _set_fd_stream(pipeset, units, n_units, idx) < 0)
 		exit(EXIT_FAILURE);
-	unit = units + state->cur_idx;
-	argv = unit->argv;
-	if (builtin_getindex(argv[0]) >= 0)
-	{
-		stat = _exec_builtin_cmd(unit, SUBSHELL);
-		if (stat != CODE_OK)
-			exit(EXIT_FAILURE);
-		exit(CODE_OK);
-	}
-	_child_exec_extern(state, units);
+	if (argv[0] && builtin_getindex(argv[0]) >= 0)
+		exit(_exec_builtin_cmd(units + idx, SUBSHELL));
+	else
+		_child_exec_extern(units, idx);
 }

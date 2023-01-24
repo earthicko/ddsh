@@ -4,8 +4,7 @@ FILE_LIBEXEC	= build_exec	\
 				  executor	\
 				  executor_builtin	\
 				  executor_child_exec	\
-				  free_build_fail	\
-				  units_destroy	\
+				  free_build_fail \
 				  io_manager	
 
 SRC_LIBEXEC	= $(addprefix srcs/, $(addsuffix .c, $(FILE_LIBEXEC)))

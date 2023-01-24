@@ -22,12 +22,11 @@
 # define SUBSHELL 0
 # define PARENTSHELL 1
 
-typedef struct s_execstate
+typedef struct s_pipeset
 {
-	int	cur_idx;
 	int	new_pipe[2];
 	int	old_pipe[2];
-}	t_execstate;
+}	t_pipeset;
 
 int		_get_n_unit(t_node *root);
 int		_get_n_redir(t_node *node);
@@ -41,8 +40,11 @@ int		_do_redir_out_append(t_redir *redir_arr);
 
 int		_io_manager(int mode, int *fdbuf);
 
-void	_child_exec_cmd(t_execstate *state, t_execunit *units, int n_units);
-int		_build_exec_unit(t_node *root, t_execunit **units, int *n_units);
-int		_exec_builtin_cmd(t_execunit *unit, int mode);
+void	_child_exec_cmd(
+			t_pipeset *pipeset, t_execunit *units, int n_units, int idx);
+int		_build_exec_unit(
+			t_node *root, t_execunit **units, int *n_units);
+int		_exec_builtin_cmd(
+			t_execunit *unit, int mode);
 
 #endif
