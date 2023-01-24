@@ -93,23 +93,22 @@ static int	_build_unit(t_execunit *unit, t_node *simple_cmd)
 
 int	_build_exec_unit(t_node *root, t_execunit **units, int *n_units)
 {
-	const int	n_unit = _get_n_unit(root);
 	t_list		*curr;
 	int			idx;
 
-	*units = malloc(sizeof(t_execunit) * n_unit);
+	*n_units = _get_n_unit(root);
+	*units = malloc(sizeof(t_execunit) * (*n_units));
 	if (!*units)
 		return (CODE_ERROR_MALLOC);
-	ft_bzero(*units, n_unit * sizeof(t_execunit));
+	ft_bzero(*units, sizeof(t_execunit) * (*n_units));
 	curr = root->childs;
 	idx = 0;
-	while (idx < n_unit)
+	while (idx < *n_units)
 	{
-		if (_build_unit(units[idx], curr->content) == CODE_ERROR_MALLOC)
-			return (_free_all_unit(*units, n_unit));
+		if (_build_unit(*units + idx, curr->content) == CODE_ERROR_MALLOC)
+			return (_free_all_unit(*units, *n_units));
 		curr = curr->next;
 		idx++;
 	}
-	*n_units = n_unit;
 	return (CODE_OK);
 }
