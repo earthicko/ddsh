@@ -54,6 +54,8 @@ int			_envman_addentry_nameval(
 				t_list **p_list, char *name, char *val, int exp);
 t_enventry	*_envman_getentry(t_list *envlist, char *name);
 
+char		*envman_compose_envstr(t_enventry *entry);
+
 int			_envmanager(int mode, t_envmaninfo *info);
 
 int			_envman_init(t_list **p_list, char **envp);
