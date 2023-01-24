@@ -11,6 +11,8 @@
 /* ************************************************************************** */
 
 #ifndef PROMPT_INTERNAL_H
+# include "t_token.h"
+# include "t_node.h"
 # define PROMPT_INTERNAL_H
 # define CODE_CONTINUE 1
 
