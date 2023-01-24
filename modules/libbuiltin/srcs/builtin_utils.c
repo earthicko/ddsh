@@ -31,6 +31,10 @@ static void	_init_get_exec(char **exec_names, t_exec_builtin *exec_ptrs)
 	exec_ptrs[5] = builtin_env;
 	exec_names[6] = "exit";
 	exec_ptrs[6] = builtin_exit;
+	exec_names[7] = ".";
+	exec_ptrs[7] = builtin_dot;
+	exec_names[8] = "source";
+	exec_ptrs[8] = builtin_dot;
 }
 
 int	builtin_getindex(char *name)
