@@ -1,26 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_commands.h                                 :+:      :+:    :+:   */
+/*   builtin_internal.h                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dahkang <dahkang@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: donghyle <donghyle@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/22 16:42:19 by dahkang           #+#    #+#             */
+/*   Created: 2022/07/08 12:10:37 by donghyle          #+#    #+#             */
 /*   Updated: 2023/01/22 16:42:29 by dahkang          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BUILTIN_COMMANDS_H
-# define BUILTIN_COMMANDS_H
+#ifndef BUILTIN_INTERNAL_H
+# define BUILTIN_INTERNAL_H
+# define N_BUILTINS 7
 
-int	builtin_echo(char **argv);
-int	builtin_cd(char **argv);
-int	builtin_pwd(char **argv);
-int	builtin_export(char **argv);
-int	builtin_unset(char **argv);
-int	builtin_env(char **argv);
-int	builtin_exit(char **argv);
-
-int	builtin_exec_by_name(char *name, char **argv);
+typedef int	(*t_exec_builtin)(char **argv);
 
 #endif

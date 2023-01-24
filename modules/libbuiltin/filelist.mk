@@ -1,4 +1,5 @@
 FILE_LIBBUILTIN	= \
+					builtin_utils \
 					builtin_cd \
 					builtin_echo \
 					builtin_export \
