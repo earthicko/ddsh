@@ -10,20 +10,23 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lexer_internal.h"
+#include <stdlib.h>
+#include "t_token.h"
 
 void	token_destroy(t_toks *toks)
 {
 	int	i;
 
-	i = 0;
-	while (i < toks->n_toks)
+	if (toks->arr)
 	{
-		free(toks->arr[i].content);
-		toks->arr[i].content = 0;
-		i++;
+		i = 0;
+		while (i < toks->n_toks)
+		{
+			free(toks->arr[i].content);
+			i++;
+		}
+		free(toks->arr);
+		toks->arr = NULL;
 	}
 	toks->n_toks = 0;
-	free(toks->arr);
-	toks->arr = 0;
 }
