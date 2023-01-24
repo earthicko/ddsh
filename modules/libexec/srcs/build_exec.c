@@ -91,7 +91,7 @@ static int	_build_unit(t_execunit *unit, t_node *simple_cmd)
 	return (CODE_OK);
 }
 
-int	build_exec_unit(t_node *root, t_execunit **units, int *n_units)
+int	_build_exec_unit(t_node *root, t_execunit **units, int *n_units)
 {
 	const int	n_unit = _get_n_unit(root);
 	t_list		*curr;

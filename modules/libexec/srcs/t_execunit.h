@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef  T_EXEC_UNIT_H
-# define T_EXEC_UNIT_H
+#ifndef T_EXECUNIT_H
+# define T_EXECUNIT_H
 
 enum	e_redirtype
 {

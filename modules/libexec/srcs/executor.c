@@ -13,6 +13,7 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include "libft.h"
+#include "envmanager.h"
 #include "strutils.h"
 #include "executor_internal.h"
 
@@ -38,48 +39,49 @@ static int	_wait_children(pid_t last_cmd, int n_units)
 	return (exit_status);
 }
 
-static int	_parent_close_unused_pipe(t_execstate *info, int n_units)
+static int	_parent_close_unused_pipe(t_execstate *state, int n_units)
 {
 	int	stat;
 
 	stat = CODE_OK;
 	if (n_units == 1)
 		return (CODE_OK);
-	if (info->cur_idx == 0)
-		stat = close(info->new_pipe[WRITE]);
-	else if (info->cur_idx == n_units - 1)
-		stat = close(info->old_pipe[READ]);
+	if (state->cur_idx == 0)
+		stat = close(state->new_pipe[WRITE]);
+	else if (state->cur_idx == n_units - 1)
+		stat = close(state->old_pipe[READ]);
 	else
-		if (close(info->old_pipe[READ]) < 0 || close(info->new_pipe[WRITE]) < 0)
+		if (close(state->old_pipe[READ]) < 0
+			|| close(state->new_pipe[WRITE]) < 0)
 			return (CODE_ERROR_IO);
 	return (stat);
 }
 
 static int	_fork_exec(t_execunit *units, int n_units)
 {
-	t_execstate	info;
+	t_execstate	state;
 	pid_t		pid;
 
-	info.cur_idx = 0;
-	while (info.cur_idx < n_units)
+	state.cur_idx = 0;
+	while (state.cur_idx < n_units)
 	{
-		if (info.cur_idx < n_units - 1)
-			if (pipe(info.new_pipe) < 0)
+		if (state.cur_idx < n_units - 1)
+			if (pipe(state.new_pipe) < 0)
 				return (CODE_ERROR_IO);
 		pid = fork();
 		if (pid < 0)
 			return (CODE_ERROR_GENERIC);
 		if (pid == 0)
-			_child_exec_cmd(&info, units, n_units);
-		if (_parent_close_unused_pipe(&info, n_units) < 0)
+			_child_exec_cmd(&state, units, n_units);
+		if (_parent_close_unused_pipe(&state, n_units) < 0)
 			return (CODE_ERROR_IO);
-		ft_memcpy(info.old_pipe, info.new_pipe, sizeof(info.new_pipe));
-		info.cur_idx++;
+		ft_memcpy(state.old_pipe, state.new_pipe, sizeof(state.new_pipe));
+		state.cur_idx++;
 	}
 	return (_wait_children(pid, n_units));
 }
 
-int	executor(t_execunit *units, int n_units)
+static int	_execute_units(t_execunit *units, int n_units)
 {
 	int	stat;
 
@@ -97,4 +99,21 @@ int	executor(t_execunit *units, int n_units)
 	if (n_units == 1 && is_builtin_command(units->argv[0]))
 		return (_exec_builtin_cmd(units, PARENTSHELL));
 	return (_fork_exec(units, n_units));
+}
+
+int	execute_tree(t_node *parse_tree)
+{
+	t_execunit	*units;
+	int			n_units;
+	int			stat;
+
+	stat = _build_exec_unit(parse_tree, &units, &n_units);
+	if (stat)
+		return (stat);
+	stat = _execute_units(units, n_units);
+	exit_stat_manager(stat);
+	units_destroy(units, n_units);
+	if (stat)
+		return (stat);
+	return (CODE_OK);
 }

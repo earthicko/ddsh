@@ -22,7 +22,6 @@
 #include "parser.h"
 #include "t_node.h"
 #include "msgdef.h"
-#include "build_exec.h"
 #include "executor.h"
 #include "sighandler.h"
 #include "builtin_commands.h"
@@ -86,19 +85,9 @@ int	prompt_getparsetree(t_toks *toks, t_node **buf)
 
 int	prompt_execute(t_node *parse_tree)
 {
-	t_execunit	*units;
-	int			n_units;
-	int			stat;
+	int	stat;
 
-	stat = build_exec_unit(parse_tree, &units, &n_units);
-	if (stat)
-	{
-		ft_print_error(MSG_ERROR_PREFIX, stat);
-		return (CODE_CONTINUE);
-	}
-	stat = executor(units, n_units);
-	exit_stat_manager(stat);
-	units_destroy(units, n_units);
+	stat = execute_tree(parse_tree);
 	if (stat)
 	{
 		ft_print_error(MSG_ERROR_PREFIX, stat);

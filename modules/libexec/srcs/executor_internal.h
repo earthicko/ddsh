@@ -22,10 +22,6 @@
 # define SUBSHELL 0
 # define PARENTSHELL 1
 
-int		_get_n_unit(t_node *root);
-int		_get_n_redir(t_node *node);
-t_node	*_get_child_node(t_node *cmd_elem, int depth);
-
 typedef struct s_execstate
 {
 	int	cur_idx;
@@ -33,7 +29,9 @@ typedef struct s_execstate
 	int	old_pipe[2];
 }	t_execstate;
 
-typedef int	(*t_do_redir)(t_redir *redir_arr);
+int		_get_n_unit(t_node *root);
+int		_get_n_redir(t_node *node);
+t_node	*_get_child_node(t_node *cmd_elem, int depth);
 
 int		_process_redir(t_redir *redir_arr, int n_redir);
 int		_do_redir_in(t_redir *redir_arr);
@@ -43,8 +41,8 @@ int		_do_redir_out_append(t_redir *redir_arr);
 
 int		_io_manager(int mode);
 
-void	_child_exec_cmd(t_execstate *info, t_execunit *units, int n_units);
-
+void	_child_exec_cmd(t_execstate *state, t_execunit *units, int n_units);
+int		_build_exec_unit(t_node *root, t_execunit **units, int *n_units);
 int		_exec_builtin_cmd(t_execunit *unit, int mode);
 
 #endif

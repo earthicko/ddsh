@@ -13,8 +13,6 @@
 #ifndef EXECUTOR_H
 # define EXECUTOR_H
 
-# include "t_execunit.h"
-
-int	executor(t_execunit *units, int n_units);
+int	execute_tree(t_node *parse_tree);
 
 #endif
