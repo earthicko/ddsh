@@ -1,8 +1,0 @@
--I./includes
--I./modules/libft/includes
--I./modules/libenvman/includes
--I./modules/liblexer/includes
--I./modules/libparser/includes
--I./modules/libexec/includes
--I./modules/libbuiltin/includes
--I./modules/libheredoc/includes
