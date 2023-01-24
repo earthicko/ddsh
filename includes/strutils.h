@@ -15,9 +15,6 @@
 # include "t_node.h"
 # define PCHARARR_INITIAL_CAP 1
 
-int			ft_strappend(char **body, const char *tail);
-char		*ft_strmerge(int n_str, ...);
-
 typedef struct s_pchararr
 {
 	int		len;

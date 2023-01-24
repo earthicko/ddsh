@@ -10,7 +10,6 @@ FILENAME			= \
 					strutils/expansion/expansion_utils \
 					strutils/expansion/expansion_nodes \
 					strutils/expansion/expansion \
-					strutils/ft_strmerge \
 					strutils/pchararr \
 					strutils/pchararr_utils \
 					strutils/remove_quotes \

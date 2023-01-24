@@ -7,9 +7,6 @@
 # 개요
 
 ```c
-int			ft_strappend(char **body, const char *tail);
-char		*ft_strmerge(int n_str, ...);
-
 typedef struct s_pchararr
 {
 	int		len;
@@ -31,35 +28,6 @@ int			find_exec(char **buf);
 유용하게 사용할 수 있는 문자열 관련 유틸리티 함수들이다.
 
 # 기능 설명
-
-### ft_strappend
-
-```c
-int ft_strappend(char **body, const char *tail);
-
-char *foo = strdup("FOO");
-char *bar = strdup("BAR");
-ft_strappend(&foo, bar);
-```
-
-`tail`을 `body`의 뒤에 붙여 `body`가 가리키는 주소에 할당한다. 기존에 `body`가 가리키던 주소의 메모리는 `free()`되므로 `*body`가 반드시 `free()` 가능해야 한다.
-
-반환 값은 다음과 같다.
-
-- `CODE_OK`: 정상적으로 완료됨
-- `CODE_ERROR_GENERIC`: `tail`이 `NULL`임
-- `CODE_ERROR_MALLOC`: 메모리를 할당할 수 없음
-
-### ft_strmerge
-
-```c
-char *ft_strmerge(int n_str, ...);
-
-char *foo = "FOO", *bar = "BAR", *spam = "SPAM", *egg = "EGG";
-char *foobarspamegg = ft_strmerge(4, foo, bar, spam, egg);
-```
-
-`n_str`개의 `char *` 변수를 `va_list`로 받아서 이들을 모두 이어붙인 문자열을 반환한다. 실패 시 `NULL`을 반환한다.
 
 ### t_pchararr
 
