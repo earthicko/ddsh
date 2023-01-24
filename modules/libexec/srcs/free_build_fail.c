@@ -11,11 +11,11 @@
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include "exec_internal.h"
-#include "libft_def.h"
-#include "t_exec_unit.h"
+#include "executor_internal.h"
+#include "libft.h"
+#include "t_execunit.h"
 
-int	free_unit_member(t_exec_unit *unit)
+int	_free_unit_member(t_execunit *unit)
 {
 	free(unit->argv);
 	free(unit->redir_arr);
@@ -24,34 +24,36 @@ int	free_unit_member(t_exec_unit *unit)
 	return (CODE_ERROR_MALLOC);
 }
 
-int	free_single_unit(t_exec_unit *unit, int i, int j)
-{
-	int	idx;
-
-	idx = -1;
-	while (++idx < i)
-		free(unit->argv[idx]);
-	idx = -1;
-	while (++idx < j)
-		free(unit->redir_arr[idx].content);
-	free(unit->argv);
-	free(unit->redir_arr);
-	unit->argv = 0;
-	unit->redir_arr = 0;
-	return (CODE_ERROR_MALLOC);
-}
-
-int	free_all_unit(t_unit_arr *units, int idx)
+int	_free_single_unit(t_execunit *unit)
 {
 	int	i;
 
-	i = -1;
-	if (!units->arr)
+	ft_free_strarr(unit->argv);
+	i = 0;
+	while (i < unit->n_redir)
+	{
+		if (unit->redir_arr[i].content)
+			free(unit->redir_arr[i].content);
+		i++;
+	}
+	free(unit->redir_arr);
+	unit->argv = 0;
+	unit->redir_arr = 0;
+	return (CODE_ERROR_MALLOC);
+}
+
+int	_free_all_unit(t_execunit *units, int n_units)
+{
+	int	i;
+
+	if (!units)
 		return (CODE_OK);
-	while (++i < idx)
-		free_single_unit(units->arr + i, units->arr[i].n_word, \
-				units->arr[i].n_redir);
-	free(units->arr);
-	units->arr = 0;
+	i = 0;
+	while (i < n_units)
+	{
+		_free_single_unit(units + i);
+		i++;
+	}
+	free(units);
 	return (CODE_ERROR_MALLOC);
 }

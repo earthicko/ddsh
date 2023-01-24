@@ -20,12 +20,12 @@
 #include "msgdef.h"
 #include "executor_internal.h"
 
-static int	set_fd_stream(t_info *info)
+static int	_set_fd_stream(t_execstate *info, t_execunit *units, int n_units)
 {
-	const t_exec_unit	cur_unit = info->units->arr[info->cur_idx];
+	const t_execunit	cur_unit = units[info->cur_idx];
 
-	if (info->units->n_unit == 1)
-		return (process_redir(cur_unit.redir_arr, cur_unit.n_redir));
+	if (n_units == 1)
+		return (_process_redir(cur_unit.redir_arr, cur_unit.n_redir));
 	if (info->cur_idx == 0)
 	{
 		if (close(info->new_pipe[READ]) < 0
@@ -33,7 +33,7 @@ static int	set_fd_stream(t_info *info)
 			|| close(info->new_pipe[WRITE]) < 0)
 			return (CODE_ERROR_IO);
 	}
-	else if (info->cur_idx == info->n_unit - 1)
+	else if (info->cur_idx == n_units - 1)
 	{
 		if (dup2(info->old_pipe[READ], STDIN_FILENO) < 0
 			|| close(info->old_pipe[READ]) < 0)
@@ -46,10 +46,10 @@ static int	set_fd_stream(t_info *info)
 			|| dup2(info->new_pipe[WRITE], STDOUT_FILENO) < 0
 			|| close(info->new_pipe[WRITE]) < 0)
 			return (CODE_ERROR_IO);
-	return (process_redir(cur_unit.redir_arr, cur_unit.n_redir));
+	return (_process_redir(cur_unit.redir_arr, cur_unit.n_redir));
 }
 
-void	if_dir_then_exit_126(char *cmd_name)
+void	_if_dir_then_exit_126(char *cmd_name)
 {
 	struct stat	s_statbuf;
 
@@ -66,13 +66,13 @@ void	if_dir_then_exit_126(char *cmd_name)
 	}
 }
 
-void	child_exec_extern(t_info *info)
+void	_child_exec_extern(t_execstate *info, t_execunit *units)
 {
 	char	**argv;
 	int		status;
 	char	**envp_paths;
 
-	argv = (info->units->arr + info->cur_idx)->argv;
+	argv = (units[info->cur_idx]).argv;
 	status = find_exec(&argv[0]);
 	if (status == CODE_ERROR_MALLOC)
 		exit(EXIT_FAILURE);
@@ -80,7 +80,7 @@ void	child_exec_extern(t_info *info)
 		exit(127);
 	if (envman_getenvp(&envp_paths) || envman_setval("_", argv[0]))
 		exit(EXIT_FAILURE);
-	if_dir_then_exit_126(argv[0]);
+	_if_dir_then_exit_126(argv[0]);
 	if (access(argv[0], X_OK) == 0)
 		execve(argv[0], argv, envp_paths);
 	else
@@ -91,22 +91,22 @@ void	child_exec_extern(t_info *info)
 	exit(127);
 }
 
-void	child_exec_cmd(t_info *info)
+void	_child_exec_cmd(t_execstate *info, t_execunit *units, int n_units)
 {
-	t_exec_unit	*unit;
+	t_execunit	*unit;
 	char		**argv;
 	int			stat;
 
-	if (signal_set_state_default() || set_fd_stream(info) < 0)
+	if (signal_set_state_default() || _set_fd_stream(info, units, n_units) < 0)
 		exit(EXIT_FAILURE);
-	unit = info->units->arr + info->cur_idx;
+	unit = units + info->cur_idx;
 	argv = unit->argv;
 	if (is_builtin_command(argv[0]) != FALSE)
 	{
-		stat = exec_builtin_cmd(unit, SUBSHELL);
+		stat = _exec_builtin_cmd(unit, SUBSHELL);
 		if (stat != CODE_OK)
 			exit(EXIT_FAILURE);
 		exit(CODE_OK);
 	}
-	child_exec_extern(info);
+	_child_exec_extern(info, units);
 }

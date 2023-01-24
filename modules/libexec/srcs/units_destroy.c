@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "exec_internal.h"
+#include "executor_internal.h"
 
-void	units_destroy(t_unit_arr *units)
+void	units_destroy(t_execunit *units, int n_units)
 {
-	free_all_unit(units, units->n_unit);
+	_free_all_unit(units, n_units);
 }

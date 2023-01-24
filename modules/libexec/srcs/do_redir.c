@@ -18,29 +18,32 @@
 #include "msgdef.h"
 #include "executor_internal.h"
 
-int	process_redir(t_redir *redir_arr, int n_redir)
+int	_process_redir(t_redir *redir_arr, int n_redir)
 {
-	const t_do_redir	do_redir[5] = {
-	[REDIR_NONE] = 0, [REDIR_IN] = do_redir_in, [REDIR_OUT] = do_redir_out,
-	[REDIR_IN_HERE] = do_redir_in_here, [REDIR_OUT_APPEND] = do_redir_out_append
-	};
-	int					i;
+	int	i;
+	int	stat;
 
-	i = -1;
-	while (++i < n_redir)
+	i = 0;
+	while (i < n_redir)
 	{
-		if (redir_arr[i].type == REDIR_NONE)
-		{
-			ft_dprintf(2, "critical error: redir type is none\n");
-			continue ;
-		}
-		if (do_redir[redir_arr[i].type](redir_arr + i) != CODE_OK)
-			return (CODE_ERROR_IO);
+		if (redir_arr[i].type == REDIR_IN)
+			stat = _do_redir_in(redir_arr + i);
+		else if (redir_arr[i].type == REDIR_OUT)
+			stat = _do_redir_out(redir_arr + i);
+		else if (redir_arr[i].type == REDIR_IN_HERE)
+			stat = _do_redir_in_here(redir_arr + i);
+		else if (redir_arr[i].type == REDIR_OUT_APPEND)
+			stat = _do_redir_out_append(redir_arr + i);
+		else
+			stat = CODE_ERROR_SCOPE;
+		if (stat)
+			return (stat);
+		i++;
 	}
 	return (CODE_OK);
 }
 
-int	do_redir_in(t_redir *redir_arr)
+int	_do_redir_in(t_redir *redir_arr)
 {
 	int	fd;
 
@@ -62,7 +65,7 @@ int	do_redir_in(t_redir *redir_arr)
 	return (CODE_OK);
 }
 
-int	do_redir_out(t_redir *redir_arr)
+int	_do_redir_out(t_redir *redir_arr)
 {
 	int	fd;
 
@@ -72,7 +75,7 @@ int	do_redir_out(t_redir *redir_arr)
 	return (CODE_OK);
 }
 
-int	do_redir_in_here(t_redir *redir_arr)
+int	_do_redir_in_here(t_redir *redir_arr)
 {
 	int		fd;
 	char	*heredoc_file;
@@ -87,7 +90,7 @@ int	do_redir_in_here(t_redir *redir_arr)
 	return (CODE_OK);
 }
 
-int	do_redir_out_append(t_redir *redir_arr)
+int	_do_redir_out_append(t_redir *redir_arr)
 {
 	int	fd;
 

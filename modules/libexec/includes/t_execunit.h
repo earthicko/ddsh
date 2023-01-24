@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_internal.h                                    :+:      :+:    :+:   */
+/*   t_execunit.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dahkang <dahkang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,18 +10,34 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef EXEC_INTERNAL_H
-# define EXEC_INTERNAL_H
+#ifndef  T_EXEC_UNIT_H
+# define T_EXEC_UNIT_H
 
-# include "t_node.h"
-# include "t_exec_unit.h"
+enum	e_redirtype
+{
+	REDIR_IN = 0,
+	REDIR_OUT,
+	REDIR_IN_HERE,
+	REDIR_OUT_APPEND,
+};
 
-int		get_n_unit(t_node *root);
-int		get_n_redir(t_node *node);
-t_node	*get_child_node(t_node *cmd_elem, int depth);
+typedef struct s_redir
+{
+	int		type;
+	char	*content;
+}	t_redir;
 
-int		free_unit_member(t_exec_unit *unit);
-int		free_single_unit(t_exec_unit *unit, int i, int j);
-int		free_all_unit(t_unit_arr *units, int idx);
+typedef struct s_execunit
+{
+	char	**argv;
+	t_redir	*redir_arr;
+	int		n_redir;
+	int		n_word;
+}	t_execunit;	
+
+void	units_destroy(t_execunit *units, int n_units);
+int		_free_unit_member(t_execunit *unit);
+int		_free_single_unit(t_execunit *unit);
+int		_free_all_unit(t_execunit *units, int n_units);
 
 #endif

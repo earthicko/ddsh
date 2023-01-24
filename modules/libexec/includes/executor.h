@@ -13,8 +13,8 @@
 #ifndef EXECUTOR_H
 # define EXECUTOR_H
 
-# include "t_exec_unit.h"
+# include "t_execunit.h"
 
-int	executor(t_unit_arr *units);
+int	executor(t_execunit *units, int n_units);
 
 #endif

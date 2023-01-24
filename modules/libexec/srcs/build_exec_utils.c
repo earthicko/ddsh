@@ -11,9 +11,9 @@
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "exec_internal.h"
+#include "t_node.h"
 
-int	get_n_unit(t_node *root)
+int	_get_n_unit(t_node *root)
 {
 	int		n_unit;
 	t_list	*curr;
@@ -28,7 +28,7 @@ int	get_n_unit(t_node *root)
 	return (n_unit);
 }
 
-int	get_n_redir(t_node *node)
+int	_get_n_redir(t_node *node)
 {
 	int		n_redir;
 	t_list	*cursor;
@@ -47,14 +47,14 @@ int	get_n_redir(t_node *node)
 	return (n_redir);
 }
 
-t_node	*get_child_node(t_node *node, int depth)
+t_node	*_get_child_node(t_node *node, int depth)
 {
 	t_node	*ret;
 	int		i;
 
 	ret = node;
-	i = -1;
-	while (++i < depth)
+	i = 0;
+	while (i < depth)
 	{
 		if (ret->childs)
 			ret = ret->childs->content;
@@ -63,6 +63,7 @@ t_node	*get_child_node(t_node *node, int depth)
 			ft_dprintf(2, "Exceed depth range: Current node has no child\n");
 			ft_dprintf(2, "Current depth is %d\n", i);
 		}
+		i++;
 	}
 	return (ret);
 }

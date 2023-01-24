@@ -16,15 +16,15 @@
 #include "strutils.h"
 #include "executor_internal.h"
 
-static int	wait_children(pid_t last_cmd, int n_unit)
+static int	_wait_children(pid_t last_cmd, int n_units)
 {
 	int	i;
 	int	status;
 	int	exit_status;
 
 	exit_status = 1;
-	i = -1;
-	while (++i < n_unit)
+	i = 0;
+	while (i < n_units)
 	{
 		if (last_cmd == wait(&status))
 		{
@@ -33,20 +33,21 @@ static int	wait_children(pid_t last_cmd, int n_unit)
 			else
 				exit_status = WEXITSTATUS(status);
 		}
+		i++;
 	}
 	return (exit_status);
 }
 
-static int	parent_close_unused_pipe(t_info *info)
+static int	_parent_close_unused_pipe(t_execstate *info, int n_units)
 {
 	int	stat;
 
 	stat = CODE_OK;
-	if (info->units->n_unit == 1)
+	if (n_units == 1)
 		return (CODE_OK);
 	if (info->cur_idx == 0)
 		stat = close(info->new_pipe[WRITE]);
-	else if (info->cur_idx == info->n_unit - 1)
+	else if (info->cur_idx == n_units - 1)
 		stat = close(info->old_pipe[READ]);
 	else
 		if (close(info->old_pipe[READ]) < 0 || close(info->new_pipe[WRITE]) < 0)
@@ -54,56 +55,46 @@ static int	parent_close_unused_pipe(t_info *info)
 	return (stat);
 }
 
-static void	init_info(t_info *info, t_unit_arr *units)
+static int	_fork_exec(t_execunit *units, int n_units)
 {
-	info->units = units;
-	info->n_unit = units->n_unit;
-	info->cur_idx = 0;
-}
+	t_execstate	info;
+	pid_t		pid;
 
-static int	fork_exec(t_unit_arr *units)
-{
-	t_info	info;
-	pid_t	pid;
-
-	init_info(&info, units);
-	while (info.cur_idx < info.n_unit)
+	info.cur_idx = 0;
+	while (info.cur_idx < n_units)
 	{
-		if (info.cur_idx < info.n_unit - 1)
+		if (info.cur_idx < n_units - 1)
 			if (pipe(info.new_pipe) < 0)
 				return (CODE_ERROR_IO);
 		pid = fork();
 		if (pid < 0)
 			return (CODE_ERROR_GENERIC);
 		if (pid == 0)
-			child_exec_cmd(&info);
-		if (parent_close_unused_pipe(&info) < 0)
+			_child_exec_cmd(&info, units, n_units);
+		if (_parent_close_unused_pipe(&info, n_units) < 0)
 			return (CODE_ERROR_IO);
 		ft_memcpy(info.old_pipe, info.new_pipe, sizeof(info.new_pipe));
 		info.cur_idx++;
 	}
-	return (wait_children(pid, info.n_unit));
+	return (_wait_children(pid, n_units));
 }
 
-int	executor(t_unit_arr *units)
+int	executor(t_execunit *units, int n_units)
 {
 	int	stat;
 
-	if (units->n_unit <= 0)
-		return (CODE_ERROR_SCOPE);
-	if (units->arr->n_word == 0)
+	if (units->n_word == 0)
 	{
-		if (io_manager(STDINOUT_BACKUP))
+		if (_io_manager(STDINOUT_BACKUP))
 			return (1);
-		stat = process_redir(units->arr->redir_arr, units->arr->n_redir);
-		if (io_manager(STDINOUT_RESTORE))
+		stat = _process_redir(units->redir_arr, units->n_redir);
+		if (_io_manager(STDINOUT_RESTORE))
 			return (1);
 		if (stat == CODE_ERROR_IO)
 			return (1);
 		return (CODE_OK);
 	}
-	if (units->n_unit == 1
-		&& is_builtin_command(units->arr->argv[0]))
-		return (exec_builtin_cmd(units->arr, PARENTSHELL));
-	return (fork_exec(units));
+	if (n_units == 1 && is_builtin_command(units->argv[0]))
+		return (_exec_builtin_cmd(units, PARENTSHELL));
+	return (_fork_exec(units, n_units));
 }

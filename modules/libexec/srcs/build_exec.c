@@ -12,25 +12,25 @@
 
 #include <stdlib.h>
 #include "libft.h"
-#include "exec_internal.h"
+#include "executor_internal.h"
 
-static int	init_unit(t_exec_unit *unit, t_node *simple_cmd)
+static int	_init_unit(t_execunit *unit, t_node *simple_cmd)
 {
-	const int	n_redir = get_n_redir(simple_cmd);
+	const int	n_redir = _get_n_redir(simple_cmd);
 	const int	n_word = node_getntokens(simple_cmd) - 2 * n_redir;
 
-	unit->argv = (char **)malloc(sizeof(char *) * (n_word + 1));
-	unit->redir_arr = (t_redir *)malloc(sizeof(t_redir) * (n_redir + 1));
+	unit->argv = malloc(sizeof(char *) * (n_word + 1));
+	unit->redir_arr = malloc(sizeof(t_redir) * (n_redir + 1));
 	unit->n_word = n_word;
 	unit->n_redir = n_redir;
 	ft_bzero(unit->argv, sizeof(char *) * (n_word + 1));
 	ft_bzero(unit->redir_arr, sizeof(t_redir) * (n_redir + 1));
 	if (!unit->argv || !unit->redir_arr)
-		return (free_unit_member(unit));
+		return (_free_unit_member(unit));
 	return (CODE_OK);
 }
 
-static int	set_argv(t_node *node, t_exec_unit *unit, int idx)
+static int	_set_argv(t_node *node, t_execunit *unit, int idx)
 {
 	unit->argv[idx] = ft_strdup(node->content);
 	if (!unit->argv[idx])
@@ -38,12 +38,12 @@ static int	set_argv(t_node *node, t_exec_unit *unit, int idx)
 	return (CODE_OK);
 }
 
-static int	set_redir_arr(t_node *node, t_exec_unit *unit, int idx)
+static int	_set_redir_arr(t_node *node, t_execunit *unit, int idx)
 {
 	t_node	*terminal_node;
 	t_list	*curr;
 
-	node = get_child_node(node, 1);
+	node = _get_child_node(node, 1);
 	curr = node->childs;
 	terminal_node = curr->content;
 	if (ft_strncmp(terminal_node->content, "<<", 2) == 0)
@@ -55,7 +55,7 @@ static int	set_redir_arr(t_node *node, t_exec_unit *unit, int idx)
 	else if (ft_strncmp(terminal_node->content, ">", 1) == 0)
 		unit->redir_arr[idx].type = REDIR_OUT;
 	else
-		unit->redir_arr[idx].type = REDIR_NONE;
+		unit->redir_arr[idx].type = CODE_ERROR_DATA;
 	terminal_node = curr->next->content;
 	unit->redir_arr[idx].content = ft_strdup(terminal_node->content);
 	if (!unit->redir_arr[idx].content)
@@ -63,52 +63,53 @@ static int	set_redir_arr(t_node *node, t_exec_unit *unit, int idx)
 	return (CODE_OK);
 }
 
-static int	build_unit(t_exec_unit *unit, t_node *simple_cmd)
+static int	_build_unit(t_execunit *unit, t_node *simple_cmd)
 {
-	int			i;
-	int			j;
-	t_node		*node;
-	t_list		*curr;
+	int		i;
+	int		j;
+	t_node	*node;
+	t_list	*curr;
 
-	if (init_unit(unit, simple_cmd) == CODE_ERROR_MALLOC)
+	if (_init_unit(unit, simple_cmd) == CODE_ERROR_MALLOC)
 		return (CODE_ERROR_MALLOC);
 	i = 0;
 	j = 0;
 	curr = simple_cmd->childs;
 	while (curr)
 	{
-		node = get_child_node(curr->content, 1);
+		node = _get_child_node(curr->content, 1);
 		if (node->type == NODETYPE_CMD_WORD)
 		{
-			if (set_argv(node, unit, i++) == CODE_ERROR_MALLOC)
-				return (free_single_unit(unit, i, j));
+			if (_set_argv(node, unit, i++) == CODE_ERROR_MALLOC)
+				return (_free_single_unit(unit));
 		}
 		else
-			if (set_redir_arr(node, unit, j++) == CODE_ERROR_MALLOC)
-				return (free_single_unit(unit, i, j));
+			if (_set_redir_arr(node, unit, j++) == CODE_ERROR_MALLOC)
+				return (_free_single_unit(unit));
 		curr = curr->next;
 	}
 	return (CODE_OK);
 }
 
-int	build_exec_unit(t_node *root, t_unit_arr *units)
+int	build_exec_unit(t_node *root, t_execunit **units, int *n_units)
 {
-	const int	n_unit = get_n_unit(root);
+	const int	n_unit = _get_n_unit(root);
 	t_list		*curr;
 	int			idx;
 
-	units->arr = (t_exec_unit *)malloc(sizeof(t_exec_unit) * n_unit);
-	if (!units->arr)
+	*units = malloc(sizeof(t_execunit) * n_unit);
+	if (!*units)
 		return (CODE_ERROR_MALLOC);
-	units->n_unit = n_unit;
-	ft_bzero(units->arr, n_unit * sizeof(t_exec_unit));
+	ft_bzero(*units, n_unit * sizeof(t_execunit));
 	curr = root->childs;
-	idx = -1;
-	while (++idx < n_unit)
+	idx = 0;
+	while (idx < n_unit)
 	{
-		if (build_unit(units->arr + idx, curr->content) == CODE_ERROR_MALLOC)
-			return (free_all_unit(units, idx));
+		if (_build_unit(units[idx], curr->content) == CODE_ERROR_MALLOC)
+			return (_free_all_unit(*units, n_unit));
 		curr = curr->next;
+		idx++;
 	}
+	*n_units = n_unit;
 	return (CODE_OK);
 }

@@ -12,8 +12,8 @@
 
 #ifndef EXECUTOR_INTERNAL_H
 # define EXECUTOR_INTERNAL_H
-
-# include "t_exec_unit.h"
+# include "t_node.h"
+# include "t_execunit.h"
 
 # define WRITE 1
 # define READ 0
@@ -22,28 +22,29 @@
 # define SUBSHELL 0
 # define PARENTSHELL 1
 
-typedef struct s_info
+int		_get_n_unit(t_node *root);
+int		_get_n_redir(t_node *node);
+t_node	*_get_child_node(t_node *cmd_elem, int depth);
+
+typedef struct s_execstate
 {
-	t_unit_arr	*units;
-	int			n_unit;
-	int			cur_idx;
-	int			new_pipe[2];
-	int			old_pipe[2];
-}	t_info;
+	int	cur_idx;
+	int	new_pipe[2];
+	int	old_pipe[2];
+}	t_execstate;
 
 typedef int	(*t_do_redir)(t_redir *redir_arr);
-typedef int	(*t_exec_builtin)(char **argv);
 
-int		process_redir(t_redir *redir_arr, int n_redir);
-int		do_redir_in(t_redir *redir_arr);
-int		do_redir_out(t_redir *redir_arr);
-int		do_redir_in_here(t_redir *redir_arr);
-int		do_redir_out_append(t_redir *redir_arr);
+int		_process_redir(t_redir *redir_arr, int n_redir);
+int		_do_redir_in(t_redir *redir_arr);
+int		_do_redir_out(t_redir *redir_arr);
+int		_do_redir_in_here(t_redir *redir_arr);
+int		_do_redir_out_append(t_redir *redir_arr);
 
-int		io_manager(int mode);
+int		_io_manager(int mode);
 
-void	child_exec_cmd(t_info *info);
+void	_child_exec_cmd(t_execstate *info, t_execunit *units, int n_units);
 
-int		exec_builtin_cmd(t_exec_unit *unit, int mode);
+int		_exec_builtin_cmd(t_execunit *unit, int mode);
 
 #endif

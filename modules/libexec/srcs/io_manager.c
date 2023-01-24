@@ -16,7 +16,7 @@
 #include "msgdef.h"
 #include "executor_internal.h"
 
-int	io_manager(int mode)
+int	_io_manager(int mode)
 {
 	static int	backup[2];
 
