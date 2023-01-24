@@ -56,8 +56,8 @@ static int	build_toks_arr(t_toks *toks, char *str)
 	int	idx;
 	int	tok_type;
 
-	idx = -1;
-	while (++idx < toks->n_toks)
+	idx = 0;
+	while (idx < toks->n_toks)
 	{
 		str += space_len(str);
 		tok_type = get_token_type(str);
@@ -75,6 +75,7 @@ static int	build_toks_arr(t_toks *toks, char *str)
 		}
 		if (!toks->arr[idx].content)
 			return (free_with_fail(toks, idx));
+		idx++;
 	}
 	return (CODE_OK);
 }

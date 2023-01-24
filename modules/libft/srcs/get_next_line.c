@@ -57,7 +57,8 @@ static char	*extract_line(t_list *buff_stored)
 			break ;
 		i++;
 	}
-	new_line[++i] = '\0';
+	i++;
+	new_line[i] = '\0';
 	return (new_line);
 }
 

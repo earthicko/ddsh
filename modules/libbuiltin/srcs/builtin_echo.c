@@ -17,10 +17,13 @@ static int	has_only_ch(char *str, char ch)
 {
 	int	i;
 
-	i = -1;
-	while (str[++i])
+	i = 0;
+	while (str[i])
+	{
 		if (str[i] != ch)
 			return (FALSE);
+		i++;
+	}
 	return (TRUE);
 }
 
