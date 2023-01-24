@@ -34,7 +34,7 @@ t_conv	*create_conv(void)
 {
 	t_conv	*new_conv;
 
-	new_conv = (t_conv *)malloc(sizeof(t_conv));
+	new_conv = malloc(sizeof(t_conv));
 	if (!new_conv)
 		return (NULL);
 	init_conv(new_conv);

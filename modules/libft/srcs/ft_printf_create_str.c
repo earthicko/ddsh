@@ -19,7 +19,7 @@ char	*cstr_nchars(int n, char c)
 	char	*buf;
 	int		i;
 
-	buf = (char *)malloc(n + 1);
+	buf = malloc(sizeof(char) * (n + 1));
 	if (!buf)
 		return (NULL);
 	i = 0;
@@ -47,7 +47,7 @@ char	*cstr_nbr(t_conv *conv, t_ll nbr, char *charset)
 	}
 	len_base = ft_strlen(charset);
 	len_nbr = ft_numlen_base(nbr, len_base);
-	buf = (char *)malloc(len_nbr + 1);
+	buf = malloc(sizeof(char) * (len_nbr + 1));
 	if (!buf)
 		return (NULL);
 	cstr_nbr_fill_str(buf, nbr, charset, len_base);

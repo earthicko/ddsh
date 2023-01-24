@@ -56,7 +56,7 @@ char	*ft_strmapi(char const *s, char (*f)(t_uint, char))
 	size_t	len;
 
 	len = ft_strlen(s);
-	buf = (char *)malloc(sizeof(char) * (len + 1));
+	buf = malloc(sizeof(char) * (len + 1));
 	if (!buf)
 		return (NULL);
 	i = 0;

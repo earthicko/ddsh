@@ -54,7 +54,7 @@ char	*ft_itoa(int n)
 	size_t	len;
 
 	len = ft_nbrlen(n);
-	output = (char *) malloc(sizeof(char) * (len + 1));
+	output = malloc(sizeof(char) * (len + 1));
 	if (!output)
 		return (NULL);
 	if (n < 0)

@@ -94,7 +94,7 @@ static char	*cstr_ptr_unsigned(t_conv *conv, void *ptr, int len_ptr)
 		else
 			return (ft_substr(CHARSET_LHEX, 0, 1));
 	}
-	buf = (char *)malloc(len_ptr + 1);
+	buf = malloc(sizeof(char) * (len_ptr + 1));
 	if (!buf)
 		return (NULL);
 	cstr_ptr_fill_str(ptr, len_ptr, buf);

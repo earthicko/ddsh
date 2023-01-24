@@ -46,7 +46,7 @@ static char	*extract_line(t_list *buff_stored)
 		return (NULL);
 	while (!ft_iseol(loc_fdbuff(buff_stored)->buff[i]))
 		i++;
-	new_line = (char *)malloc(sizeof(char) * (i + 2));
+	new_line = malloc(sizeof(char) * (i + 2));
 	if (!new_line)
 		return (NULL);
 	i = 0;
@@ -73,7 +73,7 @@ static void	update_buff(t_list **buff_list, t_list *buff_stored)
 	while (!ft_iseol(loc_fdbuff(buff_stored)->buff[i]))
 		i++;
 	len_new = ft_strlen(loc_fdbuff(buff_stored)->buff) - i + 1;
-	new_buff = (char *)malloc(len_new);
+	new_buff = malloc(len_new);
 	if (loc_fdbuff(buff_stored)->buff[i] == '\0' || !new_buff)
 	{
 		del_fdlist(buff_list, buff_stored);
@@ -108,7 +108,7 @@ static t_list	*assign_buff(t_list **buff_list, int fd)
 	}
 	if (loc_fdbuff(cursor)->buff == NULL)
 	{
-		loc_fdbuff(cursor)->buff = (char *)malloc(1);
+		loc_fdbuff(cursor)->buff = malloc(sizeof(char));
 		if (!loc_fdbuff(cursor)->buff)
 			return (del_fdlist(buff_list, cursor));
 		loc_fdbuff(cursor)->buff[0] = '\0';
@@ -129,7 +129,7 @@ char	*get_next_line(int fd)
 	buff_stored = assign_buff(&buff_list, fd);
 	if (!buff_stored)
 		return (NULL);
-	buff_read = (char *)malloc((sizeof(char) * BUFFER_SIZE + 1));
+	buff_read = malloc((sizeof(char) * (BUFFER_SIZE + 1)));
 	if (!buff_read)
 		return (NULL);
 	res = read_line(buff_stored, fd, buff_read);

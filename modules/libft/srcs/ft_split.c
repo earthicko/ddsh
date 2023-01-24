@@ -53,7 +53,7 @@ static char	*ft_strcpy_word(char *str, char sep)
 	len_word = 0;
 	while (str[len_word] != '\0' && str[len_word] != sep)
 		len_word++;
-	word = (char *)malloc(sizeof(char) * (len_word + 1));
+	word = malloc(sizeof(char) * (len_word + 1));
 	if (!word)
 		return (NULL);
 	while (idx < len_word)
@@ -86,7 +86,7 @@ char	**ft_split(char const *s, char c)
 	cursor = (char *)s;
 	n_words = count_words(cursor, c);
 	idx = 0;
-	strs = (char **)malloc(sizeof(char *) * (n_words + 1));
+	strs = malloc(sizeof(char *) * (n_words + 1));
 	if (!strs)
 		return (NULL);
 	while (*cursor != '\0')

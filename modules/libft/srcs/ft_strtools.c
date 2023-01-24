@@ -75,7 +75,7 @@ char	*ft_substr(char const *s, t_uint start, size_t len)
 		len = 0;
 	else if (len_s - (size_t) start < len)
 		len = len_s - (size_t) start;
-	substr = (char *)malloc(sizeof(char) * (len + 1));
+	substr = malloc(sizeof(char) * (len + 1));
 	if (!substr)
 		return (NULL);
 	ft_memcpy(substr, s + start, len);

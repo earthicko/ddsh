@@ -18,7 +18,7 @@ t_fdbuff	*init_fdbuff(int fd)
 {
 	t_fdbuff	*fdbuff;
 
-	fdbuff = (t_fdbuff *)malloc(sizeof(fdbuff));
+	fdbuff = malloc(sizeof(fdbuff));
 	if (!fdbuff)
 		return (NULL);
 	fdbuff->fd = fd;
@@ -36,7 +36,7 @@ t_list	*init_fdlist(t_list **head, int init_fd)
 {
 	t_list	*init;
 
-	init = (t_list *)malloc(sizeof(t_list));
+	init = malloc(sizeof(t_list));
 	if (!init)
 		return (NULL);
 	init->content = init_fdbuff(init_fd);

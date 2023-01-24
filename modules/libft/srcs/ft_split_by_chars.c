@@ -38,7 +38,7 @@ static char	*ft_strcpy_word(char *str, int *map)
 	len_word = 0;
 	while (str[len_word] != '\0' && !map[(t_uchar)str[len_word]])
 		len_word++;
-	word = (char *)malloc(sizeof(char) * (len_word + 1));
+	word = malloc(sizeof(char) * (len_word + 1));
 	if (!word)
 		return (NULL);
 	while (idx < len_word)
@@ -74,7 +74,7 @@ static int	init_split_by_chars(char *str, char *sep, int *map, char ***strs)
 			n_words++;
 		skip_separator(&str, map, 1);
 	}
-	*strs = (char **)malloc(sizeof(char *) * (n_words + 1));
+	*strs = malloc(sizeof(char *) * (n_words + 1));
 	return (n_words);
 }
 
