@@ -40,44 +40,45 @@ static int	_wait_children(pid_t last_cmd, int n_units)
 	return (exit_status);
 }
 
-static int	_parent_close_unused_pipe(t_execstate *state, int n_units)
+static int	_parent_close_unused_pipe(t_pipeset *pipeset, int n_units, int idx)
 {
 	int	stat;
 
 	stat = CODE_OK;
 	if (n_units == 1)
 		return (CODE_OK);
-	if (state->cur_idx == 0)
-		stat = close(state->new_pipe[WRITE]);
-	else if (state->cur_idx == n_units - 1)
-		stat = close(state->old_pipe[READ]);
+	if (idx == 0)
+		stat = close(pipeset->new_pipe[WRITE]);
+	else if (idx == n_units - 1)
+		stat = close(pipeset->old_pipe[READ]);
 	else
-		if (close(state->old_pipe[READ]) < 0
-			|| close(state->new_pipe[WRITE]) < 0)
+		if (close(pipeset->old_pipe[READ]) < 0
+			|| close(pipeset->new_pipe[WRITE]) < 0)
 			return (CODE_ERROR_IO);
 	return (stat);
 }
 
 static int	_fork_exec(t_execunit *units, int n_units)
 {
-	t_execstate	state;
+	t_pipeset	state;
 	pid_t		pid;
+	int			idx;
 
-	state.cur_idx = 0;
-	while (state.cur_idx < n_units)
+	idx = 0;
+	while (idx < n_units)
 	{
-		if (state.cur_idx < n_units - 1)
+		if (idx < n_units - 1)
 			if (pipe(state.new_pipe) < 0)
 				return (CODE_ERROR_IO);
 		pid = fork();
 		if (pid < 0)
 			return (CODE_ERROR_GENERIC);
 		if (pid == 0)
-			_child_exec_cmd(&state, units, n_units);
-		if (_parent_close_unused_pipe(&state, n_units) < 0)
+			_child_exec_cmd(&state, units, n_units, idx);
+		if (_parent_close_unused_pipe(&state, n_units, idx) < 0)
 			return (CODE_ERROR_IO);
 		ft_memcpy(state.old_pipe, state.new_pipe, sizeof(state.new_pipe));
-		state.cur_idx++;
+		idx++;
 	}
 	return (_wait_children(pid, n_units));
 }
