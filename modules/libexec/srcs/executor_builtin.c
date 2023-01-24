@@ -17,14 +17,15 @@
 int	_exec_builtin_cmd(t_execunit *unit, int mode)
 {
 	int	stat;
+	int	fdbuf[2];
 
-	if (mode == PARENTSHELL && _io_manager(STDINOUT_BACKUP))
+	if (mode == PARENTSHELL && _io_manager(STDINOUT_BACKUP, fdbuf))
 		return (1);
 	stat = _process_redir(unit->redir_arr, unit->n_redir);
 	if (stat == CODE_ERROR_IO)
 		return (1);
 	stat = builtin_exec_by_name(unit->argv[0], unit->argv);
-	if (mode == PARENTSHELL && _io_manager(STDINOUT_RESTORE))
+	if (mode == PARENTSHELL && _io_manager(STDINOUT_RESTORE, fdbuf))
 		return (1);
 	return (stat);
 }

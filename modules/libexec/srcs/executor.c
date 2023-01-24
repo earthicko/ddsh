@@ -85,13 +85,14 @@ static int	_fork_exec(t_execunit *units, int n_units)
 static int	_execute_units(t_execunit *units, int n_units)
 {
 	int	stat;
+	int	fdbuf[2];
 
 	if (units->n_word == 0)
 	{
-		if (_io_manager(STDINOUT_BACKUP))
+		if (_io_manager(STDINOUT_BACKUP, fdbuf))
 			return (1);
 		stat = _process_redir(units->redir_arr, units->n_redir);
-		if (_io_manager(STDINOUT_RESTORE))
+		if (_io_manager(STDINOUT_RESTORE, fdbuf))
 			return (1);
 		if (stat == CODE_ERROR_IO)
 			return (1);

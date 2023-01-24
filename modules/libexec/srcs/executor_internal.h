@@ -39,7 +39,7 @@ int		_do_redir_out(t_redir *redir_arr);
 int		_do_redir_in_here(t_redir *redir_arr);
 int		_do_redir_out_append(t_redir *redir_arr);
 
-int		_io_manager(int mode);
+int		_io_manager(int mode, int *fdbuf);
 
 void	_child_exec_cmd(t_execstate *state, t_execunit *units, int n_units);
 int		_build_exec_unit(t_node *root, t_execunit **units, int *n_units);
