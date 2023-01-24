@@ -35,7 +35,6 @@ typedef struct s_execunit
 	int		n_word;
 }	t_execunit;	
 
-void	units_destroy(t_execunit *units, int n_units);
 int		_free_unit_member(t_execunit *unit);
 int		_free_single_unit(t_execunit *unit);
 int		_free_all_unit(t_execunit *units, int n_units);

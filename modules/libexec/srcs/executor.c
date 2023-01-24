@@ -114,7 +114,7 @@ int	execute_tree(t_node *parse_tree)
 		return (stat);
 	stat = _execute_units(units, n_units);
 	exit_stat_manager(stat);
-	units_destroy(units, n_units);
+	_free_all_unit(units, n_units);
 	if (stat)
 		return (stat);
 	return (CODE_OK);
