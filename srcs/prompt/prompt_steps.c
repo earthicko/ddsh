@@ -44,7 +44,8 @@ int	prompt_getstr(char **buf)
 		builtin_exit(NULL);
 	if (signal_set_state_executing())
 		return (CODE_ERROR_GENERIC);
-	add_history(str);
+	if (ft_strlen(str) > 0)
+		add_history(str);
 	*buf = str;
 	return (CODE_OK);
 }
