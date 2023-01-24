@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include "lexer_internal.h"
 
 int	get_n_toks(char *str)
@@ -77,4 +78,14 @@ int	get_token_type(char *str)
 		return (TOKENTYPE_REDIR_OUT);
 	else
 		return (TOKENTYPE_WORD);
+}
+
+char	*trunc_comments(char *line)
+{
+	char	*cursor;
+
+	cursor = ft_strchr(line, '#');
+	if (!cursor)
+		return (ft_strdup(line));
+	return (ft_substr(line, 0, cursor - line));
 }

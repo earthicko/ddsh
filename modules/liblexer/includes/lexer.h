@@ -17,5 +17,6 @@
 
 int		lexer(char *str, t_toks *toks);
 void	token_destroy(t_toks *toks);
+char	*trunc_comments(char *line);
 
 #endif

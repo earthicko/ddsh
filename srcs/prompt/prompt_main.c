@@ -11,12 +11,13 @@
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include "libft_def.h"
+#include "libft.h"
 #include "envmanager.h"
 #include "builtin_commands.h"
 #include "heredoc.h"
 #include "lexer.h"
 #include "t_node.h"
+#include "msgdef.h"
 #include "prompt_internal.h"
 
 void	execute_line(char *line)
@@ -24,8 +25,16 @@ void	execute_line(char *line)
 	int		stat;
 	t_toks	toks;
 	t_node	*parse_tree;
+	char	*clean_line;
 
-	stat = prompt_gettokens(line, &toks);
+	clean_line = trunc_comments(line);
+	if (!clean_line)
+	{
+		ft_print_error(MSG_ERROR_PREFIX, CODE_ERROR_MALLOC);
+		return ;
+	}
+	stat = prompt_gettokens(clean_line, &toks);
+	free(clean_line);
 	if (stat)
 		return ;
 	stat = prompt_getparsetree(&toks, &parse_tree);
