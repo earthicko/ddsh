@@ -14,16 +14,15 @@
 #include "libft.h"
 #include "envmanager_internal.h"
 
-int	_envman_addentry_str(t_list **p_list, char *str)
+int	_envman_addentry_str(t_list **p_list, char *str, int exp)
 {
 	t_list		*newlst;
 	t_enventry	*entry;
 	int			stat;
 
-	entry = malloc(sizeof(t_enventry));
+	entry = _enventry_create(NULL, NULL, exp);
 	if (!entry)
 		return (CODE_ERROR_MALLOC);
-	ft_memset(entry, 0, sizeof(t_enventry));
 	stat = envman_split_envstr(str, &(entry->name), &(entry->val));
 	if (stat)
 	{
@@ -40,29 +39,13 @@ int	_envman_addentry_str(t_list **p_list, char *str)
 	return (CODE_OK);
 }
 
-static int	_envman_addentry_nameval_set(t_enventry *ent, char **dst, char *src)
-{
-	*dst = ft_strdup(src);
-	if (!(*dst))
-	{
-		_enventry_destroy(ent);
-		return (CODE_ERROR_MALLOC);
-	}
-	return (CODE_OK);
-}
-
-int	_envman_addentry_nameval(t_list **p_list, char *name, char *val)
+int	_envman_addentry_nameval(t_list **p_list, char *name, char *val, int exp)
 {
 	t_list		*newlst;
 	t_enventry	*entry;
 
-	entry = malloc(sizeof(t_enventry));
+	entry = _enventry_create(name, val, exp);
 	if (!entry)
-		return (CODE_ERROR_MALLOC);
-	ft_memset(entry, 0, sizeof(t_enventry));
-	if (name && _envman_addentry_nameval_set(entry, &(entry->name), name))
-		return (CODE_ERROR_MALLOC);
-	if (val && _envman_addentry_nameval_set(entry, &(entry->val), val))
 		return (CODE_ERROR_MALLOC);
 	newlst = ft_lstnew(entry);
 	if (!newlst)

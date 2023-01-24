@@ -22,7 +22,7 @@ int	_envman_init(t_list **p_list, char **envp)
 		_envman_clear(p_list);
 	while (*envp)
 	{
-		stat = _envman_addentry_str(p_list, *envp);
+		stat = _envman_addentry_str(p_list, *envp, TRUE);
 		if (stat)
 		{
 			_envman_clear(p_list);
@@ -35,9 +35,11 @@ int	_envman_init(t_list **p_list, char **envp)
 
 int	envman_init(char **envp)
 {
-	int	stat;
+	int				stat;
+	t_envmaninfo	info;
 
-	stat = _envmanager(ENVMANMODE_INIT, envp, 0, 0);
+	info.buf = envp;
+	stat = _envmanager(ENVMANMODE_INIT, &info);
 	if (stat)
 		ft_print_error(MSG_ERROR_PREFIX, stat);
 	return (stat);

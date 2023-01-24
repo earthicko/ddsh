@@ -17,7 +17,6 @@
 # include "envmanager.h"
 # define ENVSTR_DELIM_CHAR '='
 # define ENVSTR_DELIM_STR "="
-# define ENVMAN_NULLVAL (char *)-1
 
 enum e_envmanmode
 {
@@ -30,25 +29,37 @@ enum e_envmanmode
 	ENVMANMODE_EXPORT
 };
 
+typedef struct s_envmaninfo
+{
+	void	*buf;
+	char	*name;
+	char	*val;
+	int		exp;
+}	t_envmaninfo;
+
 typedef struct s_enventry
 {
 	char	*name;
 	char	*val;
+	int		exp;
 }	t_enventry;
 
+t_enventry	*_enventry_create(char *name, char *val, int exp);
 void		_free_entry(void *content);
 t_enventry	*_enventry_destroy(t_enventry *enventry);
 t_list		*_find_list_with_entry(t_list *envlist, char *name);
-int			_envman_addentry_str(t_list **p_list, char *env);
-int			_envman_addentry_nameval(t_list **p_list, char *name, char *val);
+int			_envman_addentry_str(
+				t_list **p_list, char *str, int exp);
+int			_envman_addentry_nameval(
+				t_list **p_list, char *name, char *val, int exp);
 t_enventry	*_envman_getentry(t_list *envlist, char *name);
 
-int			_envmanager(int mode, void *buf, char *name, char *val);
+int			_envmanager(int mode, t_envmaninfo *info);
 
 int			_envman_init(t_list **p_list, char **envp);
 int			_envman_clear(t_list **p_list);
 int			_envman_getval(t_list *envlist, char **buf, char *name);
-int			_envman_setval(t_list **envlist, char *name, char *val);
+int			_envman_setval(t_list **envlist, char *name, char *val, int exp);
 int			_envman_unsetval(t_list **envlist, char *name);
 int			_envman_getenvp(t_list *envlist, char ***buf);
 int			_envman_export(t_list *envlist);
