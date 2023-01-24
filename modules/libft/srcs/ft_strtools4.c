@@ -54,3 +54,8 @@ char	*ft_strmerge(int n_str, ...)
 	va_end(p_args);
 	return (buf);
 }
+
+int	is_samestr(char *str1, char *str2)
+{
+	return (ft_strncmp(str1, str2, ft_strlen(str2) + 1) == 0);
+}

@@ -42,6 +42,7 @@ char		*ft_strmapi(char const *s, char (*f)(t_uint, char));
 void		ft_striteri(char *s, void (*f)(t_uint, char*));
 int			ft_strappend(char **body, const char *tail);
 char		*ft_strmerge(int n_str, ...);
+int			is_samestr(char *str1, char *str2);
 //			ft_strarrtools
 int			ft_strarrlen(char **strarr);
 char		**ft_free_strarr(char **strarr);
