@@ -27,12 +27,15 @@ static int	_closedir_and_return(DIR *dp, int stat)
 static int	_should_delete(char *_ttyname, struct dirent *ep)
 {
 	char	*prefix;
+	int		stat;
 
 	prefix = ft_strjoin(PREFIX_HEREDOC_TEMPFILE, _ttyname);
 	if (!prefix)
 		return (CODE_ERROR_MALLOC);
-	if (ep && ep->d_type == DT_REG
-		&& !ft_strncmp(ep->d_name, prefix, ft_strlen(prefix)))
+	stat = (ep && ep->d_type == DT_REG
+			&& !ft_strncmp(ep->d_name, prefix, ft_strlen(prefix)));
+	free(prefix);
+	if (stat)
 		return (TRUE);
 	return (FALSE);
 }
