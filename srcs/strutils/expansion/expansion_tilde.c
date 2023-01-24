@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expansion_internal.h                               :+:      :+:    :+:   */
+/*   expansion_tilde.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: donghyle <donghyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,23 +10,32 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef EXPANSION_INTERNAL_H
-# define EXPANSION_INTERNAL_H
+#include <stdlib.h>
+#include "libft.h"
+#include "envmanager.h"
 
-enum	e_expand_option
+int	_do_tilde_expansion(char **buf)
 {
-	O_REMQUOTE = 1,
-	O_PARSESQUOTE = 2,
-	O_PARSEDQUOTE = 4,
-	O_REMEMPTYVAR = 8
-};
+	char	*without_tilde;
+	char	*tilde_replacement;
+	char	*temp;
 
-int	_do_expansion(char **buf, int option);
-int	_do_tilde_expansion(char **buf);
-int	_exit_compose(t_pchararr *strarr, char *word);
-int	_compose_squote(char *str, int *pos, t_pchararr *strarr, int option);
-int	_compose_dquote(char *str, int *pos, t_pchararr *strarr, int option);
-int	_compose_envvar(char *str, int *pos, t_pchararr *strarr, int option);
-int	_compose_str(char *str, int *pos, t_pchararr *strarr);
-
-#endif
+	if (!(ft_strncmp(*buf, "~", 2) == 0 || ft_strncmp(*buf, "~/", 2) == 0))
+		return (CODE_OK);
+	if (envman_getval("HOME", &tilde_replacement))
+		return (CODE_OK);
+	without_tilde = ft_substr(*buf, 1, ft_strlen(*buf) - 1);
+	if (!without_tilde)
+	{
+		free(tilde_replacement);
+		return (CODE_ERROR_MALLOC);
+	}
+	temp = ft_strjoin(tilde_replacement, without_tilde);
+	free(tilde_replacement);
+	free(without_tilde);
+	if (!temp)
+		return (CODE_ERROR_MALLOC);
+	free(*buf);
+	*buf = temp;
+	return (CODE_OK);
+}

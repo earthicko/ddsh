@@ -79,11 +79,21 @@ int	_do_expansion(char **buf, int option)
 
 int	do_shell_expansion(char **buf)
 {
+	int	stat;
+
+	stat = _do_tilde_expansion(buf);
+	if (stat)
+		return (stat);
 	return (_do_expansion(buf,
 			O_REMQUOTE | O_PARSESQUOTE | O_PARSEDQUOTE | O_REMEMPTYVAR));
 }
 
 int	do_heredoc_expansion(char **buf)
 {
+	int	stat;
+
+	stat = _do_tilde_expansion(buf);
+	if (stat)
+		return (stat);
 	return (_do_expansion(buf, 0));
 }
