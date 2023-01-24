@@ -16,7 +16,7 @@
 int		envman_init(char **envp);
 int		envman_clear(void);
 int		envman_getval(char *name, char **buf);
-int		envman_setval(char *name, char *val);
+int		envman_setval(char *name, char *val, int exp);
 int		envman_unsetval(char *name);
 int		envman_getenvp(char ***buf);
 int		envman_export(void);

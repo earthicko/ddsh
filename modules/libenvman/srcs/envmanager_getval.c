@@ -47,9 +47,12 @@ int	_envman_getval(t_list *envlist, char **buf, char *name)
 
 int	envman_getval(char *name, char **buf)
 {
-	int	stat;
+	int				stat;
+	t_envmaninfo	info;
 
-	stat = _envmanager(ENVMANMODE_GETVAL, buf, name, 0);
+	info.name = name;
+	info.buf = buf;
+	stat = _envmanager(ENVMANMODE_GETVAL, &info);
 	if (stat && stat != CODE_ERROR_DATA)
 		ft_print_error(MSG_ERROR_PREFIX, stat);
 	return (stat);

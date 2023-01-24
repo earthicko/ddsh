@@ -31,11 +31,11 @@ static int	builtin_cd_internal(char *target)
 		perror(NULL);
 	}
 	if (stat == 0 && pwd)
-		stat |= envman_setval("OLDPWD", pwd);
+		stat |= envman_setval("OLDPWD", pwd, TRUE);
 	free(pwd);
 	pwd = getcwd(NULL, 0);
 	if (pwd)
-		stat |= envman_setval("PWD", pwd);
+		stat |= envman_setval("PWD", pwd, TRUE);
 	free(pwd);
 	if (stat)
 		return (1);
