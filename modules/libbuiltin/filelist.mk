@@ -6,7 +6,8 @@ FILE_LIBBUILTIN	= \
 					builtin_pwd \
 					builtin_unset \
 					builtin_env \
-					builtin_exit
+					builtin_exit \
+					builtin_dot
 
 SRC_LIBBUILTIN	= $(addprefix srcs/, $(addsuffix .c, $(FILE_LIBBUILTIN)))
 OBJ_LIBBUILTIN	= $(addprefix srcs/, $(addsuffix .o, $(FILE_LIBBUILTIN)))

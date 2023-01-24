@@ -13,6 +13,7 @@
 #include <stdlib.h>
 #include "libft_def.h"
 #include "envmanager.h"
+#include "builtin_commands.h"
 #include "heredoc.h"
 #include "lexer.h"
 #include "t_node.h"
@@ -44,6 +45,11 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	envman_init(envp);
 	heredoc_init();
+	if (argc > 1)
+	{
+		builtin_dot(argv);
+		return (exit_stat_manager(-1));
+	}
 	while (TRUE)
 	{
 		if (prompt_clear() || prompt_getstr(&line))
