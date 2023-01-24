@@ -14,6 +14,30 @@
 #include "libft.h"
 #include "envmanager_internal.h"
 
+t_enventry	*_enventry_create(char *name, char *val, int exp)
+{
+	t_enventry	*entry;
+
+	entry = malloc(sizeof(t_enventry));
+	if (!entry)
+		return (NULL);
+	ft_bzero(entry, sizeof(t_enventry));
+	if (name)
+	{
+		entry->name = ft_strdup(name);
+		if (!entry->name)
+			return (_enventry_destroy(entry));
+	}
+	if (val)
+	{
+		entry->val = ft_strdup(val);
+		if (!entry->val)
+			return (_enventry_destroy(entry));
+	}
+	entry->exp = exp;
+	return (entry);
+}
+
 t_enventry	*_enventry_destroy(t_enventry *enventry)
 {
 	if (!enventry)

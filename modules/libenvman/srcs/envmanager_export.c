@@ -20,18 +20,21 @@ int	_envman_export(t_list *envlist)
 	stat = 0;
 	while (envlist)
 	{
-		if (((t_enventry *)(envlist->content))->val)
+		if (((t_enventry *)(envlist->content))->exp)
 		{
-			if (ft_printf("declare -x %s=\"%s\"\n",
-					((t_enventry *)(envlist->content))->name,
-				((t_enventry *)(envlist->content))->val) < 0)
-				stat = 1;
-		}
-		else
-		{
-			if (ft_printf("declare -x %s\n",
-					((t_enventry *)(envlist->content))->name) < 0)
-				stat = 1;
+			if (((t_enventry *)(envlist->content))->val)
+			{
+				if (ft_printf("declare -x %s=\"%s\"\n",
+						((t_enventry *)(envlist->content))->name,
+					((t_enventry *)(envlist->content))->val) < 0)
+					stat = 1;
+			}
+			else
+			{
+				if (ft_printf("declare -x %s\n",
+						((t_enventry *)(envlist->content))->name) < 0)
+					stat = 1;
+			}
 		}
 		envlist = envlist->next;
 	}
@@ -40,5 +43,5 @@ int	_envman_export(t_list *envlist)
 
 int	envman_export(void)
 {
-	return (_envmanager(ENVMANMODE_EXPORT, 0, 0, 0));
+	return (_envmanager(ENVMANMODE_EXPORT, 0));
 }

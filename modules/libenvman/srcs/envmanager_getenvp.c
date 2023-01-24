@@ -26,11 +26,10 @@ int	_envman_getenvp(t_list *envlist, char ***buf)
 	cursor = *buf;
 	while (envlist)
 	{
-		if (((t_enventry *)(envlist->content))->val)
+		if (((t_enventry *)(envlist->content))->val
+			&& ((t_enventry *)(envlist->content))->exp)
 		{
-			*cursor = envman_compose_envstr(
-					((t_enventry *)(envlist->content))->name,
-					((t_enventry *)(envlist->content))->val);
+			*cursor = envman_compose_envstr(envlist->content);
 			if (!(*cursor))
 			{
 				ft_free_strarr(*buf);
@@ -46,9 +45,11 @@ int	_envman_getenvp(t_list *envlist, char ***buf)
 
 int	envman_getenvp(char ***buf)
 {
-	int	stat;
+	int				stat;
+	t_envmaninfo	info;
 
-	stat = _envmanager(ENVMANMODE_GETENVP, buf, 0, 0);
+	info.buf = buf;
+	stat = _envmanager(ENVMANMODE_GETENVP, &info);
 	if (stat)
 		ft_print_error(MSG_ERROR_PREFIX, stat);
 	return (stat);
