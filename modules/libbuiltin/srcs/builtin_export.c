@@ -37,11 +37,11 @@ static int	export_var(char *word)
 	if (!ft_strchr(word, '=') && !is_valid_name(word))
 		return (_exit_export_var(CODE_ERROR_DATA, word));
 	if (!ft_strchr(word, '='))
-		return (_exit_export_var(envman_setval(word, NULL), word));
+		return (_exit_export_var(envman_setval(word, NULL, TRUE), word));
 	stat = envman_split_envstr(word, &name, &val);
 	if (stat)
 		return (_exit_export_var(stat, word));
-	stat = envman_setval(name, val);
+	stat = envman_setval(name, val, TRUE);
 	free(name);
 	free(val);
 	return (_exit_export_var(stat, word));

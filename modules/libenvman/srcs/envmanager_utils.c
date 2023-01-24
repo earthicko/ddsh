@@ -14,9 +14,9 @@
 #include "libft.h"
 #include "envmanager_internal.h"
 
-char	*envman_compose_envstr(char *name, char *val)
+char	*envman_compose_envstr(t_enventry *entry)
 {
-	return (ft_strmerge(3, name, ENVSTR_DELIM_STR, val));
+	return (ft_strmerge(3, entry->name, ENVSTR_DELIM_STR, entry->val));
 }
 
 static int	_split_envstr_abort(char **name, char **val, int stat)

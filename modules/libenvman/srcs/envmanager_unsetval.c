@@ -27,9 +27,11 @@ int	_envman_unsetval(t_list **envlist, char *name)
 
 int	envman_unsetval(char *name)
 {
-	int	stat;
+	int				stat;
+	t_envmaninfo	info;
 
-	stat = _envmanager(ENVMANMODE_UNSETVAL, 0, name, 0);
+	info.name = name;
+	stat = _envmanager(ENVMANMODE_UNSETVAL, &info);
 	if (stat && stat != CODE_ERROR_DATA)
 		ft_print_error(MSG_ERROR_PREFIX, stat);
 	return (stat);

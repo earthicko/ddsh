@@ -82,7 +82,7 @@ void	_child_exec_extern(t_execunit *units, int idx)
 		exit(EXIT_FAILURE);
 	if (status == CODE_ERROR_GENERIC)
 		exit(127);
-	if (envman_setval("_", argv[0]) || envman_getenvp(&envp_paths))
+	if (envman_setval("_", argv[0], TRUE) || envman_getenvp(&envp_paths))
 		exit(EXIT_FAILURE);
 	_if_dir_then_exit_126(argv[0]);
 	if (access(argv[0], X_OK) == 0)
