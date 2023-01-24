@@ -27,7 +27,7 @@
 #include "builtin_commands.h"
 #include "prompt_internal.h"
 
-int	prompt_init(void)
+int	prompt_clear(void)
 {
 	if (signal_set_state_interactive())
 		return (CODE_ERROR_GENERIC);
