@@ -1,3 +1,4 @@
 [submodule "modules/libft"]
 	path = modules/libft
 	url = https://github.com/earthicko/libft-ext.git
+	branch = main
