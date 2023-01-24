@@ -74,6 +74,8 @@ void	_child_exec_extern(t_execstate *state, t_execunit *units)
 	char	**envp_paths;
 
 	argv = (units[state->cur_idx]).argv;
+	if (!argv[0])
+		exit(EXIT_SUCCESS);
 	status = find_exec(&argv[0]);
 	if (status == CODE_ERROR_MALLOC)
 		exit(EXIT_FAILURE);
@@ -94,20 +96,15 @@ void	_child_exec_extern(t_execstate *state, t_execunit *units)
 
 void	_child_exec_cmd(t_execstate *state, t_execunit *units, int n_units)
 {
-	t_execunit	*unit;
+	t_execunit	*unit_ptr;
 	char		**argv;
-	int			stat;
 
+	unit_ptr = units + state->cur_idx;
+	argv = unit_ptr->argv;
 	if (signal_set_state_default() || _set_fd_stream(state, units, n_units) < 0)
 		exit(EXIT_FAILURE);
-	unit = units + state->cur_idx;
-	argv = unit->argv;
-	if (builtin_getindex(argv[0]) >= 0)
-	{
-		stat = _exec_builtin_cmd(unit, SUBSHELL);
-		if (stat != CODE_OK)
-			exit(EXIT_FAILURE);
-		exit(CODE_OK);
-	}
-	_child_exec_extern(state, units);
+	if (argv[0] && builtin_getindex(argv[0]) >= 0)
+		exit(_exec_builtin_cmd(units + state->cur_idx, SUBSHELL));
+	else
+		_child_exec_extern(state, units);
 }

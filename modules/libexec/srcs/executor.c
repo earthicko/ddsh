@@ -87,7 +87,7 @@ static int	_execute_units(t_execunit *units, int n_units)
 	int	stat;
 	int	fdbuf[2];
 
-	if (units->n_word == 0)
+	if (n_units == 1 && units->n_word == 0)
 	{
 		if (_io_manager(STDINOUT_BACKUP, fdbuf))
 			return (1);
