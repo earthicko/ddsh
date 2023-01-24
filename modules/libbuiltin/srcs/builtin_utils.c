@@ -33,7 +33,7 @@ static void	_init_get_exec(char **exec_names, t_exec_builtin *exec_ptrs)
 	exec_ptrs[6] = builtin_exit;
 }
 
-int	builtin_exec_by_name(char *name, char **argv)
+int	builtin_getindex(char *name)
 {
 	int				i;
 	char			*exec_names[N_BUILTINS];
@@ -44,10 +44,25 @@ int	builtin_exec_by_name(char *name, char **argv)
 	while (i < N_BUILTINS)
 	{
 		if (is_samestr(exec_names[i], name))
-			return (execs_ptrs[i](argv));
+			return (i);
 		i++;
 	}
+	return (-1);
+}
+
+int	builtin_exec_by_name(char *name, char **argv)
+{
+	int				i;
+	char			*exec_names[N_BUILTINS];
+	t_exec_builtin	execs_ptrs[N_BUILTINS];
+
+	_init_get_exec(exec_names, execs_ptrs);
+	i = builtin_getindex(name);
+	if (i < 0)
+	{
 	ft_dprintf(2, "%scritical: cannot find builtin `%s'\n",
 		MSG_ERROR_PREFIX, name);
 	return (CODE_ERROR_GENERIC);
+	}
+	return (execs_ptrs[i](argv));
 }

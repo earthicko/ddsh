@@ -21,7 +21,6 @@ int			pchararr_append(t_pchararr *pchararr, char *data);
 
 int			remove_quotes(char **buf);
 int			is_valid_name(char *str);
-int			is_builtin_command(char *str);
 int			find_exec(char **buf);
 ```
 
@@ -81,14 +80,6 @@ int is_valid_name(char *str);
 ```
 
 `str`이 올바른 이름(IEEE 1003 3.235)인지 여부를 검사하여 `TRUE` 또는 `FALSE`의 값을 반환한다.
-
-### is_builtin_command
-
-```c
-int is_builtin_command(char *str);
-```
-
-`str`이 minishell 과제에서 요구하는 7개의 빌트인 명령어 중 하나인지 여부를 검사하여 `TRUE` 또는 `FALSE`의 값을 반환한다.
 
 ### find_exec
 

@@ -13,6 +13,7 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include "libft.h"
+#include "builtin_commands.h"
 #include "envmanager.h"
 #include "strutils.h"
 #include "executor_internal.h"
@@ -96,7 +97,7 @@ static int	_execute_units(t_execunit *units, int n_units)
 			return (1);
 		return (CODE_OK);
 	}
-	if (n_units == 1 && is_builtin_command(units->argv[0]))
+	if (n_units == 1 && builtin_getindex(units->argv[0]) >= 0)
 		return (_exec_builtin_cmd(units, PARENTSHELL));
 	return (_fork_exec(units, n_units));
 }

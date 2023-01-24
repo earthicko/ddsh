@@ -14,6 +14,7 @@
 #include <unistd.h>
 #include <sys/stat.h>
 #include "libft.h"
+#include "builtin_commands.h"
 #include "envmanager.h"
 #include "sighandler.h"
 #include "strutils.h"
@@ -101,7 +102,7 @@ void	_child_exec_cmd(t_execstate *state, t_execunit *units, int n_units)
 		exit(EXIT_FAILURE);
 	unit = units + state->cur_idx;
 	argv = unit->argv;
-	if (is_builtin_command(argv[0]) != FALSE)
+	if (builtin_getindex(argv[0]) >= 0)
 	{
 		stat = _exec_builtin_cmd(unit, SUBSHELL);
 		if (stat != CODE_OK)

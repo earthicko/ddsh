@@ -33,8 +33,6 @@ int			remove_quotes(char **buf);
 
 int			is_valid_name(char *str);
 
-int			is_builtin_command(char *str);
-
 int			find_exec(char **buf);
 
 int			do_shell_expansion(char **buf);

@@ -21,6 +21,7 @@ int	builtin_unset(char **argv);
 int	builtin_env(char **argv);
 int	builtin_exit(char **argv);
 
+int	builtin_getindex(char *name);
 int	builtin_exec_by_name(char *name, char **argv);
 
 #endif
