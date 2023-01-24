@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include <unistd.h>
 #include "libft.h"
 #include "msgdef.h"
@@ -17,24 +18,15 @@
 
 static char	*_extract_ttyslotname(void)
 {
-	char	*cursor;
-	char	*fullname;
+	char	*slotname;
+	char	*slot_i;
 
-	fullname = ttyname(ttyslot());
-	if (!fullname)
+	slot_i = ft_itoa(ttyslot());
+	if (!slot_i)
 		return (NULL);
-	cursor = fullname;
-	while (*cursor)
-		cursor++;
-	while (cursor != fullname)
-	{
-		if (*cursor == '/')
-			break ;
-		cursor--;
-	}
-	if (*cursor == '/')
-		cursor++;
-	return (ft_strdup(cursor));
+	slotname = ft_strjoin("ttys", slot_i);
+	free(slot_i);
+	return (slotname);
 }
 
 static int	_heredoc_init(int *n_heredoc, int *i_current, char **_ttyname)
