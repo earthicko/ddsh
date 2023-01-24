@@ -46,12 +46,19 @@ void	execute_line(char *line)
 	return ;
 }
 
+static void	_prompt_init(char **envp)
+{
+	envman_init(envp);
+	heredoc_init();
+	prompt_clear();
+	execute_line("source $HOME/.dshrc");
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	char	*line;
 
-	envman_init(envp);
-	heredoc_init();
+	_prompt_init(envp);
 	if (argc > 1)
 	{
 		builtin_dot(argv);
