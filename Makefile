@@ -1,6 +1,12 @@
-NAME	= minishell
+NAME	= dsh
 
 all: $(NAME)
+
+install: $(NAME)
+	cp $(NAME) ${HOME}/$(NAME)
+
+uninstall:
+	$(RM) ${HOME}/$(NAME)
 
 include	modules.mk
 include	filelist.mk
@@ -58,4 +64,4 @@ re:
 	@make fclean
 	@make all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re install uninstall
