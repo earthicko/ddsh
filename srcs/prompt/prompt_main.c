@@ -41,8 +41,6 @@ int	main(int argc, char **argv, char **envp)
 {
 	char	*line;
 
-	(void)argc;
-	(void)argv;
 	envman_init(envp);
 	heredoc_init();
 	if (argc > 1)
