@@ -18,7 +18,7 @@ t_fdbuff	*init_fdbuff(int fd)
 {
 	t_fdbuff	*fdbuff;
 
-	fdbuff = malloc(sizeof(fdbuff));
+	fdbuff = malloc(sizeof(t_fdbuff));
 	if (!fdbuff)
 		return (NULL);
 	fdbuff->fd = fd;
