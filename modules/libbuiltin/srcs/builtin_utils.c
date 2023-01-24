@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dahkang <dahkang@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: donghyle <donghyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/22 16:40:48 by dahkang           #+#    #+#             */
-/*   Updated: 2023/01/22 16:41:46 by dahkang          ###   ########.fr       */
+/*   Created: 2023/01/22 16:40:48 by donghyle          #+#    #+#             */
+/*   Updated: 2023/01/22 16:41:46 by donghyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,9 @@ int	builtin_exec_by_name(char *name, char **argv)
 	i = builtin_getindex(name);
 	if (i < 0)
 	{
-	ft_dprintf(2, "%scritical: cannot find builtin `%s'\n",
-		MSG_ERROR_PREFIX, name);
-	return (CODE_ERROR_GENERIC);
+		ft_dprintf(2, "%scritical: cannot find builtin `%s'\n",
+			MSG_ERROR_PREFIX, name);
+		return (CODE_ERROR_GENERIC);
 	}
 	return (execs_ptrs[i](argv));
 }
