@@ -12,7 +12,7 @@
 
 #ifndef BUILTIN_INTERNAL_H
 # define BUILTIN_INTERNAL_H
-# define N_BUILTINS 9
+# define N_BUILTINS 8
 
 typedef int	(*t_exec_builtin)(char **argv);
 

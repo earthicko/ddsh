@@ -5,7 +5,6 @@ FILE_LIBBUILTIN	= \
 					builtin_export \
 					builtin_pwd \
 					builtin_unset \
-					builtin_env \
 					builtin_exit \
 					builtin_dot
 
