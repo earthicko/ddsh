@@ -65,26 +65,26 @@ static int	_set_redir_arr(t_node *node, t_execunit *unit, int idx)
 
 static int	_build_unit(t_execunit *unit, t_node *simple_cmd)
 {
-	int		i;
-	int		j;
+	int		idx_word;
+	int		idx_redir;
 	t_node	*node;
 	t_list	*curr;
 
 	if (_init_unit(unit, simple_cmd) == CODE_ERROR_MALLOC)
 		return (CODE_ERROR_MALLOC);
-	i = 0;
-	j = 0;
+	idx_word = 0;
+	idx_redir = 0;
 	curr = simple_cmd->childs;
 	while (curr)
 	{
 		node = _get_child_node(curr->content, 1);
 		if (node->type == NODETYPE_CMD_WORD)
 		{
-			if (_set_argv(node, unit, i++) == CODE_ERROR_MALLOC)
+			if (_set_argv(node, unit, idx_word++) == CODE_ERROR_MALLOC)
 				return (_free_single_unit(unit));
 		}
 		else
-			if (_set_redir_arr(node, unit, j++) == CODE_ERROR_MALLOC)
+			if (_set_redir_arr(node, unit, idx_redir++) == CODE_ERROR_MALLOC)
 				return (_free_single_unit(unit));
 		curr = curr->next;
 	}
