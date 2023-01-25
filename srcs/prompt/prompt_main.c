@@ -51,7 +51,7 @@ static void	_prompt_init(char **envp)
 	envman_init(envp);
 	heredoc_init();
 	prompt_clear();
-	execute_line("source $HOME/.dshrc");
+	execute_line("source $HOME/.ddshrc");
 }
 
 int	main(int argc, char **argv, char **envp)

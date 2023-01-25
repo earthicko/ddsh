@@ -1,4 +1,4 @@
-NAME	= dsh
+NAME	= ddsh
 
 all: $(NAME)
 

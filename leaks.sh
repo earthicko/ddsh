@@ -1,7 +1,7 @@
 #!/bin/bash
 while :
 do
-	leaks dsh
+	leaks ddsh
 	sleep 1
 done
 
