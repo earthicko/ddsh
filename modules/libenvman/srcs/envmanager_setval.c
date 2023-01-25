@@ -20,6 +20,8 @@ int	_envman_setval(t_list **envlist, char *name, char *val, int exp)
 	t_enventry	*entry;
 	char		*temp;
 
+	if (_envman_isspecialval(name))
+		return (CODE_ERROR_DATA);
 	entry = _enventry_getentry(*envlist, name);
 	if (entry)
 	{

@@ -30,6 +30,13 @@ int	_envman_getval(t_list *envlist, char **buf, char *name)
 	t_enventry	*entry;
 	char		*backup;
 
+	if (_envman_isspecialval(name))
+	{
+		if (_envman_get_specialval(name, &backup))
+			return (CODE_ERROR_GENERIC);
+		*buf = backup;
+		return (CODE_OK);
+	}
 	if (ft_strncmp(name, "?", 2) == 0)
 		return (_envman_getexitstat(buf));
 	entry = _enventry_getentry(envlist, name);
