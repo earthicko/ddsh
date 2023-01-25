@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PROMPT_BANNER_H
-# define PROMPT_BANNER_H
+#ifndef PROMPT_STRING_H
+# define PROMPT_STRING_H
 # define ANSI_RESET "\033[0m"
 # define ANSI_RED "\033[31m"
 # define ANSI_GREEN "\033[32m"
