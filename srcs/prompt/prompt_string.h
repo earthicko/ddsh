@@ -74,5 +74,5 @@
 # define _B_10_3 "     \\__\033[34m\\/     \033[0m"
 # define _B_CREDIT_0 "... \033[91md\033[0monghyle & "
 # define _B_CREDIT_1 "\033[95md\033[0mahkang \033[92ms\033[94mh\033[0mell"
-# define _B_VER "0.0.2"
+# define _B_VER "0.0.3"
 #endif
