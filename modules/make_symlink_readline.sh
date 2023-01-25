@@ -9,7 +9,7 @@ echo "Creating symlink to readline library"
 if [ -d $(pwd)/modules/readline ]
 then
     echo "readline library already linked"
-    exit 0
+    rm -rf $(pwd)/modules/readline
 fi
 
 for DIR in $candidates

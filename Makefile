@@ -4,9 +4,11 @@ all: $(NAME)
 
 install: $(NAME)
 	cp $(NAME) ${HOME}/$(NAME)
+	cp ddshrc_example ${HOME}/.ddshrc
 
 uninstall:
 	$(RM) ${HOME}/$(NAME)
+	$(RM) ${HOME}/.ddshrc
 
 include	modules.mk
 include	filelist.mk
