@@ -14,6 +14,7 @@
 #include "libft.h"
 #include "strutils.h"
 #include "msgdef.h"
+#include "t_enventry.h"
 #include "envmanager.h"
 
 static int	_exit_declare_var(int stat, char *word)
@@ -28,6 +29,19 @@ static int	_exit_declare_var(int stat, char *word)
 	return (0);
 }
 
+static int	_declare_setval(char *name, char *val)
+{
+	int			stat;
+	t_enventry	entry;
+
+	stat = envman_getentry(&entry, name);
+	if (stat != CODE_OK && stat != CODE_ERROR_DATA)
+		return (stat);
+	if (stat == CODE_ERROR_DATA)
+		return (envman_setval(name, val, FALSE));
+	return (envman_setval(name, val, entry.exp));
+}
+
 static int	declare_var(char *word)
 {
 	char	*name;
@@ -37,11 +51,11 @@ static int	declare_var(char *word)
 	if (!ft_strchr(word, '=') && !is_valid_name(word))
 		return (_exit_declare_var(CODE_ERROR_DATA, word));
 	if (!ft_strchr(word, '='))
-		return (_exit_declare_var(envman_setval(word, NULL, FALSE), word));
+		return (_exit_declare_var(_declare_setval(word, NULL), word));
 	stat = envman_split_envstr(word, &name, &val);
 	if (stat)
 		return (_exit_declare_var(stat, word));
-	stat = envman_setval(name, val, FALSE);
+	stat = _declare_setval(name, val);
 	free(name);
 	free(val);
 	return (_exit_declare_var(stat, word));

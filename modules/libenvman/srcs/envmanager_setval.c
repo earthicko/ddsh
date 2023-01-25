@@ -21,13 +21,16 @@ int	_envman_setval(t_list **envlist, char *name, char *val, int exp)
 	char		*temp;
 
 	entry = _enventry_getentry(*envlist, name);
-	if (entry && val)
+	if (entry)
 	{
-		temp = ft_strdup(val);
-		if (!temp)
-			return (CODE_ERROR_MALLOC);
-		free(entry->val);
-		entry->val = temp;
+		if (val)
+		{
+			temp = ft_strdup(val);
+			if (!temp)
+				return (CODE_ERROR_MALLOC);
+			free(entry->val);
+			entry->val = temp;
+		}
 		entry->exp = exp;
 	}
 	else if (!entry)
