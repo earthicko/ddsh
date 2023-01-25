@@ -8,7 +8,7 @@ FILE_LIBENVMAN	= \
 				envmanager_clear \
 				envmanager_getval \
 				envmanager_unsetval \
-				envmanager_export \
+				envmanager_printlist \
 				envmanager_addentry \
 				envmanager
 

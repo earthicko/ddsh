@@ -53,7 +53,7 @@ int	builtin_declare(char **argv)
 
 	argv++;
 	if (!*argv)
-		return (envman_declare());
+		return (envman_printlist_declare());
 	stat = 0;
 	while (*argv)
 	{

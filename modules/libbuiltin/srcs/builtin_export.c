@@ -53,7 +53,7 @@ int	builtin_export(char **argv)
 
 	argv++;
 	if (!*argv)
-		return (envman_export());
+		return (envman_printlist_export());
 	stat = 0;
 	while (*argv)
 	{

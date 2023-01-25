@@ -13,7 +13,7 @@
 #include "libft.h"
 #include "envmanager_internal.h"
 
-int	_envman_export(t_list *envlist)
+int	_envman_printlist_export(t_list *envlist)
 {
 	int	stat;
 
@@ -41,12 +41,12 @@ int	_envman_export(t_list *envlist)
 	return (stat);
 }
 
-int	envman_export(void)
+int	envman_printlist_export(void)
 {
-	return (_envmanager(ENVMANMODE_EXPORT, 0));
+	return (_envmanager(ENVMANMODE_PRINTLIST_EXPORT, 0));
 }
 
-int	_envman_declare(t_list *envlist)
+int	_envman_printlist_declare(t_list *envlist)
 {
 	int	stat;
 
@@ -62,7 +62,7 @@ int	_envman_declare(t_list *envlist)
 	return (stat);
 }
 
-int	envman_declare(void)
+int	envman_printlist_declare(void)
 {
-	return (_envmanager(ENVMANMODE_DECLARE, 0));
+	return (_envmanager(ENVMANMODE_PRINTLIST_DECLARE, 0));
 }
