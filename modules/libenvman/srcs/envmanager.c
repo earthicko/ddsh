@@ -32,5 +32,7 @@ int	_envmanager(int mode, t_envmaninfo *info)
 		return (_envman_getenvp(envlist, info->buf));
 	else if (mode == ENVMANMODE_EXPORT)
 		return (_envman_export(envlist));
+	else if (mode == ENVMANMODE_DECLARE)
+		return (_envman_declare(envlist));
 	return (CODE_ERROR_DATA);
 }

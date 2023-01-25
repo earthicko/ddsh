@@ -20,6 +20,7 @@ int		envman_setval(char *name, char *val, int exp);
 int		envman_unsetval(char *name);
 int		envman_getenvp(char ***buf);
 int		envman_export(void);
+int		envman_declare(void);
 
 int		envman_split_envstr(char *str, char **ret_name, char **ret_val);
 int		exit_stat_manager(int new_stat);

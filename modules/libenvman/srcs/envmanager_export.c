@@ -45,3 +45,24 @@ int	envman_export(void)
 {
 	return (_envmanager(ENVMANMODE_EXPORT, 0));
 }
+
+int	_envman_declare(t_list *envlist)
+{
+	int	stat;
+
+	stat = 0;
+	while (envlist)
+	{
+		if (ft_printf("%s=%s\n",
+				((t_enventry *)(envlist->content))->name,
+			((t_enventry *)(envlist->content))->val) < 0)
+			stat = 1;
+		envlist = envlist->next;
+	}
+	return (stat);
+}
+
+int	envman_declare(void)
+{
+	return (_envmanager(ENVMANMODE_DECLARE, 0));
+}

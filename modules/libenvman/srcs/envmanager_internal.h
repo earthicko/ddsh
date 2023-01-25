@@ -26,7 +26,8 @@ enum e_envmanmode
 	ENVMANMODE_SETVAL,
 	ENVMANMODE_UNSETVAL,
 	ENVMANMODE_GETENVP,
-	ENVMANMODE_EXPORT
+	ENVMANMODE_EXPORT,
+	ENVMANMODE_DECLARE
 };
 
 typedef struct s_envmaninfo
@@ -65,5 +66,6 @@ int			_envman_setval(t_list **envlist, char *name, char *val, int exp);
 int			_envman_unsetval(t_list **envlist, char *name);
 int			_envman_getenvp(t_list *envlist, char ***buf);
 int			_envman_export(t_list *envlist);
+int			_envman_declare(t_list *envlist);
 
 #endif
