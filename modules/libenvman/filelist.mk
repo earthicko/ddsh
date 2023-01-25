@@ -6,6 +6,7 @@ FILE_LIBENVMAN	= \
 				envmanager_setval \
 				envmanager_utils \
 				envmanager_clear \
+				envmanager_getentry \
 				envmanager_getval \
 				envmanager_unsetval \
 				envmanager_printlist \

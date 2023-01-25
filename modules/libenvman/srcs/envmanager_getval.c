@@ -32,7 +32,7 @@ int	_envman_getval(t_list *envlist, char **buf, char *name)
 
 	if (ft_strncmp(name, "?", 2) == 0)
 		return (_envman_getexitstat(buf));
-	entry = _envman_getentry(envlist, name);
+	entry = _enventry_getentry(envlist, name);
 	if (!entry)
 		return (CODE_ERROR_DATA);
 	if (entry->val)

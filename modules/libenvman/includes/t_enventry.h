@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   envmanager.h                                       :+:      :+:    :+:   */
+/*   t_enventry.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: donghyle <donghyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,21 +10,14 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ENVMANAGER_H
-# define ENVMANAGER_H
-# include "t_enventry.h"
+#ifndef T_ENVENTRY_H
+# define T_ENVENTRY_H
 
-int		envman_init(char **envp);
-int		envman_clear(void);
-int		envman_getentry(t_enventry *buf, char *name);
-int		envman_getval(char *name, char **buf);
-int		envman_setval(char *name, char *val, int exp);
-int		envman_unsetval(char *name);
-int		envman_getenvp(char ***buf);
-int		envman_printlist_export(void);
-int		envman_printlist_declare(void);
-
-int		envman_split_envstr(char *str, char **ret_name, char **ret_val);
-int		exit_stat_manager(int new_stat);
+typedef struct s_enventry
+{
+	char	*name;
+	char	*val;
+	int		exp;
+}	t_enventry;
 
 #endif

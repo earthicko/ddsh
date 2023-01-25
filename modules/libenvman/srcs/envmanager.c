@@ -22,6 +22,8 @@ int	_envmanager(int mode, t_envmaninfo *info)
 		return (_envman_init(&envlist, info->buf));
 	else if (mode == ENVMANMODE_CLEAR)
 		return (_envman_clear(&envlist));
+	else if (mode == ENVMANMODE_GETENTRY)
+		return (_envman_getentry(envlist, info->buf, info->name));
 	else if (mode == ENVMANMODE_GETVAL)
 		return (_envman_getval(envlist, info->buf, info->name));
 	else if (mode == ENVMANMODE_SETVAL)

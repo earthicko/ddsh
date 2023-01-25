@@ -22,6 +22,7 @@ enum e_envmanmode
 {
 	ENVMANMODE_INIT = 0,
 	ENVMANMODE_CLEAR,
+	ENVMANMODE_GETENTRY,
 	ENVMANMODE_GETVAL,
 	ENVMANMODE_SETVAL,
 	ENVMANMODE_UNSETVAL,
@@ -38,13 +39,6 @@ typedef struct s_envmaninfo
 	int		exp;
 }	t_envmaninfo;
 
-typedef struct s_enventry
-{
-	char	*name;
-	char	*val;
-	int		exp;
-}	t_enventry;
-
 t_enventry	*_enventry_create(char *name, char *val, int exp);
 void		_free_entry(void *content);
 t_enventry	*_enventry_destroy(t_enventry *enventry);
@@ -53,7 +47,7 @@ int			_envman_addentry_str(
 				t_list **p_list, char *str, int exp);
 int			_envman_addentry_nameval(
 				t_list **p_list, char *name, char *val, int exp);
-t_enventry	*_envman_getentry(t_list *envlist, char *name);
+t_enventry	*_enventry_getentry(t_list *envlist, char *name);
 
 char		*envman_compose_envstr(t_enventry *entry);
 
@@ -61,6 +55,7 @@ int			_envmanager(int mode, t_envmaninfo *info);
 
 int			_envman_init(t_list **p_list, char **envp);
 int			_envman_clear(t_list **p_list);
+int			_envman_getentry(t_list *envlist, t_enventry *buf, char *name);
 int			_envman_getval(t_list *envlist, char **buf, char *name);
 int			_envman_setval(t_list **envlist, char *name, char *val, int exp);
 int			_envman_unsetval(t_list **envlist, char *name);

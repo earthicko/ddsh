@@ -69,7 +69,7 @@ t_list	*_find_list_with_entry(t_list *envlist, char *name)
 	return (NULL);
 }
 
-t_enventry	*_envman_getentry(t_list *envlist, char *name)
+t_enventry	*_enventry_getentry(t_list *envlist, char *name)
 {
 	t_list	*list;
 
