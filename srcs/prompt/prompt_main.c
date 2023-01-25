@@ -64,6 +64,7 @@ int	main(int argc, char **argv, char **envp)
 		builtin_dot(argv);
 		return (exit_stat_manager(-1));
 	}
+	prompt_print_banner();
 	while (TRUE)
 	{
 		if (prompt_clear() || prompt_getstr(&line))
