@@ -1,14 +1,19 @@
 NAME	= ddsh
+RC_NAME	= .ddshrc
 
 all: $(NAME)
 
-install: $(NAME)
+${HOME}/$(NAME): $(NAME)
 	cp $(NAME) ${HOME}/$(NAME)
-	cp ddshrc_example ${HOME}/.ddshrc
+
+${HOME}/$(RC_NAME): ddshrc_example
+	cp ddshrc_example ${HOME}/$(RC_NAME)
+
+install: ${HOME}/$(NAME) ${HOME}/$(RC_NAME)
 
 uninstall:
 	$(RM) ${HOME}/$(NAME)
-	$(RM) ${HOME}/.ddshrc
+	$(RM) ${HOME}/$(RC_NAME)
 
 include	modules.mk
 include	filelist.mk
