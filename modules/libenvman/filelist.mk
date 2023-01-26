@@ -12,7 +12,12 @@ FILE_LIBENVMAN	= \
 				envmanager_printlist \
 				envmanager_addentry \
 				envmanager_specialval \
-				envmanager_specialval_getter0 \
+				envmanager_specialval0 \
+				envmanager_escape \
+				envmanager_escape0 \
+				envmanager_escape1 \
+				envmanager_escape2 \
+				envmanager_escape3 \
 				envmanager
 
 SRC_LIBENVMAN	= $(addprefix srcs/, $(addsuffix .c, $(FILE_LIBENVMAN)))

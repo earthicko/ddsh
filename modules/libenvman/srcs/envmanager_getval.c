@@ -32,6 +32,8 @@ int	_envman_getval(t_list *envlist, char **buf, char *name)
 
 	if (_envman_isspecialval(name))
 		return (_envman_get_specialval(name, buf));
+	if (_envman_isescapechar(name))
+		return (_envman_getescape(name, buf));
 	if (ft_strncmp(name, "?", 2) == 0)
 		return (_envman_getexitstat(buf));
 	entry = _enventry_getentry(envlist, name);

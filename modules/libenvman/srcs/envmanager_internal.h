@@ -18,6 +18,7 @@
 # define ENVSTR_DELIM_CHAR '='
 # define ENVSTR_DELIM_STR "="
 # define ENVMAN_N_SPECIALVAL 3
+# define ENVMAN_N_ESCAPE 17
 # define BUFFER_SIZE 64
 
 enum e_envmanmode
@@ -66,10 +67,30 @@ int			_envman_printlist_export(t_list *envlist);
 int			_envman_printlist_declare(t_list *envlist);
 
 int			_envman_isspecialval(char *name);
+int			_envman_isescapechar(char *name);
 int			_envman_get_specialval(char *name, char **buf);
+int			_envman_getescape(char *name, char **buf);
 
 char		*_envman_get_time(void);
 char		*_envman_get_pwd(void);
 char		*_envman_get_hostname(void);
+
+char		*_envman_escape_reset(void);
+char		*_envman_escape_red(void);
+char		*_envman_escape_green(void);
+char		*_envman_escape_yellow(void);
+char		*_envman_escape_blue(void);
+char		*_envman_escape_magenta(void);
+char		*_envman_escape_cyan(void);
+char		*_envman_escape_white(void);
+char		*_envman_escape_bblack(void);
+char		*_envman_escape_bred(void);
+char		*_envman_escape_bgreen(void);
+char		*_envman_escape_byellow(void);
+char		*_envman_escape_bblue(void);
+char		*_envman_escape_bmagenta(void);
+char		*_envman_escape_bcyan(void);
+char		*_envman_escape_bwhite(void);
+char		*_envman_escape_newline(void);
 
 #endif
