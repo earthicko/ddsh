@@ -58,5 +58,5 @@ char	*_envman_get_hostname(void)
 		perror(MSG_ERROR_PREFIX);
 		return (NULL);
 	}
-	return (ft_substr(buf, 0, ft_strlen(buf) - 6));
+	return (ft_substr(buf, 0, ft_strchr(buf, '.') - buf));
 }
