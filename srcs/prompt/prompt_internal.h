@@ -22,6 +22,6 @@ int		prompt_gettokens(char *str, t_toks *toks);
 int		prompt_getparsetree(t_toks *toks, t_node **buf);
 int		prompt_execute(t_node *parse_tree);
 void	prompt_print_banner(void);
-void	prompt_print_prompt(void);
+char	*prompt_get_prompt_prefix(void);
 
 #endif

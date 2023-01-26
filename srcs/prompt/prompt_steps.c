@@ -38,9 +38,11 @@ int	prompt_clear(void)
 int	prompt_getstr(char **buf)
 {
 	char	*str;
+	char	*prefix;
 
-	prompt_print_prompt();
-	str = readline(NULL);
+	prefix = prompt_get_prompt_prefix();
+	str = readline(prefix);
+	free(prefix);
 	if (!str)
 		builtin_exit(NULL);
 	if (signal_set_state_executing())

@@ -33,23 +33,19 @@ void	prompt_print_banner(void)
 		_B_CREDIT_0, _B_CREDIT_1, _B_VER);
 }
 
-void	prompt_print_prompt(void)
+char	*prompt_get_prompt_prefix(void)
 {
 	char	*buf;
 	int		stat;
 
 	if (envman_getval("DDSH_THEME", &buf))
-	{
-		ft_printf(MSG_SHELL_PROMPT);
-		return ;
-	}
+		return (ft_strdup(MSG_SHELL_PROMPT));
 	stat = do_shell_expansion(&buf);
 	if (stat)
 	{
 		ft_print_error(MSG_ERROR_PREFIX, stat);
 		free(buf);
-		return ;
+		return (ft_strdup(MSG_SHELL_PROMPT));
 	}
-	ft_printf(buf);
-	free(buf);
+	return (buf);
 }
