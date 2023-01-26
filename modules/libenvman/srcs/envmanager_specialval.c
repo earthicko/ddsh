@@ -58,18 +58,12 @@ int	_envman_get_specialval(char *name, char **buf)
 	char			*temp;
 
 	_init_envman_set_specialval_idx(names, getters);
-	i = 0;
-	while (i < ENVMAN_N_SPECIALVAL)
-	{
-		if (is_samestr(names[i], name))
-		{
-			temp = getters[i]();
-			if (!temp)
-				return (CODE_ERROR_GENERIC);
-			*buf = temp;
-			return (CODE_OK);
-		}
-		i++;
-	}
-	return (CODE_ERROR_SCOPE);
+	i = _envman_get_specialval_idx(name);
+	if (i >= ENVMAN_N_SPECIALVAL || i < 0)
+		return (CODE_ERROR_SCOPE);
+	temp = getters[i]();
+	if (!temp)
+		return (CODE_ERROR_GENERIC);
+	*buf = temp;
+	return (CODE_OK);
 }
