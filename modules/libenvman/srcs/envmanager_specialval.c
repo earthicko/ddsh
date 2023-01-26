@@ -18,12 +18,12 @@ typedef char	*(*t_envman_getter)(void);
 static void	_init_envman_set_specialval_idx(
 			char **names, t_envman_getter *getters)
 {
-	names[0] = "DDSH_USER";
-	getters[0] = _envman_get_user;
-	names[1] = "DDSH_TIME";
-	getters[1] = _envman_get_time;
-	names[2] = "DDSH_PWD";
-	getters[2] = _envman_get_pwd;
+	names[0] = "DDSH_TIME";
+	getters[0] = _envman_get_time;
+	names[1] = "DDSH_PWD";
+	getters[1] = _envman_get_pwd;
+	names[2] = "DDSH_HOSTNAME";
+	getters[2] = _envman_get_hostname;
 }
 
 static int	_envman_get_specialval_idx(char *name)

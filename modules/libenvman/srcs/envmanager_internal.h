@@ -18,6 +18,7 @@
 # define ENVSTR_DELIM_CHAR '='
 # define ENVSTR_DELIM_STR "="
 # define ENVMAN_N_SPECIALVAL 3
+# define BUFFER_SIZE 64
 
 enum e_envmanmode
 {
@@ -67,8 +68,8 @@ int			_envman_printlist_declare(t_list *envlist);
 int			_envman_isspecialval(char *name);
 int			_envman_get_specialval(char *name, char **buf);
 
-char		*_envman_get_user(void);
 char		*_envman_get_time(void);
 char		*_envman_get_pwd(void);
+char		*_envman_get_hostname(void);
 
 #endif
