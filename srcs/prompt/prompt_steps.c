@@ -39,7 +39,8 @@ int	prompt_getstr(char **buf)
 {
 	char	*str;
 
-	str = readline(MSG_SHELL_PROMPT);
+	prompt_print_prompt();
+	str = readline(NULL);
 	if (!str)
 		builtin_exit(NULL);
 	if (signal_set_state_executing())

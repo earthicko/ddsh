@@ -10,7 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "libft.h"
+#include "envmanager.h"
+#include "strutils.h"
+#include "msgdef.h"
 #include "prompt_string.h"
 
 void	prompt_print_banner(void)
@@ -27,4 +31,25 @@ void	prompt_print_banner(void)
 	ft_printf("%s%s%s%s\n", _B_09_0, _B_09_1, _B_09_2, _B_09_3);
 	ft_printf("%s%s%s%s%s%s %s\n\n", _B_10_0, _B_10_1, _B_10_2, _B_10_3,
 		_B_CREDIT_0, _B_CREDIT_1, _B_VER);
+}
+
+void	prompt_print_prompt(void)
+{
+	char	*buf;
+	int		stat;
+
+	if (envman_getval("DDSH_THEME", &buf))
+	{
+		ft_printf(MSG_SHELL_PROMPT);
+		return ;
+	}
+	stat = do_shell_expansion(&buf);
+	if (stat)
+	{
+		ft_print_error(MSG_ERROR_PREFIX, stat);
+		free(buf);
+		return ;
+	}
+	ft_printf(buf);
+	free(buf);
 }
