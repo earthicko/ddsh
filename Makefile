@@ -3,13 +3,14 @@ RC_NAME	= .ddshrc
 
 all: $(NAME)
 
-${HOME}/$(NAME): $(NAME)
-	cp $(NAME) ${HOME}/$(NAME)
+${HOME}/bin/$(NAME): $(NAME)
+	mkdir -p ${HOME}/bin
+	cp $(NAME) ${HOME}/bin/$(NAME)
 
 ${HOME}/$(RC_NAME): ddshrc_example
 	cp ddshrc_example ${HOME}/$(RC_NAME)
 
-install: ${HOME}/$(NAME) ${HOME}/$(RC_NAME)
+install: ${HOME}/bin/$(NAME) ${HOME}/$(RC_NAME)
 
 uninstall:
 	$(RM) ${HOME}/$(NAME)
