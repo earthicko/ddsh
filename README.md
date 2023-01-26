@@ -21,8 +21,8 @@ Bash와 유사하지만 대부분의 기능이 생략됨
 
 # 참고 문서
 
-[Bash 사용지침서](docs/Bash%20Reference%20Manual.md)
-[디렉토리 구조](docs/Directory%20Structure.md)
-[허용 외부 함수](docs/External%20Functions.md)
-[버젼 로드맵](docs/Roadmap.md)
-[특수 변수](docs/Special%20Variables.md)
+- [Bash 사용지침서](docs/Bash%20Reference%20Manual.md)
+- [디렉토리 구조](docs/Directory%20Structure.md)
+- [허용 외부 함수](docs/External%20Functions.md)
+- [버젼 로드맵](docs/Roadmap.md)
+- [특수 변수](docs/Special%20Variables.md)
