@@ -13,7 +13,7 @@
 #ifndef EXECUTOR_INTERNAL_H
 # define EXECUTOR_INTERNAL_H
 # include "t_node.h"
-# include "t_execunit.h"
+# include "./t_execunit/t_execunit.h"
 
 # define WRITE 1
 # define READ 0
@@ -24,27 +24,21 @@
 
 typedef struct s_pipeset
 {
-	int	new_pipe[2];
-	int	old_pipe[2];
+	int	next[2];
+	int	prev[2];
 }	t_pipeset;
 
-int		_get_n_unit(t_node *root);
-int		_get_n_redir(t_node *node);
-t_node	*_get_child_node(t_node *cmd_elem, int depth);
-
-int		_process_redir(t_redir *redir_arr, int n_redir);
-int		_do_redir_in(t_redir *redir_arr);
-int		_do_redir_out(t_redir *redir_arr);
-int		_do_redir_in_here(t_redir *redir_arr);
-int		_do_redir_out_append(t_redir *redir_arr);
-
+t_node	*_get_nth_child(t_node *root, int n);
 int		_io_manager(int mode, int *fdbuf);
 
-void	_child_exec_cmd(
-			t_pipeset *pipeset, t_execunit *units, int n_units, int idx);
-int		_build_exec_unit(
-			t_node *root, t_execunit **units, int *n_units);
-int		_exec_builtin_cmd(
-			t_execunit *unit, int mode);
+int		_exec_pipeseq(
+			t_exec_pipeseq *exec);
+int		_exec_pipeseq_fork(
+			t_exec_pipeseq *units);
+void	_exec_simplecom_forked(
+			t_pipeset *pipeset, t_exec_simplecom *exec, int n_coms, int idx);
+int		_exec_simplecom_builtin(
+			t_exec_simplecom *unit, int mode);
+int		_exec_redirs(t_list *redirs);
 
 #endif

@@ -18,32 +18,7 @@
 #include "msgdef.h"
 #include "executor_internal.h"
 
-int	_process_redir(t_redir *redir_arr, int n_redir)
-{
-	int	i;
-	int	stat;
-
-	i = 0;
-	while (i < n_redir)
-	{
-		if (redir_arr[i].type == REDIR_IN)
-			stat = _do_redir_in(redir_arr + i);
-		else if (redir_arr[i].type == REDIR_OUT)
-			stat = _do_redir_out(redir_arr + i);
-		else if (redir_arr[i].type == REDIR_IN_HERE)
-			stat = _do_redir_in_here(redir_arr + i);
-		else if (redir_arr[i].type == REDIR_OUT_APPEND)
-			stat = _do_redir_out_append(redir_arr + i);
-		else
-			stat = CODE_ERROR_SCOPE;
-		if (stat)
-			return (stat);
-		i++;
-	}
-	return (CODE_OK);
-}
-
-int	_do_redir_in(t_redir *redir_arr)
+int	exec_redir_in(t_exec_redir *redir_arr)
 {
 	int	fd;
 
@@ -65,7 +40,7 @@ int	_do_redir_in(t_redir *redir_arr)
 	return (CODE_OK);
 }
 
-int	_do_redir_out(t_redir *redir_arr)
+int	exec_redir_out(t_exec_redir *redir_arr)
 {
 	int	fd;
 
@@ -75,7 +50,7 @@ int	_do_redir_out(t_redir *redir_arr)
 	return (CODE_OK);
 }
 
-int	_do_redir_in_here(t_redir *redir_arr)
+int	exec_redir_in_here(t_exec_redir *redir_arr)
 {
 	int		fd;
 	char	*heredoc_file;
@@ -90,12 +65,37 @@ int	_do_redir_in_here(t_redir *redir_arr)
 	return (CODE_OK);
 }
 
-int	_do_redir_out_append(t_redir *redir_arr)
+int	exec_redir_out_append(t_exec_redir *redir_arr)
 {
 	int	fd;
 
 	fd = open(redir_arr->content, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (fd < 0 || dup2(fd, STDOUT_FILENO) < 0 || close(fd) < 0)
 		return (CODE_ERROR_IO);
+	return (CODE_OK);
+}
+
+int	_exec_redirs(t_list *redirs)
+{
+	int	stat;
+	int	type;
+
+	while (redirs)
+	{
+		type = ((t_exec_redir *)redirs->content)->type;
+		if (type == REDIR_IN)
+			stat = exec_redir_in(redirs->content);
+		else if (type == REDIR_OUT)
+			stat = exec_redir_out(redirs->content);
+		else if (type == REDIR_IN_HERE)
+			stat = exec_redir_in_here(redirs->content);
+		else if (type == REDIR_OUT_APPEND)
+			stat = exec_redir_out_append(redirs->content);
+		else
+			stat = CODE_ERROR_SCOPE;
+		if (stat)
+			return (stat);
+		redirs = redirs->next;
+	}
 	return (CODE_OK);
 }

@@ -14,17 +14,27 @@
 #include "builtin_commands.h"
 #include "executor_internal.h"
 
-int	_exec_builtin_cmd(t_execunit *unit, int mode)
+int	_exec_simplecom_builtin(t_exec_simplecom *exec, int mode)
 {
-	int	stat;
-	int	fdbuf[2];
+	int		stat;
+	int		fdbuf[2];
+	char	**argv;
 
+	if (exec_simplecom_getargv(exec, &argv))
+		return (1);
 	if (mode == PARENTSHELL && _io_manager(STDINOUT_BACKUP, fdbuf))
+	{
+		ft_free_strarr(argv);
 		return (1);
-	stat = _process_redir(unit->redir_arr, unit->n_redir);
+	}
+	stat = _exec_redirs(exec->redirs);
 	if (stat == CODE_ERROR_IO)
+	{
+		ft_free_strarr(argv);
 		return (1);
-	stat = builtin_exec_by_name(unit->argv[0], unit->argv);
+	}
+	stat = builtin_exec_by_name(argv[0], argv);
+	ft_free_strarr(argv);
 	if (mode == PARENTSHELL && _io_manager(STDINOUT_RESTORE, fdbuf))
 		return (1);
 	return (stat);

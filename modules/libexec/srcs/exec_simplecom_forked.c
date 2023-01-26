@@ -21,37 +21,35 @@
 #include "msgdef.h"
 #include "executor_internal.h"
 
-static int	_set_fd_stream(
-		t_pipeset *pipeset, t_execunit *units, int n_units, int idx)
+static int	_set_fd(
+		t_pipeset *pipeset, t_exec_simplecom *exec, int n_units, int idx)
 {
-	const t_execunit	cur_unit = units[idx];
-
 	if (n_units == 1)
-		return (_process_redir(cur_unit.redir_arr, cur_unit.n_redir));
+		return (_exec_redirs(exec->redirs));
 	if (idx == 0)
 	{
-		if (close(pipeset->new_pipe[READ]) < 0
-			|| dup2(pipeset->new_pipe[WRITE], STDOUT_FILENO) < 0
-			|| close(pipeset->new_pipe[WRITE]) < 0)
+		if (close(pipeset->next[READ]) < 0
+			|| dup2(pipeset->next[WRITE], STDOUT_FILENO) < 0
+			|| close(pipeset->next[WRITE]) < 0)
 			return (CODE_ERROR_IO);
 	}
 	else if (idx == n_units - 1)
 	{
-		if (dup2(pipeset->old_pipe[READ], STDIN_FILENO) < 0
-			|| close(pipeset->old_pipe[READ]) < 0)
+		if (dup2(pipeset->prev[READ], STDIN_FILENO) < 0
+			|| close(pipeset->prev[READ]) < 0)
 			return (CODE_ERROR_IO);
 	}
 	else
-		if (close(pipeset->new_pipe[READ]) < 0
-			|| dup2(pipeset->old_pipe[READ], STDIN_FILENO) < 0
-			|| close(pipeset->old_pipe[READ]) < 0
-			|| dup2(pipeset->new_pipe[WRITE], STDOUT_FILENO) < 0
-			|| close(pipeset->new_pipe[WRITE]) < 0)
+		if (close(pipeset->next[READ]) < 0
+			|| dup2(pipeset->prev[READ], STDIN_FILENO) < 0
+			|| close(pipeset->prev[READ]) < 0
+			|| dup2(pipeset->next[WRITE], STDOUT_FILENO) < 0
+			|| close(pipeset->next[WRITE]) < 0)
 			return (CODE_ERROR_IO);
-	return (_process_redir(cur_unit.redir_arr, cur_unit.n_redir));
+	return (_exec_redirs(exec->redirs));
 }
 
-void	_if_dir_then_exit_126(char *cmd_name)
+void	_if_dir_exit(char *cmd_name)
 {
 	struct stat	s_statbuf;
 
@@ -68,23 +66,21 @@ void	_if_dir_then_exit_126(char *cmd_name)
 	}
 }
 
-void	_child_exec_extern(t_execunit *units, int idx)
+void	_exec_extern(char	**argv)
 {
-	char	**argv;
-	int		status;
+	int		_stat;
 	char	**envp_paths;
 
-	argv = (units[idx]).argv;
 	if (!argv[0])
 		exit(EXIT_SUCCESS);
-	status = find_exec(&argv[0]);
-	if (status == CODE_ERROR_MALLOC)
+	_stat = find_exec(&argv[0]);
+	if (_stat == CODE_ERROR_MALLOC)
 		exit(EXIT_FAILURE);
-	if (status == CODE_ERROR_GENERIC)
+	if (_stat == CODE_ERROR_GENERIC)
 		exit(127);
 	if (envman_setval("_", argv[0], TRUE) || envman_getenvp(&envp_paths))
 		exit(EXIT_FAILURE);
-	_if_dir_then_exit_126(argv[0]);
+	_if_dir_exit(argv[0]);
 	if (access(argv[0], X_OK) == 0)
 		execve(argv[0], argv, envp_paths);
 	else
@@ -95,19 +91,17 @@ void	_child_exec_extern(t_execunit *units, int idx)
 	exit(127);
 }
 
-void	_child_exec_cmd(
-		t_pipeset *pipeset, t_execunit *units, int n_units, int idx)
+void	_exec_simplecom_forked(
+		t_pipeset *pipeset, t_exec_simplecom *exec, int n_coms, int idx)
 {
-	t_execunit	*unit_ptr;
 	char		**argv;
 
-	unit_ptr = units + idx;
-	argv = unit_ptr->argv;
-	if (signal_set_state_default()
-		|| _set_fd_stream(pipeset, units, n_units, idx) < 0)
+	if (exec_simplecom_getargv(exec, &argv))
+		exit(EXIT_FAILURE);
+	if (signal_set_state_default() || _set_fd(pipeset, exec, n_coms, idx) < 0)
 		exit(EXIT_FAILURE);
 	if (argv[0] && builtin_getindex(argv[0]) >= 0)
-		exit(_exec_builtin_cmd(units + idx, SUBSHELL));
+		exit(_exec_simplecom_builtin(exec, SUBSHELL));
 	else
-		_child_exec_extern(units, idx);
+		_exec_extern(argv);
 }

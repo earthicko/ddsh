@@ -13,6 +13,8 @@
 #ifndef EXECUTOR_H
 # define EXECUTOR_H
 
+# include "t_node.h"
+
 int	execute_tree(t_node *parse_tree);
 
 #endif
