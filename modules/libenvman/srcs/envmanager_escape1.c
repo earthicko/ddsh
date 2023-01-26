@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "prompt_string.h"
+#include "ansi_escape.h"
 
 char	*_envman_escape_magenta(void)
 {
