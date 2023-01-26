@@ -25,6 +25,7 @@
 #include "executor.h"
 #include "sighandler.h"
 #include "builtin_commands.h"
+#include "prompt.h"
 #include "prompt_internal.h"
 
 int	prompt_clear(void)

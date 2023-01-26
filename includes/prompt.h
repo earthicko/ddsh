@@ -15,4 +15,6 @@
 
 void	execute_line(char *line);
 
+char	*prompt_get_prompt_prefix(void);
+
 #endif
