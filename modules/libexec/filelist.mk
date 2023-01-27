@@ -1,9 +1,10 @@
 FILE_LIBEXEC	= \
 				io_manager \
-				exec_pipeseq_pipeutils \
-				exec_pipeseq_usepipe \
+				exec_pipeseq_fork \
+				exec_pipeseq_fork_utils \
 				exec_pipeseq \
 				exec_simplecom \
+				exec_simplecom_extern \
 				exec_redirs \
 				executor
 

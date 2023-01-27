@@ -41,21 +41,11 @@ int	exec_redir_in(t_node *filename)
 	return (CODE_OK);
 }
 
-int	exec_redir_out(t_node *filename)
+int	exec_redir_out(t_node *filename, int flag)
 {
 	int	fd;
 
-	fd = open(filename->content, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (fd < 0 || dup2(fd, STDOUT_FILENO) < 0 || close(fd) < 0)
-		return (CODE_ERROR_IO);
-	return (CODE_OK);
-}
-
-int	exec_redir_out_append(t_node *filename)
-{
-	int	fd;
-
-	fd = open(filename->content, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	fd = open(filename->content, flag, 0644);
 	if (fd < 0 || dup2(fd, STDOUT_FILENO) < 0 || close(fd) < 0)
 		return (CODE_ERROR_IO);
 	return (CODE_OK);
@@ -69,13 +59,11 @@ int	exec_io_file(t_node *io_file)
 	io_op_file = node_get_nthchild(io_file, 0);
 	filename = node_get_nthchild(io_file, 1);
 	if (ft_strncmp(io_op_file->content, ">>", 2) == 0)
-		return (exec_redir_out_append(filename));
+		return (exec_redir_out(filename, O_WRONLY | O_CREAT | O_APPEND));
 	else if (ft_strncmp(io_op_file->content, "<", 1) == 0)
 		return (exec_redir_in(filename));
 	else if (ft_strncmp(io_op_file->content, ">", 1) == 0)
-		return (exec_redir_out(filename));
-	
-	ft_dprintf(2, "%s: io_op_file->content %s\n", __func__, io_op_file->content);
+		return (exec_redir_out(filename, O_WRONLY | O_CREAT | O_TRUNC));
 	ft_dprintf(2, "%scritical: corrupted tree\n", MSG_ERROR_PREFIX);
 	return (CODE_ERROR_DATA);
 }
@@ -100,8 +88,6 @@ int	exec_io_redir(t_node *io_redir)
 		return (exec_io_here());
 	if (node_get_nthchild(io_redir, 0)->type == NODETYPE_IO_FILE)
 		return (exec_io_file(node_get_nthchild(io_redir, 0)));
-	
-	ft_dprintf(2, "%s: node_get_nthchild(io_redir, 0)->type %d\n", __func__, node_get_nthchild(io_redir, 0)->type);
 	ft_dprintf(2, "%scritical: corrupted tree\n", MSG_ERROR_PREFIX);
 	return (CODE_ERROR_DATA);
 }

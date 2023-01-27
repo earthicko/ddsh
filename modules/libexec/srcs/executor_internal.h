@@ -19,6 +19,12 @@
 # define STDINOUT_BACKUP 0
 # define STDINOUT_RESTORE 1
 
+typedef struct s_pipeset
+{
+	int	new_pipe[2];
+	int	old_pipe[2];
+}	t_pipeset;
+
 int		_io_manager(int mode, int *fdbuf);
 
 int		exec_pipeseq(t_node *pipeseq);
