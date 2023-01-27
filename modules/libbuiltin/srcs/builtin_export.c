@@ -28,7 +28,7 @@ static int	_exit_export_var(int stat, char *word)
 	return (0);
 }
 
-static int	export_var(char *word)
+static int	_export_var(char *word)
 {
 	char	*name;
 	char	*val;
@@ -57,7 +57,7 @@ int	builtin_export(char **argv)
 	stat = 0;
 	while (*argv)
 	{
-		if (export_var(*argv))
+		if (_export_var(*argv))
 			stat = 1;
 		argv++;
 	}

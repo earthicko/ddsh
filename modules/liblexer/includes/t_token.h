@@ -37,4 +37,6 @@ enum	e_tokentype
 	TOKENTYPE_PIPE
 };
 
+void	token_destroy(t_toks *toks);
+
 #endif

@@ -23,8 +23,8 @@
 
 int		_io_manager(int mode, int *fdbuf);
 
-int		exec_pipeseq(t_node *pipeseq);
-int		exec_simplecom(t_node *simplecom);
-int		exec_io_redir(t_node *io_redir);
+int		_exec_pipeseq(t_node *pipeseq);
+int		_exec_simplecom(t_node *simplecom);
+int		_exec_io_redir(t_node *io_redir);
 
 #endif

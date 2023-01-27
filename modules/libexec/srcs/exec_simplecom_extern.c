@@ -20,7 +20,7 @@
 #include "msgdef.h"
 #include "strutils.h"
 
-static void	exec_simplecom_prepare_extern(char **argv, char ***envp_buf)
+static void	_exec_simplecom_prepare_extern(char **argv, char ***envp_buf)
 {
 	int			_stat;
 	struct stat	s_statbuf;
@@ -47,7 +47,7 @@ static void	exec_simplecom_prepare_extern(char **argv, char ***envp_buf)
 	}
 }
 
-int	exec_simplecom_fork_extern(char **argv)
+int	_exec_simplecom_fork_extern(char **argv)
 {
 	pid_t	pid;
 	char	**envp;
@@ -61,7 +61,7 @@ int	exec_simplecom_fork_extern(char **argv)
 	}
 	if (pid == 0)
 	{
-		exec_simplecom_prepare_extern(argv, &envp);
+		_exec_simplecom_prepare_extern(argv, &envp);
 		execve(argv[0], argv, envp);
 	}
 	wait4(pid, &_stat, 0, NULL);

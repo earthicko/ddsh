@@ -20,17 +20,17 @@
 
 # define UNCLOSED_QUOTE -1
 
-int		get_n_toks(char *str);
-int		get_word_len(char *str);
-int		get_token_type(char *str);
+int	_get_n_toks(char *str);
+int	_get_word_len(char *str);
+int	_get_token_type(char *str);
 
-t_bool	is_space(char ch);
-t_bool	is_quote(char ch);
-t_bool	is_metachar(char ch);
+int	_is_space(char ch);
+int	_is_quote(char ch);
+int	_is_metachar(char ch);
 
-int		space_len(char *str);
-int		inquote_len(char *str, char quote);
-int		letter_len(char *str);
-int		op_len(char *str);
+int	_get_len_space(char *str);
+int	_get_len_inquotes(char *str, char quote);
+int	_get_len_normal(char *str);
+int	op_len(char *str);
 
 #endif

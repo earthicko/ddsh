@@ -17,7 +17,7 @@
 #include "msgdef.h"
 #include "envmanager.h"
 
-static int	builtin_cd_internal(char *target)
+static int	_builtin_cd_internal(char *target)
 {
 	char	*pwd;
 	int		stat;
@@ -57,7 +57,7 @@ static int	_builtin_cd_to_oldpwd(void)
 	stat = ft_printf("%s\n", target);
 	if (stat < 0)
 		return (1);
-	stat = builtin_cd_internal(target);
+	stat = _builtin_cd_internal(target);
 	free(target);
 	return (stat);
 }
@@ -74,7 +74,7 @@ static int	_builtin_cd_to_home(void)
 			ft_dprintf(2, "%scd: HOME not set\n", MSG_ERROR_PREFIX);
 		return (1);
 	}
-	stat = builtin_cd_internal(target);
+	stat = _builtin_cd_internal(target);
 	free(target);
 	return (stat);
 }
@@ -90,7 +90,7 @@ static int	_builtin_cd_to_cwd(void)
 		ft_print_error(MSG_ERROR_PREFIX, CODE_ERROR_MALLOC);
 		return (1);
 	}
-	stat = builtin_cd_internal(target);
+	stat = _builtin_cd_internal(target);
 	free(target);
 	return (stat);
 }
@@ -104,5 +104,5 @@ int	builtin_cd(char **argv)
 		return (_builtin_cd_to_oldpwd());
 	else if (ft_strlen(*argv) == 0)
 		return (_builtin_cd_to_cwd());
-	return (builtin_cd_internal(*argv));
+	return (_builtin_cd_internal(*argv));
 }

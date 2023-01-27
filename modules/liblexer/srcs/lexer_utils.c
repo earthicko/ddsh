@@ -13,7 +13,7 @@
 #include "libft.h"
 #include "lexer_internal.h"
 
-int	get_n_toks(char *str)
+int	_get_n_toks(char *str)
 {
 	int		n_toks;
 	int		tok_type;
@@ -22,11 +22,11 @@ int	get_n_toks(char *str)
 	n_toks = 0;
 	while (*str)
 	{
-		str += space_len(str);
-		tok_type = get_token_type(str);
+		str += _get_len_space(str);
+		tok_type = _get_token_type(str);
 		if (tok_type == TOKENTYPE_WORD)
 		{
-			word_len = get_word_len(str);
+			word_len = _get_word_len(str);
 			if (word_len == -1)
 				return (-1);
 			str += word_len;
@@ -40,29 +40,29 @@ int	get_n_toks(char *str)
 	return (n_toks);
 }
 
-int	get_word_len(char *str)
+int	_get_word_len(char *str)
 {
 	int		len;
 	char	quote;
 
 	len = 0;
-	while (str[len] && !is_space(str[len]) && !is_metachar(str[len]))
+	while (str[len] && !_is_space(str[len]) && !_is_metachar(str[len]))
 	{
 		if (str[len] == '\'' || str[len] == '"')
 		{
 			quote = str[len++];
-			len += inquote_len(str + len, quote);
+			len += _get_len_inquotes(str + len, quote);
 			if (str[len] != quote)
 				return (-1);
 			quote = 0;
 			len++;
 		}
-		len += letter_len(str + len);
+		len += _get_len_normal(str + len);
 	}
 	return (len);
 }
 
-int	get_token_type(char *str)
+int	_get_token_type(char *str)
 {
 	if (*str == 0)
 		return (TOKENTYPE_NULL);

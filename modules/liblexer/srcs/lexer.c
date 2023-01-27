@@ -14,16 +14,16 @@
 #include "msgdef.h"
 #include "lexer_internal.h"
 
-static void	get_word_token(t_toks *toks, int idx, char *str)
+static void	_get_word_token(t_toks *toks, int idx, char *str)
 {
 	const char	*from = str;
 
-	str += get_word_len(str);
+	str += _get_word_len(str);
 	toks->arr[idx].type = TOKENTYPE_WORD;
 	toks->arr[idx].content = ft_substr(from, 0, str - from);
 }
 
-static void	get_op_token(t_toks *toks, int idx, int tok_type)
+static void	_get_op_token(t_toks *toks, int idx, int tok_type)
 {
 	toks->arr[idx].type = tok_type;
 	if (tok_type == TOKENTYPE_PIPE)
@@ -38,7 +38,7 @@ static void	get_op_token(t_toks *toks, int idx, int tok_type)
 		toks->arr[idx].content = ft_strdup(">");
 }
 
-static int	free_with_fail(t_toks *toks, int idx)
+static int	_free_with_fail(t_toks *toks, int idx)
 {
 	while (idx >= 0)
 	{
@@ -51,7 +51,7 @@ static int	free_with_fail(t_toks *toks, int idx)
 	return (CODE_ERROR_MALLOC);
 }
 
-static int	build_toks_arr(t_toks *toks, char *str)
+static int	_build_toks_arr(t_toks *toks, char *str)
 {
 	int	idx;
 	int	tok_type;
@@ -59,32 +59,32 @@ static int	build_toks_arr(t_toks *toks, char *str)
 	idx = 0;
 	while (idx < toks->n_toks)
 	{
-		str += space_len(str);
-		tok_type = get_token_type(str);
+		str += _get_len_space(str);
+		tok_type = _get_token_type(str);
 		if (tok_type == TOKENTYPE_WORD)
 		{
-			get_word_token(toks, idx, str);
-			str += get_word_len(str);
+			_get_word_token(toks, idx, str);
+			str += _get_word_len(str);
 		}
 		else if (tok_type == TOKENTYPE_NULL)
 			continue ;
 		else
 		{
-			get_op_token(toks, idx, tok_type);
+			_get_op_token(toks, idx, tok_type);
 			str += op_len(str);
 		}
 		if (!toks->arr[idx].content)
-			return (free_with_fail(toks, idx));
+			return (_free_with_fail(toks, idx));
 		idx++;
 	}
 	return (CODE_OK);
 }
 
-int	lexer(char *str, t_toks *toks)
+int	lex_str(char *str, t_toks *toks)
 {
 	int	stat;
 
-	toks->n_toks = get_n_toks(str);
+	toks->n_toks = _get_n_toks(str);
 	if (toks->n_toks == -1)
 	{
 		ft_dprintf(2, "%ssyntax error: unclosed quotes\n", MSG_ERROR_PREFIX);
@@ -98,7 +98,7 @@ int	lexer(char *str, t_toks *toks)
 	}
 	toks->arr[toks->n_toks].type = TOKENTYPE_NULL;
 	toks->arr[toks->n_toks].content = 0;
-	stat = build_toks_arr(toks, str);
+	stat = _build_toks_arr(toks, str);
 	if (stat)
 		ft_print_error(MSG_ERROR_PREFIX, stat);
 	return (stat);

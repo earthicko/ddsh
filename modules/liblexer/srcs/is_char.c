@@ -12,7 +12,7 @@
 
 #include "lexer_internal.h"
 
-t_bool	is_space(char ch)
+int	_is_space(char ch)
 {
 	if (ch == ' ' || ch == '\t' || ch == '\n')
 		return (TRUE);
@@ -20,7 +20,7 @@ t_bool	is_space(char ch)
 		return (FALSE);
 }
 
-t_bool	is_quote(char ch)
+int	_is_quote(char ch)
 {
 	if (ch == '\'' || ch == '\"')
 		return (TRUE);
@@ -28,7 +28,7 @@ t_bool	is_quote(char ch)
 		return (FALSE);
 }
 
-t_bool	is_metachar(char ch)
+int	_is_metachar(char ch)
 {
 	if (ch == '<' || ch == '>' || ch == '|')
 		return (TRUE);

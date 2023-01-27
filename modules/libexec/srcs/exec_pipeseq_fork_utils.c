@@ -18,7 +18,7 @@
 #include "envmanager.h"
 #include "executor_internal.h"
 
-static void	exec_pipeseq_kill_pids(pid_t *pids, int n)
+static void	_exec_pipeseq_kill_pids(pid_t *pids, int n)
 {
 	int	i;
 
@@ -30,13 +30,13 @@ static void	exec_pipeseq_kill_pids(pid_t *pids, int n)
 	}
 }
 
-static int	exec_pipeseq_wait_pids(pid_t *pids, int n, int send_kill)
+static int	_exec_pipeseq_wait_pids(pid_t *pids, int n, int send_kill)
 {
 	int	i;
 	int	exit_stat;
 
 	if (send_kill)
-		exec_pipeseq_kill_pids(pids, n);
+		_exec_pipeseq_kill_pids(pids, n);
 	i = 0;
 	while (i < n)
 	{
@@ -55,16 +55,16 @@ static int	exec_pipeseq_wait_pids(pid_t *pids, int n, int send_kill)
 	return (exit_stat);
 }
 
-int	exec_pipeseq_fork_abort(pid_t *pids, int n, int send_kill)
+int	_exec_pipeseq_fork_abort(pid_t *pids, int n, int send_kill)
 {
 	int	stat;
 
-	stat = exec_pipeseq_wait_pids(pids, n, send_kill);
+	stat = _exec_pipeseq_wait_pids(pids, n, send_kill);
 	free(pids);
 	return (stat);
 }
 
-int	exec_pipeset_close_parent_pipe(int *pipeset, int n_units, int idx)
+int	_exec_pipeset_close_parent_pipe(int *pipeset, int n_units, int idx)
 {
 	int	stat;
 
@@ -82,7 +82,7 @@ int	exec_pipeset_close_parent_pipe(int *pipeset, int n_units, int idx)
 	return (stat);
 }
 
-int	exec_pipeseq_dup_stdio(int *pipeset, int n_units, int idx)
+int	_exec_pipeseq_dup_stdio(int *pipeset, int n_units, int idx)
 {
 	if (n_units == 1)
 		return (CODE_OK);

@@ -72,7 +72,7 @@ static void	test_build_unit(char *str)
 	t_unit_arr	units;
 	int			i;
 
-	stat = lexer(str, &toks);
+	stat = lex_str(str, &toks);
 	if (stat)
 	{
 		printf("Failed to build toks arr in lexer\n\n");
@@ -108,7 +108,7 @@ static void	test_get_n_redir(char *str, t_toks *toks)
 	int		stat;
 
 	printf("\n\n");
-	stat = lexer(str, toks);
+	stat = lex_str(str, toks);
 	if (stat)
 	{
 		printf("Failed to build toks arr in lexer\n\n");
@@ -144,7 +144,7 @@ static void	test_exec(char *input)
 		dprintf(2, "prompt don't pass null input to lexer\n\n\n");
 		return ;
 	}
-	if (lexer(input, &toks) != CODE_OK)
+	if (lex_str(input, &toks) != CODE_OK)
 		dprintf(2, "Failed while lexing\n");
 	if (toks.n_toks == 0)
 	{

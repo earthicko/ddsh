@@ -18,9 +18,9 @@
 #include "msgdef.h"
 #include "executor_internal.h"
 
-int	exec_simplecom_fork_extern(char **argv);
+int	_exec_simplecom_fork_extern(char **argv);
 
-int	exec_simplecom_assort_elems(t_node *simplecom, int n_elem, t_pchararr *args)
+int	_exec_simplecom_assort_elems(t_node *simplecom, int n_elem, t_pchararr *args)
 {
 	int		i;
 	t_node	*elem;
@@ -36,20 +36,20 @@ int	exec_simplecom_assort_elems(t_node *simplecom, int n_elem, t_pchararr *args)
 			return (CODE_ERROR_MALLOC);
 		}
 		else if (node_get_nthchild(elem, 0)->type == NODETYPE_IO_REDIRECT
-			&& exec_io_redir(node_get_nthchild(elem, 0)))
+			&& _exec_io_redir(node_get_nthchild(elem, 0)))
 			return (CODE_ERROR_IO);
 		i++;
 	}
 	return (CODE_OK);
 }
 
-static int	exec_simplecom_abort(t_pchararr *argarr, int stat)
+static int	_exec_simplecom_abort(t_pchararr *argarr, int stat)
 {
 	pchararr_destroy(argarr);
 	return (stat);
 }
 
-static int	exec_simplecom_init(t_node *simplecom, char ***argv_buf)
+static int	_exec_simplecom_init(t_node *simplecom, char ***argv_buf)
 {
 	int			stat;
 	t_pchararr	*argarr;
@@ -62,19 +62,19 @@ static int	exec_simplecom_init(t_node *simplecom, char ***argv_buf)
 		return (CODE_ERROR_MALLOC);
 	}
 	n_elem = ft_lstsize(simplecom->childs);
-	stat = exec_simplecom_assort_elems(simplecom, n_elem, argarr);
+	stat = _exec_simplecom_assort_elems(simplecom, n_elem, argarr);
 	if (stat)
-		return (exec_simplecom_abort(argarr, stat));
+		return (_exec_simplecom_abort(argarr, stat));
 	stat = pchararr_to_strarr(argarr, argv_buf);
-	return (exec_simplecom_abort(argarr, stat));
+	return (_exec_simplecom_abort(argarr, stat));
 }
 
-int	exec_simplecom(t_node *simplecom)
+int	_exec_simplecom(t_node *simplecom)
 {
 	char	**argv;
 	int		_stat;
 
-	if (exec_simplecom_init(simplecom, &argv))
+	if (_exec_simplecom_init(simplecom, &argv))
 		return (EXIT_FAILURE);
 	if (argv[0] == NULL)
 	{
@@ -87,7 +87,7 @@ int	exec_simplecom(t_node *simplecom)
 		ft_free_strarr(argv);
 		return (_stat);
 	}
-	_stat = exec_simplecom_fork_extern(argv);
+	_stat = _exec_simplecom_fork_extern(argv);
 	ft_free_strarr(argv);
 	return (_stat);
 }

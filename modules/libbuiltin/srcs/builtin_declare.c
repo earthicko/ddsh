@@ -42,7 +42,7 @@ static int	_declare_setval(char *name, char *val)
 	return (envman_setval(name, val, entry.exp));
 }
 
-static int	declare_var(char *word)
+static int	_declare_var(char *word)
 {
 	char	*name;
 	char	*val;
@@ -71,7 +71,7 @@ int	builtin_declare(char **argv)
 	stat = 0;
 	while (*argv)
 	{
-		if (declare_var(*argv))
+		if (_declare_var(*argv))
 			stat = 1;
 		argv++;
 	}

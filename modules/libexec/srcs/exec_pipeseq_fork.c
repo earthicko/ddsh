@@ -17,19 +17,20 @@
 #include "sighandler.h"
 #include "executor_internal.h"
 
-int	exec_pipeseq_dup_stdio(int *pipeset, int n_units, int idx);
-int	exec_pipeseq_fork_abort(pid_t *pids, int n, int send_kill);
-int	exec_pipeset_close_parent_pipe(int *pipeset, int n_units, int idx);
+int	_exec_pipeseq_dup_stdio(int *pipeset, int n_units, int idx);
+int	_exec_pipeseq_fork_abort(pid_t *pids, int n, int send_kill);
+int	_exec_pipeset_close_parent_pipe(int *pipeset, int n_units, int idx);
 
-static void	exec_pipeseq_init_childproc(
+static void	_exec_pipeseq_init_childproc(
 		int *pipeset, t_node *pipeseq, int n, int i)
 {
-	if (signal_set_state_default() || exec_pipeseq_dup_stdio(pipeset, n, i) < 0)
+	if (signal_set_state_default()
+		|| _exec_pipeseq_dup_stdio(pipeset, n, i) < 0)
 		exit(EXIT_FAILURE);
-	exit(exec_simplecom(node_get_nthchild(pipeseq, i)));
+	exit(_exec_simplecom(node_get_nthchild(pipeseq, i)));
 }
 
-int	exec_pipeseq_fork(t_node *pipeseq, int n_simplecom)
+int	_exec_pipeseq_fork(t_node *pipeseq, int n_simplecom)
 {
 	pid_t	*pids;
 	int		i;
@@ -42,16 +43,16 @@ int	exec_pipeseq_fork(t_node *pipeseq, int n_simplecom)
 	while (i < n_simplecom)
 	{
 		if (i < n_simplecom - 1 && pipe(pipeset) < 0)
-			return (exec_pipeseq_fork_abort(pids, n_simplecom, TRUE));
+			return (_exec_pipeseq_fork_abort(pids, n_simplecom, TRUE));
 		pids[i] = fork();
 		if (pids[i] < 0)
-			return (exec_pipeseq_fork_abort(pids, n_simplecom, TRUE));
+			return (_exec_pipeseq_fork_abort(pids, n_simplecom, TRUE));
 		if (pids[i] == 0)
-			exec_pipeseq_init_childproc(pipeset, pipeseq, n_simplecom, i);
-		if (exec_pipeset_close_parent_pipe(pipeset, n_simplecom, i) < 0)
-			return (exec_pipeseq_fork_abort(pids, n_simplecom, TRUE));
+			_exec_pipeseq_init_childproc(pipeset, pipeseq, n_simplecom, i);
+		if (_exec_pipeset_close_parent_pipe(pipeset, n_simplecom, i) < 0)
+			return (_exec_pipeseq_fork_abort(pids, n_simplecom, TRUE));
 		ft_memcpy(pipeset + 2, pipeset, sizeof(int) * 2);
 		i++;
 	}
-	return (exec_pipeseq_fork_abort(pids, n_simplecom, FALSE));
+	return (_exec_pipeseq_fork_abort(pids, n_simplecom, FALSE));
 }

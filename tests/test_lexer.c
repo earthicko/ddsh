@@ -33,7 +33,7 @@ void	test_lexer(char *str)
 	(void)str;
 	printf("\n>================<\n\n");
 	printf("input: %s\n\n", str);
-	if ((ret = lexer(str, &toks)) != CODE_OK)
+	if ((ret = lex_str(str, &toks)) != CODE_OK)
 		printf("code error: %d\n", ret);
 	else
 		print_tok_arr(&toks);

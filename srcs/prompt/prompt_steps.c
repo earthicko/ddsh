@@ -58,7 +58,7 @@ int	prompt_gettokens(char *str, t_toks *toks)
 {
 	int	stat;
 
-	stat = lexer(str, toks);
+	stat = lex_str(str, toks);
 	if (toks->n_toks == 0)
 	{
 		token_destroy(toks);

@@ -13,17 +13,17 @@
 #include "libft.h"
 #include "lexer_internal.h"
 
-int	space_len(char *str)
+int	_get_len_space(char *str)
 {
 	int	len;
 
 	len = 0;
-	while (str[len] && is_space(str[len]))
+	while (str[len] && _is_space(str[len]))
 		len++;
 	return (len);
 }
 
-int	inquote_len(char *str, char quote)
+int	_get_len_inquotes(char *str, char quote)
 {
 	int	len;
 
@@ -33,13 +33,13 @@ int	inquote_len(char *str, char quote)
 	return (len);
 }
 
-int	letter_len(char *str)
+int	_get_len_normal(char *str)
 {
 	int	len;
 
 	len = 0;
-	while (str[len] && !is_quote(str[len])
-		&& !is_space(str[len]) && !is_metachar(str[len]))
+	while (str[len] && !_is_quote(str[len])
+		&& !_is_space(str[len]) && !_is_metachar(str[len]))
 		len++;
 	return (len);
 }

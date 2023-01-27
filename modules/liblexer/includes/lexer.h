@@ -15,8 +15,7 @@
 
 # include "t_token.h"
 
-int		lexer(char *str, t_toks *toks);
-void	token_destroy(t_toks *toks);
+int		lex_str(char *str, t_toks *toks);
 char	*trunc_comments(char *line);
 
 #endif

@@ -19,7 +19,7 @@
 #include "msgdef.h"
 #include "executor_internal.h"
 
-int	exec_redir_in(t_node *filename)
+int	_exec_redir_in(t_node *filename)
 {
 	int	fd;
 
@@ -41,7 +41,7 @@ int	exec_redir_in(t_node *filename)
 	return (CODE_OK);
 }
 
-int	exec_redir_out(t_node *filename, int flag)
+int	_exec_redir_out(t_node *filename, int flag)
 {
 	int	fd;
 
@@ -51,7 +51,7 @@ int	exec_redir_out(t_node *filename, int flag)
 	return (CODE_OK);
 }
 
-int	exec_io_file(t_node *io_file)
+int	_exec_io_file(t_node *io_file)
 {
 	t_node	*io_op_file;
 	t_node	*filename;
@@ -59,16 +59,16 @@ int	exec_io_file(t_node *io_file)
 	io_op_file = node_get_nthchild(io_file, 0);
 	filename = node_get_nthchild(io_file, 1);
 	if (ft_strncmp(io_op_file->content, ">>", 2) == 0)
-		return (exec_redir_out(filename, O_WRONLY | O_CREAT | O_APPEND));
+		return (_exec_redir_out(filename, O_WRONLY | O_CREAT | O_APPEND));
 	else if (ft_strncmp(io_op_file->content, "<", 1) == 0)
-		return (exec_redir_in(filename));
+		return (_exec_redir_in(filename));
 	else if (ft_strncmp(io_op_file->content, ">", 1) == 0)
-		return (exec_redir_out(filename, O_WRONLY | O_CREAT | O_TRUNC));
+		return (_exec_redir_out(filename, O_WRONLY | O_CREAT | O_TRUNC));
 	ft_dprintf(2, "%scritical: corrupted tree\n", MSG_ERROR_PREFIX);
 	return (CODE_ERROR_DATA);
 }
 
-int	exec_io_here(void)
+int	_exec_io_here(void)
 {
 	int		fd;
 	char	*heredoc_file;
@@ -82,12 +82,12 @@ int	exec_io_here(void)
 	return (CODE_OK);
 }
 
-int	exec_io_redir(t_node *io_redir)
+int	_exec_io_redir(t_node *io_redir)
 {
 	if (node_get_nthchild(io_redir, 0)->type == NODETYPE_IO_HERE)
-		return (exec_io_here());
+		return (_exec_io_here());
 	if (node_get_nthchild(io_redir, 0)->type == NODETYPE_IO_FILE)
-		return (exec_io_file(node_get_nthchild(io_redir, 0)));
+		return (_exec_io_file(node_get_nthchild(io_redir, 0)));
 	ft_dprintf(2, "%scritical: corrupted tree\n", MSG_ERROR_PREFIX);
 	return (CODE_ERROR_DATA);
 }
