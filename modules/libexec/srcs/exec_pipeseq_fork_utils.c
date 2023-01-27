@@ -64,7 +64,7 @@ int	exec_pipeseq_fork_abort(pid_t *pids, int n, int send_kill)
 	return (stat);
 }
 
-int	exec_pipeset_close_parent_pipe(t_pipeset *pipeset, int n_units, int idx)
+int	exec_pipeset_close_parent_pipe(int *pipeset, int n_units, int idx)
 {
 	int	stat;
 
@@ -72,39 +72,39 @@ int	exec_pipeset_close_parent_pipe(t_pipeset *pipeset, int n_units, int idx)
 	if (n_units == 1)
 		return (CODE_OK);
 	if (idx == 0)
-		stat = close(pipeset->new_pipe[WRITE]);
+		stat = close(pipeset[NEW_WRITE]);
 	else if (idx == n_units - 1)
-		stat = close(pipeset->old_pipe[READ]);
+		stat = close(pipeset[OLD_READ]);
 	else
-		if (close(pipeset->old_pipe[READ]) < 0
-			|| close(pipeset->new_pipe[WRITE]) < 0)
+		if (close(pipeset[OLD_READ]) < 0
+			|| close(pipeset[NEW_WRITE]) < 0)
 			return (CODE_ERROR_IO);
 	return (stat);
 }
 
-int	exec_pipeseq_dup_stdio(t_pipeset *pipeset, int n_units, int idx)
+int	exec_pipeseq_dup_stdio(int *pipeset, int n_units, int idx)
 {
 	if (n_units == 1)
 		return (CODE_OK);
 	if (idx == 0)
 	{
-		if (close(pipeset->new_pipe[READ]) < 0
-			|| dup2(pipeset->new_pipe[WRITE], STDOUT_FILENO) < 0
-			|| close(pipeset->new_pipe[WRITE]) < 0)
+		if (close(pipeset[NEW_READ]) < 0
+			|| dup2(pipeset[NEW_WRITE], STDOUT_FILENO) < 0
+			|| close(pipeset[NEW_WRITE]) < 0)
 			return (CODE_ERROR_IO);
 	}
 	else if (idx == n_units - 1)
 	{
-		if (dup2(pipeset->old_pipe[READ], STDIN_FILENO) < 0
-			|| close(pipeset->old_pipe[READ]) < 0)
+		if (dup2(pipeset[OLD_READ], STDIN_FILENO) < 0
+			|| close(pipeset[OLD_READ]) < 0)
 			return (CODE_ERROR_IO);
 	}
 	else
-		if (close(pipeset->new_pipe[READ]) < 0
-			|| dup2(pipeset->old_pipe[READ], STDIN_FILENO) < 0
-			|| close(pipeset->old_pipe[READ]) < 0
-			|| dup2(pipeset->new_pipe[WRITE], STDOUT_FILENO) < 0
-			|| close(pipeset->new_pipe[WRITE]) < 0)
+		if (close(pipeset[NEW_READ]) < 0
+			|| dup2(pipeset[OLD_READ], STDIN_FILENO) < 0
+			|| close(pipeset[OLD_READ]) < 0
+			|| dup2(pipeset[NEW_WRITE], STDOUT_FILENO) < 0
+			|| close(pipeset[NEW_WRITE]) < 0)
 			return (CODE_ERROR_IO);
 	return (CODE_OK);
 }
