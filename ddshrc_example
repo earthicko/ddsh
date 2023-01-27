@@ -1,2 +1,17 @@
 export PATH=$HOME/bin:/usr/local/bin:$PATH
-# alias norm="norminette"
+export PATH="/Users/donghyle/Applications/CMake.app/Contents/bin":"$PATH"
+
+# alias ez="vim ~/.zshrc"
+# alias sz="source ~/.zshrc"
+# alias gg='gcc -Wall -Wextra -Werror'
+# alias norm="norminette -R CheckForbiddenSourceHeader"
+# alias normd="norminette -R CheckDefine"
+
+export USER=donghyle
+export MAIL="donghyle@student.42seoul.kr"
+
+export brewPath=/Users/donghyle
+export PATH=$brewPath/.brew/bin:$PATH
+
+export DDSH_TIME_FORMAT="%H:%M:%S"
+export DDSH_THEME='$ESC_BGREEN$USER$ESC_GREEN@$DDSH_HOSTNAME $ESC_BLUE[$DDSH_TIME] $ESC_RESET[$DDSH_PWD]$ESC_NEWLINE${ESC_BLUE}ddsh> $ESC_RESET'
