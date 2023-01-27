@@ -10,24 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include "msgdef.h"
-#include "./t_execunit/t_execunit.h"
 #include "executor_internal.h"
 
 int	execute_tree(t_node *parse_tree)
 {
-	int				stat;
-	t_exec_pipeseq	*exec;
-
-	exec = exec_pipeseq_create(parse_tree);
-	if (!exec)
-	{
-		ft_dprintf(2, "%scritical: failed to build exec unit\n",
-			MSG_ERROR_PREFIX);
-		return (CODE_ERROR_GENERIC);
-	}
-	stat = _exec_pipeseq(exec);
-	exec_pipeseq_destroy(exec);
-	return (stat);
+	return (exec_pipeseq(parse_tree));
 }
