@@ -12,10 +12,13 @@
 
 #ifndef EXPANSION_INTERNAL_H
 # define EXPANSION_INTERNAL_H
+
+# include "strutils.h"
+
 # define ASCII_DEL '\177'
 # define ASCII_STX '\002'
 # define ASCII_ETX '\003'
-# define SPLIT_MARKER "\003\002"
+# define SPLIT_MARKER "\002"
 # define IFS_DEFAULT "\040\011\012"
 
 enum	e_expand_option
@@ -34,5 +37,6 @@ int	_compose_squote(char *str, int *pos, t_pchararr *strarr, int option);
 int	_compose_dquote(char *str, int *pos, t_pchararr *strarr, int option);
 int	_compose_envvar(char *str, int *pos, t_pchararr *strarr, int option);
 int	_compose_str(char *str, int *pos, t_pchararr *strarr);
+int	_do_word_split(char **buf);
 
 #endif

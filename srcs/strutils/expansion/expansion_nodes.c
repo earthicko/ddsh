@@ -18,7 +18,7 @@ static int	_expand_single_node(t_node *root)
 {
 	if (!(root->type == NODETYPE_CMD_WORD || root->type == NODETYPE_FILENAME))
 		return (CODE_OK);
-	return (do_shell_expansion(&(root->content)));
+	return (do_shell_expansion(&(root->content), TRUE));
 }
 
 int	expand_node(t_node *root)

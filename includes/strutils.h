@@ -37,7 +37,7 @@ int			is_valid_name(char *str);
 
 int			find_exec(char **buf);
 
-int			do_shell_expansion(char **buf);
+int			do_shell_expansion(char **buf, int split_word);
 int			do_heredoc_expansion(char **buf);
 
 int			expand_node(t_node *root);
