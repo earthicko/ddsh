@@ -52,3 +52,44 @@ int	remove_quotes(char **buf)
 	*buf = backup;
 	return (CODE_OK);
 }
+
+static int	_count_char(char *str, char c)
+{
+	int	i;
+
+	i = 0;
+	while (*str)
+	{
+		if (*str == c)
+			i++;
+		str++;
+	}
+	return (i);
+}
+
+int	remove_char(char **buf, char c)
+{
+	char	*backup;
+	int		i;
+	int		j;
+
+	backup = malloc(sizeof(char)
+			* (ft_strlen(*buf) - _count_char(*buf, c) + 1));
+	if (!backup)
+		return (CODE_ERROR_MALLOC);
+	i = 0;
+	j = 0;
+	while ((*buf)[i])
+	{
+		if (!((*buf)[i] == c))
+		{
+			backup[j] = (*buf)[i];
+			j++;
+		}
+		i++;
+	}
+	backup[j] = '\0';
+	free(*buf);
+	*buf = backup;
+	return (CODE_OK);
+}

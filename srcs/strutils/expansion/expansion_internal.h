@@ -12,6 +12,8 @@
 
 #ifndef EXPANSION_INTERNAL_H
 # define EXPANSION_INTERNAL_H
+# define ASCII_DEL_STR "\177"
+# define ASCII_DEL_CHAR '\177'
 
 enum	e_expand_option
 {

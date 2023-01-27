@@ -32,7 +32,7 @@ static int	_exit_do_expansion(int stat, t_pchararr *strarr, char **buf)
 		return (CODE_ERROR_MALLOC);
 	free(*buf);
 	*buf = backup;
-	return (CODE_OK);
+	return (remove_char(buf, ASCII_DEL_CHAR));
 }
 
 static int	_compose_char(int *pos, t_pchararr *strarr, char c)

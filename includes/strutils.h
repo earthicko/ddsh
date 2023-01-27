@@ -31,6 +31,7 @@ int			pchararr_to_strarr(t_pchararr *strarr, char ***buf);
 void		pchararr_free_all_pchars(t_pchararr *strarr);
 
 int			remove_quotes(char **buf);
+int			remove_char(char **buf, char c);
 
 int			is_valid_name(char *str);
 
