@@ -101,13 +101,3 @@ int	_mark_split(char **buf)
 	*buf = marked;
 	return (CODE_OK);
 }
-
-int	_do_word_split(char **buf)
-{
-	int	stat;
-
-	stat = _mark_split(buf);
-	if (stat)
-		return (stat);
-	return (stat);
-}

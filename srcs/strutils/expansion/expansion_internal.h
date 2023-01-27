@@ -37,6 +37,6 @@ int	_compose_squote(char *str, int *pos, t_pchararr *strarr, int option);
 int	_compose_dquote(char *str, int *pos, t_pchararr *strarr, int option);
 int	_compose_envvar(char *str, int *pos, t_pchararr *strarr, int option);
 int	_compose_str(char *str, int *pos, t_pchararr *strarr);
-int	_do_word_split(char **buf);
+int	_mark_split(char **buf);
 
 #endif

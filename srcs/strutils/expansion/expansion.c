@@ -80,20 +80,17 @@ int	_do_expansion(char **buf, int option)
 int	do_shell_expansion(char **buf, int split_word)
 {
 	int	stat;
+	int	option;
 
 	stat = _do_tilde_expansion(buf);
 	if (stat)
 		return (stat);
-	stat = _do_expansion(buf,
-			O_REMQUOTE | O_PARSESQUOTE | O_PARSEDQUOTE
-			| O_REMEMPTYVAR | O_WORDSPLIT);
+	option = O_REMQUOTE | O_PARSESQUOTE | O_PARSEDQUOTE | O_REMEMPTYVAR;
 	if (split_word)
-	{
-		stat = _do_word_split(buf);
-		if (stat)
-			return (stat);
-	}
-	return (remove_char(buf, ASCII_DEL));
+		option |= O_WORDSPLIT;
+	stat = _do_expansion(buf, option);
+	stat = remove_char(buf, ASCII_DEL);
+	return (stat);
 }
 
 int	do_heredoc_expansion(char **buf)
