@@ -20,7 +20,7 @@
 
 int	_exec_simplecom_fork_extern(char **argv);
 
-int	_exec_simplecom_assort_elems(t_node *simplecom, int n_elem, t_pchararr *args)
+int	_exec_simplecom_assort(t_node *simplecom, int n_elem, t_pchararr *args)
 {
 	int		i;
 	t_node	*elem;
@@ -62,7 +62,7 @@ static int	_exec_simplecom_init(t_node *simplecom, char ***argv_buf)
 		return (CODE_ERROR_MALLOC);
 	}
 	n_elem = ft_lstsize(simplecom->childs);
-	stat = _exec_simplecom_assort_elems(simplecom, n_elem, argarr);
+	stat = _exec_simplecom_assort(simplecom, n_elem, argarr);
 	if (stat)
 		return (_exec_simplecom_abort(argarr, stat));
 	stat = pchararr_to_strarr(argarr, argv_buf);
