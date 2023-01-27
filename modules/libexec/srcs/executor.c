@@ -10,9 +10,14 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "envmanager.h"
 #include "executor_internal.h"
 
 int	execute_tree(t_node *parse_tree)
 {
-	return (exec_pipeseq(parse_tree));
+	int	stat;
+
+	stat = exec_pipeseq(parse_tree);
+	exit_stat_manager(stat);
+	return (CODE_OK);
 }

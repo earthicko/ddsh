@@ -18,20 +18,25 @@
 #include "envmanager.h"
 #include "executor_internal.h"
 
-static void	exec_pipeseq_wait_pids(pid_t *pids, int n, int send_kill)
+static void	exec_pipeseq_kill_pids(pid_t *pids, int n)
+{
+	int	i;
+
+	i = 0;
+	while (i < n)
+	{
+		kill(pids[i], SIGKILL);
+		i++;
+	}
+}
+
+static int	exec_pipeseq_wait_pids(pid_t *pids, int n, int send_kill)
 {
 	int	i;
 	int	exit_stat;
 
 	if (send_kill)
-	{
-		i = 0;
-		while (i < n)
-		{
-			kill(pids[i], SIGKILL);
-			i++;
-		}
-	}
+		exec_pipeseq_kill_pids(pids, n);
 	i = 0;
 	while (i < n)
 	{
@@ -39,17 +44,22 @@ static void	exec_pipeseq_wait_pids(pid_t *pids, int n, int send_kill)
 		if (i == n - 1)
 		{
 			if (WIFSIGNALED(exit_stat))
-				exit_stat_manager(WTERMSIG(exit_stat) + 128);
+				exit_stat = WTERMSIG(exit_stat) + 128;
 			else
-				exit_stat_manager(WEXITSTATUS(exit_stat));
+				exit_stat = WEXITSTATUS(exit_stat);
 		}
 		i++;
 	}
+	if (send_kill)
+		return (EXIT_FAILURE);
+	return (exit_stat);
 }
 
-int	exec_pipeseq_fork_abort(pid_t *pids, int n, int send_kill, int stat)
+int	exec_pipeseq_fork_abort(pid_t *pids, int n, int send_kill)
 {
-	exec_pipeseq_wait_pids(pids, n, send_kill);
+	int	stat;
+
+	stat = exec_pipeseq_wait_pids(pids, n, send_kill);
 	free(pids);
 	return (stat);
 }

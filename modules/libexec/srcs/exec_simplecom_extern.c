@@ -16,6 +16,7 @@
 #include <sys/wait.h>
 #include "libft.h"
 #include "envmanager.h"
+#include "sighandler.h"
 #include "msgdef.h"
 #include "strutils.h"
 
@@ -29,7 +30,8 @@ static void	exec_simplecom_prepare_extern(char **argv, char ***envp_buf)
 		exit(EXIT_FAILURE);
 	if (_stat == CODE_ERROR_GENERIC)
 		exit(127);
-	if (envman_setval("_", argv[0], TRUE) || envman_getenvp(envp_buf))
+	if (envman_setval("_", argv[0], TRUE) || envman_getenvp(envp_buf)
+		|| signal_set_state_default())
 		exit(EXIT_FAILURE);
 	if (stat(argv[0], &s_statbuf) != 0)
 		exit(EXIT_FAILURE);

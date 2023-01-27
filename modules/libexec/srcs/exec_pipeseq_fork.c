@@ -18,7 +18,7 @@
 #include "executor_internal.h"
 
 int	exec_pipeseq_dup_stdio(t_pipeset *pipeset, int n_units, int idx);
-int	exec_pipeseq_fork_abort(pid_t *pids, int n, int send_kill, int stat);
+int	exec_pipeseq_fork_abort(pid_t *pids, int n, int send_kill);
 int	exec_pipeset_close_parent_pipe(t_pipeset *pipeset, int n_units, int idx);
 
 static void	exec_pipeseq_init_childproc(
@@ -42,18 +42,16 @@ int	exec_pipeseq_fork(t_node *pipeseq, int n_simplecom)
 	while (i < n_simplecom)
 	{
 		if (i < n_simplecom - 1 && pipe(pipeset.new_pipe) < 0)
-			return (exec_pipeseq_fork_abort(
-					pids, n_simplecom, TRUE, CODE_ERROR_IO));
+			return (exec_pipeseq_fork_abort(pids, n_simplecom, TRUE));
 		pids[i] = fork();
 		if (pids[i] < 0)
-			return (exec_pipeseq_fork_abort(
-					pids, n_simplecom, TRUE, CODE_ERROR_GENERIC));
+			return (exec_pipeseq_fork_abort(pids, n_simplecom, TRUE));
 		if (pids[i] == 0)
 			exec_pipeseq_init_childproc(&pipeset, pipeseq, n_simplecom, i);
 		if (exec_pipeset_close_parent_pipe(&pipeset, n_simplecom, i) < 0)
-			return (CODE_ERROR_IO);
+			return (exec_pipeseq_fork_abort(pids, n_simplecom, TRUE));
 		ft_memcpy(pipeset.old_pipe, pipeset.new_pipe, sizeof(pipeset.new_pipe));
 		i++;
 	}
-	return (exec_pipeseq_fork_abort(pids, n_simplecom, TRUE, CODE_OK));
+	return (exec_pipeseq_fork_abort(pids, n_simplecom, FALSE));
 }
