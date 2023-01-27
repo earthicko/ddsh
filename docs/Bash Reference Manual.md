@@ -55,6 +55,36 @@ Simple Command는 `<space>`로 구분되고 `<newline>`으로 끝나는 단어�
 
 이때 parameter가 한자릿수 이상의 숫자거나 (위치 파라미터) parameter 뒤에 문자가 올 시 `{}`가 필요하다.
 
+## 단어 쪼개기
+
+쌍따옴표 바깥에서 일어난 파라미터 확장(parameter expansion), 커맨드 대체(command substitution), 산술 확장(arithmetic expansion)에 대해 단어 쪼개기를 수행한다.
+
+`$IFS`의 각 문자는 delimeter로 취급한다. 확장의 결과값을 이 delimeter로 쪼갠다.
+
+### 기본 행동
+
+`$IFS`가 설정되지 않았거나 그 값이 정확히 `<space><tab><newline>`(기본값)일 경우
+
+- 대상의 처음과 끝에 연속하여 등장하는 `<space><tab><newline>`들은 무시된다.
+- 대상의 중간에 연속하여 등장하는 `<space><tab><newline>`들이 단어의 구분자 역할을 한다.
+
+### 예외 행동
+
+`$IFS`가 기본값이 아닐 경우
+
+- `$IFS`가 빈 문자열일 시 단어 쪼개기를 하지 않는다.
+- `$IFS`에 `<space><tab><newline>`중 하나 이상이 포함되었을 시, 대상의 처음과 끝에 연속하여 등장하는 `<space><tab><newline>`들은 무시된다.
+- `$IFS`에 포함된 글자 중 `<space><tab><newline>`가 아닌 글자는 연속하여 등장하는 `<space><tab><newline>`와 접해 있다면 구분자 역할을 한다.
+- 대상의 중간에 연속하여 등장하는 `<space><tab><newline>`들이 단어의 구분자 역할을 한다.
+
+### 빈 문자열 처리
+
+- 명시적으로 비어 있는 `""` `''`는 전달된다.
+- 인용되지 않은 변수가 확장되어 생기는 빈 문자열은 제거된다.
+- 쌍따옴표 안에서 변수가 확장되서 생겨나는 빈 문자열은 전달된다. 
+
+확장이 없으면 단어 쪼개기도 없다.
+
 # 리디렉션
 
 ## here-document
