@@ -12,15 +12,19 @@
 
 #ifndef EXPANSION_INTERNAL_H
 # define EXPANSION_INTERNAL_H
-# define ASCII_DEL_STR "\177"
-# define ASCII_DEL_CHAR '\177'
+# define ASCII_DEL '\177'
+# define ASCII_STX '\002'
+# define ASCII_ETX '\003'
+# define SPLIT_MARKER "\003\002"
+# define IFS_DEFAULT "\040\011\012"
 
 enum	e_expand_option
 {
 	O_REMQUOTE = 1,
 	O_PARSESQUOTE = 2,
 	O_PARSEDQUOTE = 4,
-	O_REMEMPTYVAR = 8
+	O_REMEMPTYVAR = 8,
+	O_WORDSPLIT = 16
 };
 
 int	_do_expansion(char **buf, int option);

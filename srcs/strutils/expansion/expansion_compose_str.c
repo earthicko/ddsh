@@ -65,8 +65,7 @@ static char	*_compose_envvar_varname(char *str, int start, int end)
 	return (ft_substr(str, start, end - start));
 }
 
-int	_compose_envvar(
-	char *str, int *pos, t_pchararr *strarr, int option)
+int	_compose_envvar(char *str, int *pos, t_pchararr *strarr, int option)
 {
 	int		start;
 	int		stat;

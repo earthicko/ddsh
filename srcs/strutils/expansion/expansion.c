@@ -32,7 +32,7 @@ static int	_exit_do_expansion(int stat, t_pchararr *strarr, char **buf)
 		return (CODE_ERROR_MALLOC);
 	free(*buf);
 	*buf = backup;
-	return (remove_char(buf, ASCII_DEL_CHAR));
+	return (remove_char(buf, ASCII_DEL));
 }
 
 static int	_compose_char(int *pos, t_pchararr *strarr, char c)
@@ -85,7 +85,11 @@ int	do_shell_expansion(char **buf)
 	if (stat)
 		return (stat);
 	return (_do_expansion(buf,
-			O_REMQUOTE | O_PARSESQUOTE | O_PARSEDQUOTE | O_REMEMPTYVAR));
+			O_REMQUOTE
+			| O_PARSESQUOTE
+			| O_PARSEDQUOTE
+			| O_REMEMPTYVAR
+			| O_WORDSPLIT));
 }
 
 int	do_heredoc_expansion(char **buf)

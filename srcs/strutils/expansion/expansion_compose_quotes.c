@@ -45,10 +45,15 @@ int	_compose_squote(char *str, int *pos, t_pchararr *strarr, int option)
 		return (CODE_ERROR_MALLOC);
 	if (option & O_REMQUOTE)
 	{
-		word[0] = ASCII_DEL_CHAR;
-		word[ft_strlen(word) - 1] = ASCII_DEL_CHAR;
+		word[0] = ASCII_DEL;
+		word[ft_strlen(word) - 1] = ASCII_DEL;
 	}
 	return (_exit_compose(strarr, word));
+}
+
+static int	_compose_dquote_recurse_setopt(int option)
+{
+	return ((option & O_REMEMPTYVAR) & (~O_WORDSPLIT));
 }
 
 static int	_compose_dquote_recurse(char **buf, int option)
@@ -59,7 +64,7 @@ static int	_compose_dquote_recurse(char **buf, int option)
 	temp[0] = ft_substr(*buf, 1, ft_strlen(*buf) - 2);
 	if (!temp[0])
 		return (CODE_ERROR_MALLOC);
-	stat = _do_expansion(&(temp[0]), option & O_REMEMPTYVAR);
+	stat = _do_expansion(&(temp[0]), _compose_dquote_recurse_setopt(option));
 	if (stat)
 	{
 		free(temp[0]);
@@ -72,8 +77,8 @@ static int	_compose_dquote_recurse(char **buf, int option)
 	temp[0] = temp[1];
 	if (option & O_REMQUOTE)
 	{
-		temp[0][0] = ASCII_DEL_CHAR;
-		temp[0][ft_strlen(temp[0]) - 1] = ASCII_DEL_CHAR;
+		temp[0][0] = ASCII_DEL;
+		temp[0][ft_strlen(temp[0]) - 1] = ASCII_DEL;
 	}
 	free(*buf);
 	*buf = temp[0];
