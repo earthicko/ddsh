@@ -43,6 +43,6 @@ t_node	*node_destroy(t_node *node);
 int		node_addchild(t_node *node, t_node *child);
 int		node_getntokens(t_node *node);
 
-t_node	*_get_nth_child(t_node *root, int n);
+t_node	*node_get_nthchild(t_node *root, int n);
 
 #endif

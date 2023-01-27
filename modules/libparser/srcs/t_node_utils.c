@@ -14,7 +14,7 @@
 #include "libft_def.h"
 #include "t_node.h"
 
-t_node	*_get_nth_child(t_node *root, int n)
+t_node	*node_get_nthchild(t_node *root, int n)
 {
 	t_list	*cursor;
 
