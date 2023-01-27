@@ -1,11 +1,12 @@
-FILE_LIBEXEC	= build_exec	\
-				  build_exec_utils	\
-				  do_redir	\
-				  executor	\
-				  executor_builtin	\
-				  executor_child_exec	\
-				  free_build_fail \
-				  io_manager	
+FILE_LIBEXEC	= \
+				io_manager \
+				exec_pipeseq_fork \
+				exec_pipeseq_fork_utils \
+				exec_pipeseq \
+				exec_simplecom \
+				exec_simplecom_extern \
+				exec_redirs \
+				executor
 
 SRC_LIBEXEC	= $(addprefix srcs/, $(addsuffix .c, $(FILE_LIBEXEC)))
 OBJ_LIBEXEC	= $(addprefix srcs/, $(addsuffix .o, $(FILE_LIBEXEC)))

@@ -14,73 +14,65 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include "libft.h"
+#include "t_node.h"
 #include "heredoc.h"
 #include "msgdef.h"
 #include "executor_internal.h"
 
-int	_process_redir(t_redir *redir_arr, int n_redir)
-{
-	int	i;
-	int	stat;
-
-	i = 0;
-	while (i < n_redir)
-	{
-		if (redir_arr[i].type == REDIR_IN)
-			stat = _do_redir_in(redir_arr + i);
-		else if (redir_arr[i].type == REDIR_OUT)
-			stat = _do_redir_out(redir_arr + i);
-		else if (redir_arr[i].type == REDIR_IN_HERE)
-			stat = _do_redir_in_here(redir_arr + i);
-		else if (redir_arr[i].type == REDIR_OUT_APPEND)
-			stat = _do_redir_out_append(redir_arr + i);
-		else
-			stat = CODE_ERROR_SCOPE;
-		if (stat)
-			return (stat);
-		i++;
-	}
-	return (CODE_OK);
-}
-
-int	_do_redir_in(t_redir *redir_arr)
+int	exec_redir_in(t_node *filename)
 {
 	int	fd;
 
-	if (access(redir_arr->content, F_OK) != 0)
+	if (access(filename->content, F_OK) != 0)
 	{
 		ft_dprintf(2, "%s%s: No such file or directory\n",
-			MSG_ERROR_PREFIX, redir_arr->content);
+			MSG_ERROR_PREFIX, filename->content);
 		return (CODE_ERROR_IO);
 	}
-	if (access(redir_arr->content, R_OK) != 0)
+	if (access(filename->content, R_OK) != 0)
 	{
 		ft_dprintf(2, "%s%s: Permission denied\n",
-			MSG_ERROR_PREFIX, redir_arr->content);
+			MSG_ERROR_PREFIX, filename->content);
 		return (CODE_ERROR_IO);
 	}
-	fd = open(redir_arr->content, O_RDONLY);
+	fd = open(filename->content, O_RDONLY);
 	if (fd < 0 || dup2(fd, STDIN_FILENO) < 0 || close(fd) < 0)
 		return (CODE_ERROR_IO);
 	return (CODE_OK);
 }
 
-int	_do_redir_out(t_redir *redir_arr)
+int	exec_redir_out(t_node *filename, int flag)
 {
 	int	fd;
 
-	fd = open(redir_arr->content, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	fd = open(filename->content, flag, 0644);
 	if (fd < 0 || dup2(fd, STDOUT_FILENO) < 0 || close(fd) < 0)
 		return (CODE_ERROR_IO);
 	return (CODE_OK);
 }
 
-int	_do_redir_in_here(t_redir *redir_arr)
+int	exec_io_file(t_node *io_file)
+{
+	t_node	*io_op_file;
+	t_node	*filename;
+
+	io_op_file = node_get_nthchild(io_file, 0);
+	filename = node_get_nthchild(io_file, 1);
+	if (ft_strncmp(io_op_file->content, ">>", 2) == 0)
+		return (exec_redir_out(filename, O_WRONLY | O_CREAT | O_APPEND));
+	else if (ft_strncmp(io_op_file->content, "<", 1) == 0)
+		return (exec_redir_in(filename));
+	else if (ft_strncmp(io_op_file->content, ">", 1) == 0)
+		return (exec_redir_out(filename, O_WRONLY | O_CREAT | O_TRUNC));
+	ft_dprintf(2, "%scritical: corrupted tree\n", MSG_ERROR_PREFIX);
+	return (CODE_ERROR_DATA);
+}
+
+int	exec_io_here(void)
 {
 	int		fd;
 	char	*heredoc_file;
 
-	(void)redir_arr;
 	if (heredoc_get_next_filename(&heredoc_file) != CODE_OK)
 		return (CODE_ERROR_IO);
 	fd = open(heredoc_file, O_RDONLY);
@@ -90,12 +82,12 @@ int	_do_redir_in_here(t_redir *redir_arr)
 	return (CODE_OK);
 }
 
-int	_do_redir_out_append(t_redir *redir_arr)
+int	exec_io_redir(t_node *io_redir)
 {
-	int	fd;
-
-	fd = open(redir_arr->content, O_WRONLY | O_CREAT | O_APPEND, 0644);
-	if (fd < 0 || dup2(fd, STDOUT_FILENO) < 0 || close(fd) < 0)
-		return (CODE_ERROR_IO);
-	return (CODE_OK);
+	if (node_get_nthchild(io_redir, 0)->type == NODETYPE_IO_HERE)
+		return (exec_io_here());
+	if (node_get_nthchild(io_redir, 0)->type == NODETYPE_IO_FILE)
+		return (exec_io_file(node_get_nthchild(io_redir, 0)));
+	ft_dprintf(2, "%scritical: corrupted tree\n", MSG_ERROR_PREFIX);
+	return (CODE_ERROR_DATA);
 }

@@ -46,3 +46,26 @@ void	pchararr_free_all_pchars(t_pchararr *strarr)
 		i++;
 	}
 }
+
+int	pchararr_to_strarr(t_pchararr *strarr, char ***buf)
+{
+	int	i;
+
+	*buf = malloc(sizeof(char *) * (strarr->len + 1));
+	if (!*buf)
+		return (CODE_ERROR_MALLOC);
+	ft_bzero(*buf, sizeof(char *) * (strarr->len + 1));
+	i = 0;
+	while (i < strarr->len)
+	{
+		(*buf)[i] = ft_strdup((strarr->data)[i]);
+		if (!((*buf)[i]))
+		{
+			ft_free_strarr(*buf);
+			*buf = NULL;
+			return (CODE_ERROR_MALLOC);
+		}
+		i++;
+	}
+	return (CODE_OK);
+}

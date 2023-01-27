@@ -1,5 +1,6 @@
 FILE_LIBPARSER	= \
 				t_node \
+				t_node_utils \
 				parse_util \
 				parse_map_setter \
 				parse_io_file \
