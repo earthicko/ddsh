@@ -33,9 +33,9 @@
 
 ### 0.1.0
 
-- exec unit 생성 방식 변경
-  - 전위 순회 사용
-  - 만나는 노드 순서대로 exec unit에 추가
+- exec 방식 변경
+  - exec_unit 삭제하고 파스 트리를 직접 실행
+  - 전위 순회를 통해 만나는 노드부터 실행
 - `$IFS` 변수를 통한 word splitting
   - 한 노드에서 word splitting이 발생할 시 자식 노드 생성하여 각 토큰을 추가
 
