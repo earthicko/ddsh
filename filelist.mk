@@ -13,6 +13,7 @@ FILENAME			= \
 					strutils/expansion/expansion_utils \
 					strutils/expansion/expansion_nodes \
 					strutils/expansion/expansion_tilde \
+					strutils/expansion/expansion_interface \
 					strutils/expansion/expansion \
 					strutils/pchararr \
 					strutils/pchararr_utils \

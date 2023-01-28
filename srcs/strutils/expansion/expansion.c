@@ -76,29 +76,3 @@ int	_do_expansion(char **buf, int option)
 	}
 	return (_exit_do_expansion(stat, words, buf));
 }
-
-int	do_shell_expansion(char **buf, int split_word)
-{
-	int	stat;
-	int	option;
-
-	stat = _do_tilde_expansion(buf);
-	if (stat)
-		return (stat);
-	option = O_REMQUOTE | O_PARSESQUOTE | O_PARSEDQUOTE | O_REMEMPTYVAR;
-	if (split_word)
-		option |= O_WORDSPLIT;
-	stat = _do_expansion(buf, option);
-	stat = remove_char(buf, ASCII_DEL);
-	return (stat);
-}
-
-int	do_heredoc_expansion(char **buf)
-{
-	int	stat;
-
-	stat = _do_tilde_expansion(buf);
-	if (stat)
-		return (stat);
-	return (_do_expansion(buf, 0));
-}

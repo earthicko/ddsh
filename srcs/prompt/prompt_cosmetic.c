@@ -39,7 +39,7 @@ char	*prompt_get_prompt_prefix(void)
 
 	if (envman_getval("DDSH_THEME", &buf))
 		return (ft_strdup(MSG_SHELL_PROMPT));
-	stat = do_shell_expansion(&buf, FALSE);
+	stat = do_shell_expansion(&buf);
 	if (stat)
 	{
 		ft_print_error(MSG_ERROR_PREFIX, stat);
