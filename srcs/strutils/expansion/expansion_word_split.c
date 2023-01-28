@@ -89,6 +89,8 @@ int	_mark_split(char **buf)
 	int		*is_ifs;
 	char	*marked;
 
+	ft_printf("%s: process %s\n", __func__, *buf);
+
 	strlen = ft_strlen(*buf);
 	if (strlen == 0)
 		return (CODE_OK);
@@ -99,5 +101,12 @@ int	_mark_split(char **buf)
 		return (CODE_ERROR_MALLOC);
 	free(*buf);
 	*buf = marked;
+	return (CODE_OK);
+}
+
+int	_do_word_split(char *str, char ***buf)
+{
+	(void)str;
+	(void)buf;
 	return (CODE_OK);
 }
