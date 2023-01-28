@@ -13,7 +13,7 @@ void	test_expansion(char *str, int mode)
 	echo_str = ft_strmerge(3, "echo \"", str, "\"");
 	printf("before: <%s>\n", str);
 	if (!mode)
-		stat = do_shell_expansion(&str);
+		stat = do_shell_expansion(&str, TRUE);
 	else
 		stat = do_heredoc_expansion(&str);
 	printf("after:  <%s>\n", str);

@@ -7,6 +7,7 @@ FILENAME			= \
 					prompt/prompt_steps \
 					prompt/prompt_cosmetic \
 					strutils/expansion/expansion_word_split \
+					strutils/expansion/expansion_word_split_utils \
 					strutils/expansion/expansion_compose_quotes \
 					strutils/expansion/expansion_compose_envvar \
 					strutils/expansion/expansion_compose_str \

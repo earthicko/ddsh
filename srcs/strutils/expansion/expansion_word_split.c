@@ -15,98 +15,50 @@
 #include "strutils.h"
 #include "expansion_internal.h"
 
-int	*_build_ifs_map(char *str, int len)
+int	_do_word_split_addarr_if_notempty(t_pchararr *arr, char **strarr)
 {
-	int	i;
-	int	*map;
+	char	*str;
 
-	map = malloc(sizeof(int) * len);
-	if (!map)
-		return (NULL);
-	i = 0;
-	while (i < len)
+	while (*strarr)
 	{
-		if (ft_strchr(IFS_DEFAULT, str[i]))
-			map[i] = TRUE;
-		else
-			map[i] = FALSE;
-		i++;
-	}
-	return (map);
-}
-
-int	_add_seg_to_arr(t_pchararr *arr, char **str, int **map, int is_ifs)
-{
-	char	*start;
-	char	*seg;
-
-	start = *str;
-	while (**str != '\0' && **map == is_ifs)
-	{
-		(*str)++;
-		(*map)++;
-	}
-	if (is_ifs)
-		seg = ft_strdup(SPLIT_MARKER);
-	else
-		seg = ft_substr(start, 0, *str - start);
-	if (!seg)
-		return (CODE_ERROR_MALLOC);
-	if (pchararr_append(arr, seg))
-	{
-		free(seg);
-		return (CODE_ERROR_MALLOC);
+		if (ft_strlen(*strarr) > 0)
+		{
+			if (remove_char(strarr, ASCII_DEL))
+				return (CODE_ERROR_MALLOC);
+			str = ft_strdup(*strarr);
+			if (!str)
+				return (CODE_ERROR_MALLOC);
+			if (pchararr_append(arr, str))
+			{
+				free(str);
+				return (CODE_ERROR_MALLOC);
+			}
+		}
+		strarr++;
 	}
 	return (CODE_OK);
 }
 
-char	*_mark_split_gen_arr(char *str, int *map)
+int	_do_word_split(char *str, t_pchararr **buf)
 {
 	t_pchararr	*arr;
-	char		*merged;
+	char		**temp;
 
+	temp = ft_split_by_chars(str, SPLIT_MARKER);
+	if (!temp)
+		return (CODE_ERROR_MALLOC);
 	arr = pchararr_create();
 	if (!arr)
-		return (NULL);
-	while (*str)
 	{
-		if (_add_seg_to_arr(arr, &str, &map, *map))
-		{
-			pchararr_free_all_pchars(arr);
-			pchararr_destroy(arr);
-			return (NULL);
-		}
-	}
-	merged = pchararr_merge(arr);
-	pchararr_free_all_pchars(arr);
-	pchararr_destroy(arr);
-	return (merged);
-}
-
-int	_mark_split(char **buf)
-{
-	int		strlen;
-	int		*is_ifs;
-	char	*marked;
-
-	ft_printf("%s: process %s\n", __func__, *buf);
-
-	strlen = ft_strlen(*buf);
-	if (strlen == 0)
-		return (CODE_OK);
-	is_ifs = _build_ifs_map(*buf, strlen);
-	marked = _mark_split_gen_arr(*buf, is_ifs);
-	free(is_ifs);
-	if (!marked)
+		ft_free_strarr(temp);
 		return (CODE_ERROR_MALLOC);
-	free(*buf);
-	*buf = marked;
-	return (CODE_OK);
-}
-
-int	_do_word_split(char *str, char ***buf)
-{
-	(void)str;
-	(void)buf;
+	}
+	if (_do_word_split_addarr_if_notempty(arr, temp))
+	{
+		ft_free_strarr(temp);
+		return (CODE_ERROR_MALLOC);
+	}
+	ft_free_strarr(temp);
+	*buf = arr;
 	return (CODE_OK);
 }

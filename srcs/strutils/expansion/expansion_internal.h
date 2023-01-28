@@ -32,7 +32,7 @@ enum	e_expand_option
 
 int	_do_expansion(char **buf, int option);
 int	_do_tilde_expansion(char **buf);
-int	_do_word_split(char *str, char ***buf);
+int	_do_word_split(char *str, t_pchararr **buf);
 int	_exit_compose(t_pchararr *strarr, char *word);
 int	_compose_squote(char *str, int *pos, t_pchararr *strarr, int option);
 int	_compose_dquote(char *str, int *pos, t_pchararr *strarr, int option);

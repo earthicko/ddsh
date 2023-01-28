@@ -45,7 +45,7 @@ int	do_shell_expansion(char **buf)
 	return (CODE_OK);
 }
 
-int	do_shell_expansion_word_split(char *str, char ***split_buf)
+int	do_shell_expansion_word_split(char *str, t_pchararr **buf)
 {
 	int		stat;
 	int		option;
@@ -62,7 +62,7 @@ int	do_shell_expansion_word_split(char *str, char ***split_buf)
 	stat = _do_expansion(&temp, option);
 	if (stat)
 		return (_do_shell_expansion_abort(temp, stat));
-	stat = _do_word_split(temp, split_buf);
+	stat = _do_word_split(temp, buf);
 	return (_do_shell_expansion_abort(temp, stat));
 }
 
