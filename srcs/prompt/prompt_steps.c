@@ -69,22 +69,21 @@ int	prompt_gettokens(char *str, t_toks *toks)
 		exit_stat_manager(258);
 		return (CODE_CONTINUE);
 	}
+	stat = expand_tokens(toks);
+	if (stat)
+	{
+		token_destroy(toks);
+		exit_stat_manager(258);
+		return (CODE_CONTINUE);
+	}
 	return (CODE_OK);
 }
 
 int	prompt_getparsetree(t_toks *toks, t_node **buf)
 {
-	int	stat;
-
 	*buf = parse_tokens(toks->arr, toks->n_toks);
 	if (!*buf)
 		return (CODE_CONTINUE);
-	stat = expand_node(*buf);
-	if (stat)
-	{
-		ft_print_error(MSG_ERROR_PREFIX, stat);
-		return (CODE_CONTINUE);
-	}
 	return (CODE_OK);
 }
 

@@ -12,6 +12,7 @@
 
 #ifndef STRUTILS_H
 # define STRUTILS_H
+# include "t_token.h"
 # include "t_node.h"
 # define PCHARARR_INITIAL_CAP 1
 
@@ -38,8 +39,10 @@ int			is_valid_name(char *str);
 int			find_exec(char **buf);
 
 int			do_shell_expansion(char **buf);
+int			do_shell_expansion_word_split(char *str, t_pchararr **buf);
 int			do_heredoc_expansion(char **buf);
 
-int			expand_node(t_node *root);
+// int			expand_node(t_node *root);
+int			expand_tokens(t_toks *toks);
 
 #endif
