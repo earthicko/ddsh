@@ -1,4 +1,4 @@
-LIB_DIR				= modules
+LIB_DIR				= ${PWD}/modules
 
 LIBREADLINE_DIR		= $(LIB_DIR)/readline
 LIBREADLINE			= $(LIBREADLINE_DIR)/lib/libreadline.a
@@ -64,7 +64,7 @@ LDFLAGS				= \
 					$(LINK_LIBHEREDOC) \
 					$(LINK_LIBBUILTIN) \
 					$(LINK_LIBEXEC)
-INC_DIR				= -I. -Iincludes \
+INC_DIR				= -I. -I${PWD}/includes \
 					$(INC_DIR_LIBREADLINE) \
 					$(INC_DIR_LIBFT) \
 					$(INC_DIR_LIBLEXER) \
@@ -94,6 +94,7 @@ ABS_SRC_LIBBUILTIN = $(addprefix $(LIBBUILTIN_DIR)/, $(SRC_LIBBUILTIN))
 ABS_SRC_LIBEXEC = $(addprefix $(LIBEXEC_DIR)/, $(SRC_LIBEXEC))
 
 export ACFLAGS
+export INC_DIR
 
 $(LIBREADLINE):
 	./modules/make_symlink_readline.sh

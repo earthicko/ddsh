@@ -1,10 +1,6 @@
 NAME		= liblexer.a
 
-BASE_DIR	= ../..
-INC_DIR		= \
-			-I./includes \
-			-I$(BASE_DIR)/modules/libft/includes \
-			-I$(BASE_DIR)/includes
+INC_DIR		:= $(INC_DIR) -I./includes
 CFLAGS		= -Wall -Werror -Wextra -MMD -MP $(ACFLAGS) $(INC_DIR)
 ARFLAGS		= rcs
 

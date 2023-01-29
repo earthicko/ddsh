@@ -1,13 +1,6 @@
 NAME		= libexpansion.a
 
-BASE_DIR	= ../..
-INC_DIR		= \
-			-I./includes \
-			-I$(BASE_DIR)/includes \
-			-I$(BASE_DIR)/modules/libft/includes \
-			-I$(BASE_DIR)/modules/libenvman/includes \
-			-I$(BASE_DIR)/modules/liblexer/includes \
-			-I$(BASE_DIR)/modules/libparser/includes
+INC_DIR		:= $(INC_DIR) -I./includes
 CFLAGS		= -Wall -Werror -Wextra -MMD -MP $(ACFLAGS) $(INC_DIR)
 ARFLAGS		= rcs
 
