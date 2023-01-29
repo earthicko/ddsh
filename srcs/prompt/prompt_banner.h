@@ -61,6 +61,6 @@
 # define _B_CREDIT_1 "| \033[91md\033[0monghyle"
 # define _B_CREDIT_2 "| \033[95md\033[0mahkang"
 # define _B_CREDIT_3 "| \033[92ms\033[94mh\033[0mell"
-# define _B_VER "| 0.0.5"
+# define _B_VER "| 0.1.0"
 
 #endif
