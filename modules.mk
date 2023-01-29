@@ -100,6 +100,7 @@ $(LIBREADLINE):
 	./modules/make_symlink_readline.sh
 
 $(LIBFT): $(ABS_SRC_LIBFT)
+	git submodule update --remote $(LIBFT_DIR)
 	@make -j4 -C $(LIBFT_DIR)/
 
 $(LIBLEXER): $(ABS_SRC_LIBLEXER)
