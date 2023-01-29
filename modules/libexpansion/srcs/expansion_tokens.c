@@ -13,6 +13,7 @@
 #include <stdlib.h>
 #include "libft.h"
 #include "t_token.h"
+#include "expansion.h"
 #include "strutils.h"
 
 static int	_expand_token_assign(t_toks *toks, t_pchararr *arr, int *idx)

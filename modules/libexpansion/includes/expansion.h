@@ -10,32 +10,15 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef STRUTILS_H
-# define STRUTILS_H
+#ifndef EXPANSION_H
+# define EXPANSION_H
+
 # include "t_token.h"
-# include "t_node.h"
-# define PCHARARR_INITIAL_CAP 1
+# include "strutils.h"
 
-typedef struct s_pchararr
-{
-	int		len;
-	int		cap;
-	char	**data;
-}	t_pchararr;
-
-t_pchararr	*pchararr_create(void);
-t_pchararr	*pchararr_destroy(t_pchararr *pchararr);
-int			pchararr_expand(t_pchararr *pchararr);
-int			pchararr_append(t_pchararr *pchararr, char *data);
-char		*pchararr_merge(t_pchararr *strarr);
-int			pchararr_to_strarr(t_pchararr *strarr, char ***buf);
-void		pchararr_free_all_pchars(t_pchararr *strarr);
-
-int			remove_quotes(char **buf);
-int			remove_char(char **buf, char c);
-
-int			is_valid_name(char *str);
-
-int			find_exec(char **buf);
+int			do_shell_expansion(char **buf);
+int			do_shell_expansion_word_split(char *str, t_pchararr **buf);
+int			do_heredoc_expansion(char **buf);
+int			expand_tokens(t_toks *toks);
 
 #endif

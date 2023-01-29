@@ -6,16 +6,6 @@ DRIVER_DEP			= $(addsuffix .d, $(DRIVER_FILENAME))
 FILENAME			= \
 					prompt/prompt_steps \
 					prompt/prompt_cosmetic \
-					strutils/expansion/expansion_word_split \
-					strutils/expansion/expansion_word_split_utils \
-					strutils/expansion/expansion_compose_quotes \
-					strutils/expansion/expansion_compose_envvar \
-					strutils/expansion/expansion_compose_str \
-					strutils/expansion/expansion_utils \
-					strutils/expansion/expansion_tokens \
-					strutils/expansion/expansion_tilde \
-					strutils/expansion/expansion_interface \
-					strutils/expansion/expansion \
 					strutils/pchararr \
 					strutils/pchararr_utils \
 					strutils/remove_quotes \

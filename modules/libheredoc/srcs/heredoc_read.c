@@ -18,6 +18,7 @@
 #include "libft.h"
 #include "msgdef.h"
 #include "envmanager.h"
+#include "expansion.h"
 #include "heredoc_internal.h"
 #include "sighandler.h"
 

@@ -13,6 +13,7 @@
 #include <stdlib.h>
 #include "libft.h"
 #include "envmanager.h"
+#include "expansion.h"
 #include "strutils.h"
 #include "msgdef.h"
 #include "prompt_banner.h"

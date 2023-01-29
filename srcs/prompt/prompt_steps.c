@@ -17,6 +17,7 @@
 #include "libft.h"
 #include "strutils.h"
 #include "envmanager.h"
+#include "expansion.h"
 #include "heredoc.h"
 #include "lexer.h"
 #include "parser.h"
