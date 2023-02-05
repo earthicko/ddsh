@@ -64,7 +64,7 @@ int	_exec_simplecom_fork_extern(char **argv)
 		_exec_simplecom_prepare_extern(argv, &envp);
 		execve(argv[0], argv, envp);
 	}
-	wait4(pid, &_stat, 0, NULL);
+	waitpid(pid, &_stat, 0);
 	if (WIFSIGNALED(_stat))
 		return (WTERMSIG(_stat) + 128);
 	else

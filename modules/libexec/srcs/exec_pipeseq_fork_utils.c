@@ -40,7 +40,7 @@ static int	_exec_pipeseq_wait_pids(pid_t *pids, int n, int send_kill)
 	i = 0;
 	while (i < n)
 	{
-		wait4(pids[i], &exit_stat, 0, NULL);
+		waitpid(pids[i], &exit_stat, 0);
 		if (i == n - 1)
 		{
 			if (WIFSIGNALED(exit_stat))

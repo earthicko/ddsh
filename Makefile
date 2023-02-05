@@ -16,12 +16,14 @@ uninstall:
 	$(RM) ${HOME}/$(NAME)
 	$(RM) ${HOME}/$(RC_NAME)
 
+OSNAME = $(shell uname -s)
+
 include	modules.mk
 include	filelist.mk
 CFLAGS	= -Wall -Werror -Wextra -MMD -MP $(ACFLAGS) $(INC_DIR)
 
 $(NAME): $(LDLIBS) $(OBJ) $(DRIVER_OBJ) $(LIBREADLINE)
-	$(CC) $(CFLAGS) $(LDLIBS) $(OBJ) $(DRIVER_OBJ) -o $@ $(LDFLAGS)
+	$(CC) $(CFLAGS) $(OBJ) $(DRIVER_OBJ) $(LDFLAGS) $(LDLIBS) -o $@
 
 test_lexer: $(LDLIBS) $(OBJ) $(TEST_OBJ) tests/test_lexer.o
 	$(CC) $(CFLAGS) $(LDLIBS) $(OBJ) $(TEST_OBJ) tests/test_lexer.o -o $@ $(LDFLAGS)

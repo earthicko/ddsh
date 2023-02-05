@@ -1,9 +1,16 @@
 LIB_DIR				= ${PWD}/modules
 
-LIBREADLINE_DIR		= $(LIB_DIR)/readline
-LIBREADLINE			= $(LIBREADLINE_DIR)/lib/libreadline.a
-LINK_LIBREADLINE	= -L$(LIBREADLINE_DIR)/lib -lreadline
-INC_DIR_LIBREADLINE	= -I$(LIBREADLINE_DIR)/include
+ifeq ($(OSNAME),Linux)
+	LIBREADLINE_DIR		= /usr/lib/x86_64-linux-gnu
+	LIBREADLINE			= $(LIBREADLINE_DIR)/libreadline.a
+	LINK_LIBREADLINE	= -L$(LIBREADLINE_DIR) -lreadline
+	INC_DIR_LIBREADLINE	= -I/usr/include
+else ifeq ($(OSNAME),Darwin)
+	LIBREADLINE_DIR		= $(LIB_DIR)/readline
+	LIBREADLINE			= $(LIBREADLINE_DIR)/lib/libreadline.a
+	LINK_LIBREADLINE	= -L$(LIBREADLINE_DIR)/lib -lreadline
+	INC_DIR_LIBREADLINE	= -I$(LIBREADLINE_DIR)/include
+endif
 
 LIBFT_DIR			= $(LIB_DIR)/libft
 LIBFT				= $(LIBFT_DIR)/libft.a
@@ -46,14 +53,14 @@ LINK_LIBEXEC		= -L$(LIBEXEC_DIR)
 INC_DIR_LIBEXEC		= -I$(LIBEXEC_DIR)/includes
 
 LDLIBS				= \
-					$(LIBFT) \
 					$(LIBLEXER) \
-					$(LIBPARSER) \
 					$(LIBENVMAN) \
 					$(LIBEXPANSION) \
 					$(LIBHEREDOC) \
+					$(LIBEXEC) \
 					$(LIBBUILTIN)\
-					$(LIBEXEC)
+					$(LIBPARSER) \
+					$(LIBFT)
 LDFLAGS				= \
 					$(LINK_LIBREADLINE) \
 					$(LINK_LIBFT) \
@@ -97,7 +104,9 @@ export ACFLAGS
 export INC_DIR
 
 $(LIBREADLINE):
-	./modules/make_symlink_readline.sh
+	ifeq ($(OSNAME),Darwin)
+		./modules/make_symlink_readline.sh
+	endif
 
 $(LIBFT): $(ABS_SRC_LIBFT)
 	git submodule update --remote $(LIBFT_DIR)

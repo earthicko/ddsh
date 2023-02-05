@@ -13,6 +13,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <sys/wait.h>
 #include <fcntl.h>
 #include <readline/readline.h>
 #include "strutils.h"
@@ -121,7 +122,7 @@ int	_heredoc_read(char *ttyname, int *n_heredoc, char *delimeter)
 		return (CODE_ERROR_GENERIC);
 	stat = CODE_OK;
 	if (pid)
-		wait4(pid, &stat, 0, NULL);
+		waitpid(pid, &stat, 0);
 	else
 		_write_to_file(filename, delimeter);
 	free(filename);
