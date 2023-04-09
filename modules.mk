@@ -103,10 +103,10 @@ ABS_SRC_LIBEXEC = $(addprefix $(LIBEXEC_DIR)/, $(SRC_LIBEXEC))
 export ACFLAGS
 export INC_DIR
 
+ifeq ($(OSNAME),Darwin)
 $(LIBREADLINE):
-	ifeq ($(OSNAME),Darwin)
-		./modules/make_symlink_readline.sh
-	endif
+	./modules/make_symlink_readline.sh
+endif
 
 $(LIBFT): $(ABS_SRC_LIBFT)
 	git submodule update --remote $(LIBFT_DIR)
