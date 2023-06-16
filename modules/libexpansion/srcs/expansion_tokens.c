@@ -65,7 +65,10 @@ static int	_expand_token(t_toks *toks, int *i)
 	t_pchararr	*arr;
 
 	if ((toks->arr)[*i].type != TOKENTYPE_WORD)
+	{
+		(*i)++;
 		return (CODE_OK);
+	}
 	stat = do_shell_expansion_word_split((toks->arr)[*i].content, &arr);
 	if (stat)
 		return (stat);
