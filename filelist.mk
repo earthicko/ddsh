@@ -33,6 +33,14 @@ FILENAME			= \
 					envmanager/escape2 \
 					envmanager/escape3 \
 					envmanager/envmanager \
+					executor/io_manager \
+					executor/pipeseq_fork \
+					executor/pipeseq_fork_utils \
+					executor/pipeseq \
+					executor/simplecom \
+					executor/simplecom_extern \
+					executor/redirs \
+					executor/executor \
 					parser/t_node \
 					parser/t_node_utils \
 					parser/util \
