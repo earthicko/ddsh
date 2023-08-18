@@ -105,7 +105,7 @@ static void	_write_to_file(char *filename, char *delimeter)
 	_abort_write_to_file(fd, filename, delim_dup, 1);
 }
 
-int	_heredoc_read(char *ttyname, int *n_heredoc, char *delimeter)
+int	_heredoc_read(char *shellname, int *n_heredoc, char *delimeter)
 {
 	pid_t	pid;
 	char	*filename;
@@ -113,7 +113,7 @@ int	_heredoc_read(char *ttyname, int *n_heredoc, char *delimeter)
 
 	(*n_heredoc)++;
 	stat = _heredoc_get_filename(
-			ttyname, *n_heredoc, (*n_heredoc) - 1, &filename);
+			shellname, *n_heredoc, (*n_heredoc) - 1, &filename);
 	(*n_heredoc)--;
 	if (stat)
 		return (stat);

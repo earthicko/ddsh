@@ -21,7 +21,8 @@ static int	_setval_and_return(char **buf, char *val, int ret)
 	return (ret);
 }
 
-int	_heredoc_get_filename(char *ttyname, int n_heredoc, int doc_id, char **buf)
+int	_heredoc_get_filename(
+		char *shellname, int n_heredoc, int doc_id, char **buf)
 {
 	char	*docname;
 	char	*result;
@@ -32,7 +33,7 @@ int	_heredoc_get_filename(char *ttyname, int n_heredoc, int doc_id, char **buf)
 	if (!docname)
 		return (_setval_and_return(buf, NULL, CODE_ERROR_MALLOC));
 	result = ft_strmerge(6, DIR_HEREDOC, "/", PREFIX_HEREDOC_TEMPFILE,
-			ttyname, "_", docname);
+			shellname, "_", docname);
 	free(docname);
 	if (!result)
 		return (_setval_and_return(buf, NULL, CODE_ERROR_MALLOC));
@@ -40,11 +41,11 @@ int	_heredoc_get_filename(char *ttyname, int n_heredoc, int doc_id, char **buf)
 }
 
 int	_heredoc_get_next_filename(
-		char *ttyname, int n_heredoc, int *i_current, char **buf)
+		char *shellname, int n_heredoc, int *i_current, char **buf)
 {
 	int	stat;
 
-	stat = _heredoc_get_filename(ttyname, n_heredoc, *i_current, buf);
+	stat = _heredoc_get_filename(shellname, n_heredoc, *i_current, buf);
 	if (!stat)
 		(*i_current)++;
 	return (stat);

@@ -24,12 +24,12 @@ static int	_closedir_and_return(DIR *dp, int stat)
 	return (stat);
 }
 
-static int	_should_delete(char *_ttyname, struct dirent *ep)
+static int	_should_delete(char *shellname, struct dirent *ep)
 {
 	char	*prefix;
 	int		stat;
 
-	prefix = ft_strjoin(PREFIX_HEREDOC_TEMPFILE, _ttyname);
+	prefix = ft_strjoin(PREFIX_HEREDOC_TEMPFILE, shellname);
 	if (!prefix)
 		return (CODE_ERROR_MALLOC);
 	stat = (ep && ep->d_type == DT_REG
@@ -52,7 +52,7 @@ static int	_heredoc_clear_entry(struct dirent *ep)
 	return (CODE_OK);
 }
 
-static int	_heredoc_clear_all(char *_ttyname)
+static int	_heredoc_clear_all(char *shellname)
 {
 	DIR				*dp;
 	struct dirent	*ep;
@@ -66,7 +66,7 @@ static int	_heredoc_clear_all(char *_ttyname)
 		ep = readdir(dp);
 		if (!ep)
 			break ;
-		stat = _should_delete(_ttyname, ep);
+		stat = _should_delete(shellname, ep);
 		if (stat < 0)
 			return (_closedir_and_return(dp, CODE_ERROR_MALLOC));
 		if (stat == TRUE && _heredoc_clear_entry(ep))
@@ -75,13 +75,13 @@ static int	_heredoc_clear_all(char *_ttyname)
 	return (_closedir_and_return(dp, CODE_OK));
 }
 
-int	_heredoc_clear(char *ttyname, int *n_heredoc, int *i_current)
+int	_heredoc_clear(char *shellname, int *n_heredoc, int *i_current)
 {
 	int	stat;
 
 	*n_heredoc = 0;
 	*i_current = 0;
-	stat = _heredoc_clear_all(ttyname);
+	stat = _heredoc_clear_all(shellname);
 	if (stat == CODE_ERROR_IO)
 		ft_dprintf(2, "%sfailed to open dir: %s\n",
 			MSG_ERROR_PREFIX, DIR_HEREDOC);

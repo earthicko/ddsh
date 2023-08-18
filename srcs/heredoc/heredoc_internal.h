@@ -14,7 +14,7 @@
 # define HEREDOC_INTERNAL_H
 # include "heredoc.h"
 # define DIR_HEREDOC "/tmp"
-# define PREFIX_HEREDOC_TEMPFILE ".heredoc_"
+# define PREFIX_HEREDOC_TEMPFILE ".heredoc"
 # define PREFIX_HEREDOC_PROMPT "> "
 
 enum e_heredocmode
@@ -28,12 +28,12 @@ enum e_heredocmode
 
 int	_heredocmanager(int mode, int doc_id, void *buf);
 int	_heredoc_read(
-		char *ttyname, int *n_heredoc, char *delimeter);
+		char *shellname, int *n_heredoc, char *delimeter);
 int	_heredoc_get_filename(
-		char *ttyname, int n_heredoc, int doc_id, char **buf);
+		char *shellname, int n_heredoc, int doc_id, char **buf);
 int	_heredoc_get_next_filename(
-		char *ttyname, int n_heredoc, int *i_current, char **buf);
+		char *shellname, int n_heredoc, int *i_current, char **buf);
 int	_heredoc_clear(
-		char *ttyname, int *n_heredoc, int *i_current);
+		char *shellname, int *n_heredoc, int *i_current);
 
 #endif
