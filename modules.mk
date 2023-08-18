@@ -22,33 +22,23 @@ LIBLEXER			= $(LIBLEXER_DIR)/liblexer.a
 LINK_LIBLEXER		= -L$(LIBLEXER_DIR)
 INC_DIR_LIBLEXER	= -I$(LIBLEXER_DIR)/includes
 
-LIBHEREDOC_DIR		= $(LIB_DIR)/libheredoc
-LIBHEREDOC			= $(LIBHEREDOC_DIR)/libheredoc.a
-LINK_LIBHEREDOC		= -L$(LIBHEREDOC_DIR)
-INC_DIR_LIBHEREDOC	= -I$(LIBHEREDOC_DIR)/includes
-
 LDLIBS				= \
 					$(LIBLEXER) \
-					$(LIBHEREDOC) \
 					$(LIBFT)
 LDFLAGS				= \
 					$(LINK_LIBREADLINE) \
 					$(LINK_LIBFT) \
-					$(LINK_LIBLEXER) \
-					$(LINK_LIBHEREDOC)
+					$(LINK_LIBLEXER)
 INC_DIR				= -I. -I${PWD}/includes \
 					$(INC_DIR_LIBREADLINE) \
 					$(INC_DIR_LIBFT) \
 					$(INC_DIR_LIBLEXER) \
-					$(INC_DIR_LIBHEREDOC) \
 
 include $(LIBFT_DIR)/filelist.mk
 include $(LIBLEXER_DIR)/filelist.mk
-include $(LIBHEREDOC_DIR)/filelist.mk
 
 ABS_SRC_LIBFT = $(addprefix $(LIBFT_DIR)/, $(SRC_LIBFT))
 ABS_SRC_LIBLEXER = $(addprefix $(LIBLEXER_DIR)/, $(SRC_LIBLEXER))
-ABS_SRC_LIBHEREDOC = $(addprefix $(LIBHEREDOC_DIR)/, $(SRC_LIBHEREDOC))
 
 export ACFLAGS
 export INC_DIR
@@ -64,6 +54,3 @@ $(LIBFT): $(ABS_SRC_LIBFT)
 
 $(LIBLEXER): $(ABS_SRC_LIBLEXER)
 	@make -j4 -C $(LIBLEXER_DIR)/
-
-$(LIBHEREDOC): $(ABS_SRC_LIBHEREDOC)
-	@make -j4 -C $(LIBHEREDOC_DIR)/

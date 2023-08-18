@@ -51,6 +51,11 @@ FILENAME			= \
 					expansion/tilde \
 					expansion/interface \
 					expansion/expansion \
+					heredoc/clear \
+					heredoc/filename \
+					heredoc/interface \
+					heredoc/read \
+					heredoc/heredocmanager \
 					parser/t_node \
 					parser/t_node_utils \
 					parser/util \
