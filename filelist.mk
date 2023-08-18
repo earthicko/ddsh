@@ -56,6 +56,11 @@ FILENAME			= \
 					heredoc/interface \
 					heredoc/read \
 					heredoc/heredocmanager \
+					lexer/type_len \
+					lexer/is_char \
+					lexer/lexer_utils \
+					lexer/token_destroy \
+					lexer/lexer \
 					parser/t_node \
 					parser/t_node_utils \
 					parser/util \

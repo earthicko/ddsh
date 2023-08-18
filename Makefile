@@ -52,13 +52,11 @@ clean:
 	$(RM) $(TESTER_OBJ) $(TESTER_DEP)
 	$(RM) $(TEST_OBJ) $(TEST_DEP)
 	@make clean -C $(LIBFT_DIR)
-	@make clean -C $(LIBLEXER_DIR)
 
 fclean: clean
 	$(RM) $(NAME)
 	$(RM) $(TESTER_FILENAME)
 	@make fclean -C $(LIBFT_DIR)
-	@make fclean -C $(LIBLEXER_DIR)
 
 re:
 	@make fclean
