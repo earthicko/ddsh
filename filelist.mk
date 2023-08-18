@@ -4,6 +4,26 @@ DRIVER_OBJ			= $(addsuffix .o, $(DRIVER_FILENAME))
 DRIVER_DEP			= $(addsuffix .d, $(DRIVER_FILENAME))
 
 FILENAME			= \
+					envmanager/t_enventry \
+					envmanager/exit_stat_manager \
+					envmanager/getenvp \
+					envmanager/init \
+					envmanager/setval \
+					envmanager/utils \
+					envmanager/clear \
+					envmanager/getentry \
+					envmanager/getval \
+					envmanager/unsetval \
+					envmanager/printlist \
+					envmanager/addentry \
+					envmanager/specialval \
+					envmanager/specialval0 \
+					envmanager/escape \
+					envmanager/escape0 \
+					envmanager/escape1 \
+					envmanager/escape2 \
+					envmanager/escape3 \
+					envmanager/envmanager \
 					prompt/prompt_steps \
 					prompt/prompt_cosmetic \
 					strutils/pchararr \

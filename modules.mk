@@ -27,11 +27,6 @@ LIBPARSER			= $(LIBPARSER_DIR)/libparser.a
 LINK_LIBPARSER		= -L$(LIBPARSER_DIR)
 INC_DIR_LIBPARSER	= -I$(LIBPARSER_DIR)/includes
 
-LIBENVMAN_DIR		= $(LIB_DIR)/libenvman
-LIBENVMAN			= $(LIBENVMAN_DIR)/libenvman.a
-LINK_LIBENVMAN		= -L$(LIBENVMAN_DIR)
-INC_DIR_LIBENVMAN	= -I$(LIBENVMAN_DIR)/includes
-
 LIBEXPANSION_DIR	= $(LIB_DIR)/libexpansion
 LIBEXPANSION		= $(LIBEXPANSION_DIR)/libexpansion.a
 LINK_LIBEXPANSION	= -L$(LIBEXPANSION_DIR)
@@ -54,7 +49,6 @@ INC_DIR_LIBEXEC		= -I$(LIBEXEC_DIR)/includes
 
 LDLIBS				= \
 					$(LIBLEXER) \
-					$(LIBENVMAN) \
 					$(LIBEXPANSION) \
 					$(LIBHEREDOC) \
 					$(LIBEXEC) \
@@ -66,7 +60,6 @@ LDFLAGS				= \
 					$(LINK_LIBFT) \
 					$(LINK_LIBLEXER) \
 					$(LINK_LIBPARSER) \
-					$(LINK_LIBENVMAN) \
 					$(LINK_LIBEXPANSION) \
 					$(LINK_LIBHEREDOC) \
 					$(LINK_LIBBUILTIN) \
@@ -76,7 +69,6 @@ INC_DIR				= -I. -I${PWD}/includes \
 					$(INC_DIR_LIBFT) \
 					$(INC_DIR_LIBLEXER) \
 					$(INC_DIR_LIBPARSER) \
-					$(INC_DIR_LIBENVMAN) \
 					$(INC_DIR_LIBEXPANSION) \
 					$(INC_DIR_LIBHEREDOC) \
 					$(INC_DIR_LIBBUILTIN) \
@@ -85,7 +77,6 @@ INC_DIR				= -I. -I${PWD}/includes \
 include $(LIBFT_DIR)/filelist.mk
 include $(LIBLEXER_DIR)/filelist.mk
 include $(LIBPARSER_DIR)/filelist.mk
-include $(LIBENVMAN_DIR)/filelist.mk
 include $(LIBEXPANSION_DIR)/filelist.mk
 include $(LIBHEREDOC_DIR)/filelist.mk
 include $(LIBBUILTIN_DIR)/filelist.mk
@@ -94,7 +85,6 @@ include $(LIBEXEC_DIR)/filelist.mk
 ABS_SRC_LIBFT = $(addprefix $(LIBFT_DIR)/, $(SRC_LIBFT))
 ABS_SRC_LIBLEXER = $(addprefix $(LIBLEXER_DIR)/, $(SRC_LIBLEXER))
 ABS_SRC_LIBPARSER = $(addprefix $(LIBPARSER_DIR)/, $(SRC_LIBPARSER))
-ABS_SRC_LIBENVMAN = $(addprefix $(LIBENVMAN_DIR)/, $(SRC_LIBENVMAN))
 ABS_SRC_LIBEXPANSION = $(addprefix $(LIBEXPANSION_DIR)/, $(SRC_LIBEXPANSION))
 ABS_SRC_LIBHEREDOC = $(addprefix $(LIBHEREDOC_DIR)/, $(SRC_LIBHEREDOC))
 ABS_SRC_LIBBUILTIN = $(addprefix $(LIBBUILTIN_DIR)/, $(SRC_LIBBUILTIN))
@@ -117,9 +107,6 @@ $(LIBLEXER): $(ABS_SRC_LIBLEXER)
 
 $(LIBPARSER): $(ABS_SRC_LIBPARSER)
 	@make -j4 -C $(LIBPARSER_DIR)/
-
-$(LIBENVMAN): $(ABS_SRC_LIBENVMAN)
-	@make -j4 -C $(LIBENVMAN_DIR)/
 
 $(LIBEXPANSION): $(ABS_SRC_LIBEXPANSION)
 	@make -j4 -C $(LIBEXPANSION_DIR)/
