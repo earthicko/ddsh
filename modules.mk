@@ -22,11 +22,6 @@ LIBLEXER			= $(LIBLEXER_DIR)/liblexer.a
 LINK_LIBLEXER		= -L$(LIBLEXER_DIR)
 INC_DIR_LIBLEXER	= -I$(LIBLEXER_DIR)/includes
 
-LIBPARSER_DIR		= $(LIB_DIR)/libparser
-LIBPARSER			= $(LIBPARSER_DIR)/libparser.a
-LINK_LIBPARSER		= -L$(LIBPARSER_DIR)
-INC_DIR_LIBPARSER	= -I$(LIBPARSER_DIR)/includes
-
 LIBEXPANSION_DIR	= $(LIB_DIR)/libexpansion
 LIBEXPANSION		= $(LIBEXPANSION_DIR)/libexpansion.a
 LINK_LIBEXPANSION	= -L$(LIBEXPANSION_DIR)
@@ -53,13 +48,11 @@ LDLIBS				= \
 					$(LIBHEREDOC) \
 					$(LIBEXEC) \
 					$(LIBBUILTIN)\
-					$(LIBPARSER) \
 					$(LIBFT)
 LDFLAGS				= \
 					$(LINK_LIBREADLINE) \
 					$(LINK_LIBFT) \
 					$(LINK_LIBLEXER) \
-					$(LINK_LIBPARSER) \
 					$(LINK_LIBEXPANSION) \
 					$(LINK_LIBHEREDOC) \
 					$(LINK_LIBBUILTIN) \
@@ -68,7 +61,6 @@ INC_DIR				= -I. -I${PWD}/includes \
 					$(INC_DIR_LIBREADLINE) \
 					$(INC_DIR_LIBFT) \
 					$(INC_DIR_LIBLEXER) \
-					$(INC_DIR_LIBPARSER) \
 					$(INC_DIR_LIBEXPANSION) \
 					$(INC_DIR_LIBHEREDOC) \
 					$(INC_DIR_LIBBUILTIN) \
@@ -76,7 +68,6 @@ INC_DIR				= -I. -I${PWD}/includes \
 
 include $(LIBFT_DIR)/filelist.mk
 include $(LIBLEXER_DIR)/filelist.mk
-include $(LIBPARSER_DIR)/filelist.mk
 include $(LIBEXPANSION_DIR)/filelist.mk
 include $(LIBHEREDOC_DIR)/filelist.mk
 include $(LIBBUILTIN_DIR)/filelist.mk
@@ -84,7 +75,6 @@ include $(LIBEXEC_DIR)/filelist.mk
 
 ABS_SRC_LIBFT = $(addprefix $(LIBFT_DIR)/, $(SRC_LIBFT))
 ABS_SRC_LIBLEXER = $(addprefix $(LIBLEXER_DIR)/, $(SRC_LIBLEXER))
-ABS_SRC_LIBPARSER = $(addprefix $(LIBPARSER_DIR)/, $(SRC_LIBPARSER))
 ABS_SRC_LIBEXPANSION = $(addprefix $(LIBEXPANSION_DIR)/, $(SRC_LIBEXPANSION))
 ABS_SRC_LIBHEREDOC = $(addprefix $(LIBHEREDOC_DIR)/, $(SRC_LIBHEREDOC))
 ABS_SRC_LIBBUILTIN = $(addprefix $(LIBBUILTIN_DIR)/, $(SRC_LIBBUILTIN))
@@ -104,9 +94,6 @@ $(LIBFT): $(ABS_SRC_LIBFT)
 
 $(LIBLEXER): $(ABS_SRC_LIBLEXER)
 	@make -j4 -C $(LIBLEXER_DIR)/
-
-$(LIBPARSER): $(ABS_SRC_LIBPARSER)
-	@make -j4 -C $(LIBPARSER_DIR)/
 
 $(LIBEXPANSION): $(ABS_SRC_LIBEXPANSION)
 	@make -j4 -C $(LIBEXPANSION_DIR)/

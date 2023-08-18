@@ -24,6 +24,18 @@ FILENAME			= \
 					envmanager/escape2 \
 					envmanager/escape3 \
 					envmanager/envmanager \
+					parser/t_node \
+					parser/t_node_utils \
+					parser/util \
+					parser/map_setter \
+					parser/io_file \
+					parser/io_redirect \
+					parser/simple_command \
+					parser/cmd_element \
+					parser/io_here \
+					parser/pipe_sequence \
+					parser/terminal \
+					parser/parser \
 					prompt/prompt_steps \
 					prompt/prompt_cosmetic \
 					strutils/pchararr \
