@@ -41,6 +41,16 @@ FILENAME			= \
 					executor/simplecom_extern \
 					executor/redirs \
 					executor/executor \
+					expansion/word_split \
+					expansion/word_split_utils \
+					expansion/compose_quotes \
+					expansion/compose_envvar \
+					expansion/compose_str \
+					expansion/utils \
+					expansion/tokens \
+					expansion/tilde \
+					expansion/interface \
+					expansion/expansion \
 					parser/t_node \
 					parser/t_node_utils \
 					parser/util \

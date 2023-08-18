@@ -53,7 +53,6 @@ clean:
 	$(RM) $(TEST_OBJ) $(TEST_DEP)
 	@make clean -C $(LIBFT_DIR)
 	@make clean -C $(LIBLEXER_DIR)
-	@make clean -C $(LIBEXPANSION_DIR)
 	@make clean -C $(LIBHEREDOC_DIR)
 
 fclean: clean
@@ -61,7 +60,6 @@ fclean: clean
 	$(RM) $(TESTER_FILENAME)
 	@make fclean -C $(LIBFT_DIR)
 	@make fclean -C $(LIBLEXER_DIR)
-	@make fclean -C $(LIBEXPANSION_DIR)
 	@make fclean -C $(LIBHEREDOC_DIR)
 
 re:
