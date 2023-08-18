@@ -55,7 +55,6 @@ clean:
 	@make clean -C $(LIBLEXER_DIR)
 	@make clean -C $(LIBEXPANSION_DIR)
 	@make clean -C $(LIBHEREDOC_DIR)
-	@make clean -C $(LIBBUILTIN_DIR)
 	@make clean -C $(LIBEXEC_DIR)
 
 fclean: clean
@@ -65,7 +64,6 @@ fclean: clean
 	@make fclean -C $(LIBLEXER_DIR)
 	@make fclean -C $(LIBEXPANSION_DIR)
 	@make fclean -C $(LIBHEREDOC_DIR)
-	@make fclean -C $(LIBBUILTIN_DIR)
 	@make fclean -C $(LIBEXEC_DIR)
 
 re:

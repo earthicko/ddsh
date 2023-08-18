@@ -32,11 +32,6 @@ LIBHEREDOC			= $(LIBHEREDOC_DIR)/libheredoc.a
 LINK_LIBHEREDOC		= -L$(LIBHEREDOC_DIR)
 INC_DIR_LIBHEREDOC	= -I$(LIBHEREDOC_DIR)/includes
 
-LIBBUILTIN_DIR		= $(LIB_DIR)/libbuiltin
-LIBBUILTIN			= $(LIBBUILTIN_DIR)/libbuiltin.a
-LINK_LIBBUILTIN		= -L$(LIBBUILTIN_DIR)
-INC_DIR_LIBBUILTIN	= -I$(LIBBUILTIN_DIR)/includes
-
 LIBEXEC_DIR			= $(LIB_DIR)/libexec
 LIBEXEC				= $(LIBEXEC_DIR)/libexec.a
 LINK_LIBEXEC		= -L$(LIBEXEC_DIR)
@@ -47,7 +42,6 @@ LDLIBS				= \
 					$(LIBEXPANSION) \
 					$(LIBHEREDOC) \
 					$(LIBEXEC) \
-					$(LIBBUILTIN)\
 					$(LIBFT)
 LDFLAGS				= \
 					$(LINK_LIBREADLINE) \
@@ -55,7 +49,6 @@ LDFLAGS				= \
 					$(LINK_LIBLEXER) \
 					$(LINK_LIBEXPANSION) \
 					$(LINK_LIBHEREDOC) \
-					$(LINK_LIBBUILTIN) \
 					$(LINK_LIBEXEC)
 INC_DIR				= -I. -I${PWD}/includes \
 					$(INC_DIR_LIBREADLINE) \
@@ -63,21 +56,18 @@ INC_DIR				= -I. -I${PWD}/includes \
 					$(INC_DIR_LIBLEXER) \
 					$(INC_DIR_LIBEXPANSION) \
 					$(INC_DIR_LIBHEREDOC) \
-					$(INC_DIR_LIBBUILTIN) \
 					$(INC_DIR_LIBEXEC)
 
 include $(LIBFT_DIR)/filelist.mk
 include $(LIBLEXER_DIR)/filelist.mk
 include $(LIBEXPANSION_DIR)/filelist.mk
 include $(LIBHEREDOC_DIR)/filelist.mk
-include $(LIBBUILTIN_DIR)/filelist.mk
 include $(LIBEXEC_DIR)/filelist.mk
 
 ABS_SRC_LIBFT = $(addprefix $(LIBFT_DIR)/, $(SRC_LIBFT))
 ABS_SRC_LIBLEXER = $(addprefix $(LIBLEXER_DIR)/, $(SRC_LIBLEXER))
 ABS_SRC_LIBEXPANSION = $(addprefix $(LIBEXPANSION_DIR)/, $(SRC_LIBEXPANSION))
 ABS_SRC_LIBHEREDOC = $(addprefix $(LIBHEREDOC_DIR)/, $(SRC_LIBHEREDOC))
-ABS_SRC_LIBBUILTIN = $(addprefix $(LIBBUILTIN_DIR)/, $(SRC_LIBBUILTIN))
 ABS_SRC_LIBEXEC = $(addprefix $(LIBEXEC_DIR)/, $(SRC_LIBEXEC))
 
 export ACFLAGS
@@ -100,9 +90,6 @@ $(LIBEXPANSION): $(ABS_SRC_LIBEXPANSION)
 
 $(LIBHEREDOC): $(ABS_SRC_LIBHEREDOC)
 	@make -j4 -C $(LIBHEREDOC_DIR)/
-
-$(LIBBUILTIN): $(ABS_SRC_LIBBUILTIN)
-	@make -j4 -C $(LIBBUILTIN_DIR)/
 
 $(LIBEXEC): $(ABS_SRC_LIBEXEC)
 	@make -j4 -C $(LIBEXEC_DIR)\

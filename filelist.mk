@@ -4,6 +4,15 @@ DRIVER_OBJ			= $(addsuffix .o, $(DRIVER_FILENAME))
 DRIVER_DEP			= $(addsuffix .d, $(DRIVER_FILENAME))
 
 FILENAME			= \
+					builtin/utils \
+					builtin/cd \
+					builtin/echo \
+					builtin/export \
+					builtin/declare \
+					builtin/pwd \
+					builtin/unset \
+					builtin/exit \
+					builtin/dot \
 					envmanager/t_enventry \
 					envmanager/exit_stat_manager \
 					envmanager/getenvp \
