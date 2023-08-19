@@ -82,7 +82,7 @@ FILENAME			= \
 					strutils/find_exec \
 					strutils/find_exec_from_path \
 					signal/signal_set_state \
-					signal/signal_handler
+					signal/signal_handler \
 
 SRC					= $(addprefix srcs/, $(addsuffix .c, $(FILENAME)))
 OBJ					= $(addprefix srcs/, $(addsuffix .o, $(FILENAME)))
@@ -90,7 +90,8 @@ DEP					= $(addprefix srcs/, $(addsuffix .d, $(FILENAME)))
 
 TEST_FILENAME		= \
 					print_nodes \
-					print_tokens
+					print_tokens \
+
 TEST_SRC			= $(addprefix tests/, $(addsuffix .c, $(TEST_FILENAME)))
 TEST_OBJ			= $(addprefix tests/, $(addsuffix .o, $(TEST_FILENAME)))
 TEST_DEP			= $(addprefix tests/, $(addsuffix .d, $(TEST_FILENAME)))
@@ -102,7 +103,7 @@ TESTER_FILENAME		= \
 					test_heredoc \
 					test_expansion \
 					test_exec \
-					test_strutils
+					test_strutils \
 
 TESTER_OBJ			= $(addprefix tests/, $(addsuffix .o, $(TESTER_FILENAME)))
 TESTER_DEP			= $(addprefix tests/, $(addsuffix .d, $(TESTER_FILENAME)))

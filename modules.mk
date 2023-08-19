@@ -25,10 +25,12 @@ LINK_LIBFT			= -L$(LIBFT_DIR)
 INC_DIR_LIBFT		= -I$(LIBFT_DIR)/includes
 
 LDLIBS				= \
-					$(LIBFT)
+					$(LIBFT) \
+
 LDFLAGS				= \
 					$(LINK_LIBREADLINE) \
-					$(LINK_LIBFT)
+					$(LINK_LIBFT) \
+
 INC_DIR				= -I. -I${PWD}/includes \
 					$(INC_DIR_LIBREADLINE) \
 					$(INC_DIR_LIBFT) \
