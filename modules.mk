@@ -1,22 +1,24 @@
 LIB_DIR				= ${PWD}/modules
 
-ifeq ($(OSNAME),Linux)
-	ifeq ($(shell [ -d "/data/data/com.termux/files/usr" ] && echo 1), 1)
-		LIBREADLINE_DIR		= /data/data/com.termux/files/usr/lib
-		LIBREADLINE			= $(LIBREADLINE_DIR)/libreadline.so
-		LINK_LIBREADLINE	= -L$(LIBREADLINE_DIR) -lreadline
-		INC_DIR_LIBREADLINE	= -I/data/data/com.termux/files/usr/include
-	else
-		LIBREADLINE_DIR		= /usr/lib/x86_64-linux-gnu
-		LIBREADLINE			= $(LIBREADLINE_DIR)/libreadline.a
-		LINK_LIBREADLINE	= -L$(LIBREADLINE_DIR) -lreadline
-		INC_DIR_LIBREADLINE	= -I/usr/include
-	endif
-else ifeq ($(OSNAME),Darwin)
-	LIBREADLINE_DIR		= $(LIB_DIR)/readline
-	LIBREADLINE			= $(LIBREADLINE_DIR)/lib/libreadline.a
-	LINK_LIBREADLINE	= -L$(LIBREADLINE_DIR)/lib -lreadline
-	INC_DIR_LIBREADLINE	= -I$(LIBREADLINE_DIR)/include
+ifeq ($(TARGET_SYSTEM), macos)
+LIBREADLINE_DIR		= $(LIB_DIR)/readline
+LIBREADLINE			= $(LIBREADLINE_DIR)/lib/libreadline.a
+LINK_LIBREADLINE	= -L$(LIBREADLINE_DIR)/lib -lreadline
+INC_DIR_LIBREADLINE	= -I$(LIBREADLINE_DIR)/include
+
+else ifeq ($(TARGET_SYSTEM), linux_x86_64)
+LIBREADLINE_DIR		= /usr/lib/x86_64-linux-gnu
+LIBREADLINE			= $(LIBREADLINE_DIR)/libreadline.a
+LINK_LIBREADLINE	= -L$(LIBREADLINE_DIR) -lreadline
+INC_DIR_LIBREADLINE	= -I/usr/include
+
+else ifeq ($(TARGET_SYSTEM), linux_termux)
+LIBREADLINE_DIR		= /data/data/com.termux/files/usr/lib
+LIBREADLINE			= $(LIBREADLINE_DIR)/libreadline.so
+LINK_LIBREADLINE	= -L$(LIBREADLINE_DIR) -lreadline
+INC_DIR_LIBREADLINE	= -I/data/data/com.termux/files/usr/include
+
+else
 endif
 
 LIBFT_DIR			= $(LIB_DIR)/libft

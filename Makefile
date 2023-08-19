@@ -16,10 +16,10 @@ uninstall:
 	$(RM) ${HOME}/$(NAME)
 	$(RM) ${HOME}/$(RC_NAME)
 
-OSNAME = $(shell uname -s)
-
+include target_system.mk
 include	modules.mk
 include	filelist.mk
+
 CFLAGS	= -Wall -Werror -Wextra -MMD -MP $(ACFLAGS) $(INC_DIR)
 
 $(NAME): $(LDLIBS) $(OBJ) $(DRIVER_OBJ) $(LIBREADLINE)
