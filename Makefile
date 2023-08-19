@@ -20,7 +20,7 @@ include target_system.mk
 include	modules.mk
 include	filelist.mk
 
-CFLAGS	= -Wall -Werror -Wextra -MMD -MP $(ACFLAGS) $(INC_DIR)
+CFLAGS	= -Wall -Werror -Wextra -MMD -MP $(ACFLAGS) $(INC_DIR) $(DEFINES)
 
 $(NAME): $(LDLIBS) $(OBJ) $(DRIVER_OBJ) $(LIBREADLINE)
 	$(CC) $(CFLAGS) $(OBJ) $(DRIVER_OBJ) $(LDFLAGS) $(LDLIBS) -o $@

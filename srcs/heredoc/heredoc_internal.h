@@ -13,9 +13,11 @@
 #ifndef HEREDOC_INTERNAL_H
 # define HEREDOC_INTERNAL_H
 # include "heredoc.h"
-# define DIR_HEREDOC "/tmp"
 # define PREFIX_HEREDOC_TEMPFILE ".heredoc"
 # define PREFIX_HEREDOC_PROMPT "> "
+# ifndef DIR_HEREDOC
+#  define DIR_HEREDOC "/tmp"
+# endif
 
 enum e_heredocmode
 {
